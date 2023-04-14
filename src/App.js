@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
+import ToastEditor from "./components/ToastEditor";
+import ToastViewer from "./components/ToastViewer";
 import Home from "./components/Home";
 import Bbslist from "./components/Bbslist";
 import Bbswrite from "./components/Bbswrite";
@@ -41,6 +43,13 @@ function App() {
                   <Link className="nav-link" to="/pdslist">자료실</Link>
                 </li>   
 
+                <li className="nav-item">
+                  <Link className="nav-link" to="/write">write</Link>
+                </li> 
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/viewer/1">viewer</Link>
+                </li> 
 
               </ul>
             </div>
@@ -70,6 +79,9 @@ function App() {
 
                 <Route path="/bbsupdate/:seq" exact element={<Bbsupdate />}></Route>
 
+                <Route path="/write" element={<ToastEditor />}></Route>
+
+                <Route path="/viewer/:seq" exact element={<ToastViewer />}></Route>
               </Routes>
 
             </div>
