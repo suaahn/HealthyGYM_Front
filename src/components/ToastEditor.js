@@ -11,7 +11,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 export default function ToastEditor() {
     let history = useNavigate();
 
-    const [member_seq, setMember_seq] = useState(1);
+    const [memberseq, setMemberseq] = useState(1);
+    const [bbstag, setBbstag] = useState(0);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
@@ -23,20 +24,26 @@ export default function ToastEditor() {
 
     // 등록 버튼 핸들러
     const handleRegisterButton = () => {
-        // 입력창에 입력한 내용을 HTML 태그 형태로 출력
-        console.log(editorRef.current.getInstance().getHTML());
-        // 입력창에 입력한 내용을 MarkDown 형태로 출력
-        console.log(editorRef.current.getInstance().getMarkdown());
+        // 입력한 내용을 HTML 태그 형태로 출력
+        // console.log(editorRef.current.getInstance().getHTML());
+        // 입력한 내용을 MarkDown 형태로 출력
+        // console.log(editorRef.current.getInstance().getMarkdown());
         // 제목 출력
-        console.log(title);
+        // console.log(title, memberseq, bbstag);
 
-        if(title === undefined || title.trim() === ''){
-            alert('제목을 입력해 주십시오');
+        if(bbstag === 0) {
+            alert('토픽을 선택해주세요');
+            return;
+        } else if(title.trim() === ''){
+            alert('제목을 입력해주세요.');
+            return;
+        } else if(editorRef.current.getInstance().getMarkdown().length === 0) {
+            alert('내용을 입력해주세요.');
             return;
         }
         // 각자 사용 시 params 변경하면 됨!!!!
         axios.post("http://localhost:3000/writefreebbs", null, 
-                    { params:{ "member_seq":member_seq, "title":title, "content":content, "bbs_tag":1 } })
+                    { params:{ "memberseq":memberseq, "title":title, "content":content, "bbstag":bbstag } })
              .then(res => {
                 console.log(res.data);
                 if(res.data === "OK"){
@@ -117,7 +124,18 @@ export default function ToastEditor() {
 
     return (
         <div className="edit_wrap">
-             <input
+            <h2>글쓰기</h2><hr/>
+
+            <select value={bbstag} defaultValue={0} onChange={(e) => setBbstag(e.target.value)}>
+                <option value={0} hidden>토픽을 선택해주세요</option>
+                <optgroup label='커뮤니티'>
+                    <option value={1}>바디갤러리</option>
+                    <option value={2}>정보</option>
+                    <option value={3}>자유</option>
+                </optgroup>
+            </select><br/>
+
+            <input
                 type="text"
                 id="title"
                 name="title"
