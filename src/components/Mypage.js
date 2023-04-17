@@ -124,10 +124,21 @@ function Mywrite() {
 
 function EditProfile() {
 
+    const [memberseq, setMemberseq] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('');
+    const [phone, setPhone] = useState('');
+    const [mbti, setMbti] = useState('');
+    const [profile, setProfile] = useState('');
+
     useEffect(() => {
         axios
             .get("http://localhost:3000/members/findmember")
             .then((response) => {
+                setMemberseq(response.data.memberseq);
                 setEmail(response.data.email);
                 setProfile(response.data.profile);
                 setNickname(response.data.nickname);
@@ -151,15 +162,6 @@ function EditProfile() {
                 console.error(error);
             });
     }, []);
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [nickname, setNickname] = useState('');
-    const [gender, setGender] = useState('');
-    const [age, setAge] = useState('');
-    const [phone, setPhone] = useState('');
-    const [mbti, setMbti] = useState('');
-    const [profile, setProfile] = useState('');
 
     const handleNameChange = (event) => {
         setName(event.target.value);
@@ -196,7 +198,8 @@ function EditProfile() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.put('http://localhost:3000/members/updatemember', {
+        axios.post('http://localhost:3000/members/profileupdate', {
+            memberseq: memberseq,
             email: email,
             nickname: nickname,
             gender: gender,
@@ -216,6 +219,7 @@ function EditProfile() {
 
     return (
         <form onSubmit={handleSubmit}>
+            <input type="hidden" name="memberseq" value={memberseq} />
             <label>
                 이메일:
                 <input type="email" value={email} onChange={handleEmailChange} />
@@ -227,11 +231,11 @@ function EditProfile() {
             <fieldset>
                 <legend>성별:</legend>
                 <label>
-                    <input type="radio" name="gender" value="1" checked={gender === "1"} onChange={handleGenderChange} />
+                    <input type="radio" name="gender" value="male" checked={gender === "male"} onChange={handleGenderChange} />
                     남성
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="0" checked={gender === "0"} onChange={handleGenderChange} />
+                    <input type="radio" name="gender" value="female" checked={gender === "female"} onChange={handleGenderChange} />
                     여성
                 </label>
             </fieldset>
