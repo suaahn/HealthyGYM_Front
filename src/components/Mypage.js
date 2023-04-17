@@ -2,6 +2,7 @@ import {Link, Routes, Route, NavLink} from "react-router-dom";
 import "./Mypage.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
+
 function Nav() {
     return (
         <div>
@@ -55,9 +56,13 @@ function Profile() {
                 <li><Link to="/mypage/setting">설정</Link></li>
                 <hr></hr>
 
-                <li><div>나의 헬친</div></li>
+                <li>
+                    <div>나의 헬친</div>
+                </li>
                 <li><Link to="/mypage/mate">+나의 헬친을 등록해주세요</Link></li>
-                <li><div>나의 체성분 변화</div></li>
+                <li>
+                    <div>나의 체성분 변화</div>
+                </li>
                 <li><Link to="/mypage/bodycom">+나의 체성분을 등록해주세요</Link></li>
             </ul>
         </div>
@@ -97,11 +102,19 @@ function Bodycom() {
                 <li><Link to="/mypage/setting">설정</Link></li>
                 <hr></hr>
 
-                <li><div>체성분검사 업로드</div></li>
+                <li>
+                    <div>체성분검사 업로드</div>
+                </li>
                 <li><Link to="/mypage/upload">Input Form</Link></li>
-                <li><div>업로드 이력</div></li>
-                <li><div>날짜 골격근량 (+-) 체지방량 (+-) (삭제 버튼) </div></li>
-                <li><div>List ...</div></li>
+                <li>
+                    <div>업로드 이력</div>
+                </li>
+                <li>
+                    <div>날짜 골격근량 (+-) 체지방량 (+-) (삭제 버튼)</div>
+                </li>
+                <li>
+                    <div>List ...</div>
+                </li>
             </ul>
         </div>
     )
@@ -219,37 +232,39 @@ function EditProfile() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="hidden" name="memberseq" value={memberseq} />
+            <input type="hidden" name="memberseq" value={memberseq}/>
             <label>
                 이메일:
-                <input type="email" value={email} onChange={handleEmailChange} />
+                <input type="email" value={email} onChange={handleEmailChange}/>
             </label>
             <label>
                 별명:
-                <input type="text" value={nickname} onChange={handleNicknameChange} />
+                <input type="text" value={nickname} onChange={handleNicknameChange}/>
             </label>
             <fieldset>
                 <legend>성별:</legend>
                 <label>
-                    <input type="radio" name="gender" value="male" checked={gender === "male"} onChange={handleGenderChange} />
+                    <input type="radio" name="gender" value="male" checked={gender === "male"}
+                           onChange={handleGenderChange}/>
                     남성
                 </label>
                 <label>
-                    <input type="radio" name="gender" value="female" checked={gender === "female"} onChange={handleGenderChange} />
+                    <input type="radio" name="gender" value="female" checked={gender === "female"}
+                           onChange={handleGenderChange}/>
                     여성
                 </label>
             </fieldset>
             <label>
                 이름:
-                <input type="text" value={name} onChange={handleNameChange} />
+                <input type="text" value={name} onChange={handleNameChange}/>
             </label>
             <label>
                 나이:
-                <input type="text" value={age} onChange={handleAgeChange} />
+                <input type="text" value={age} onChange={handleAgeChange}/>
             </label>
             <label>
                 전화번호:
-                <input type="text" value={phone} onChange={handlePhoneChange} />
+                <input type="text" value={phone} onChange={handlePhoneChange}/>
             </label>
             <label>
                 Mbti:
@@ -274,7 +289,7 @@ function EditProfile() {
             </label>
             <label>
                 프로필 이미지:
-                <input type="text" value={profile} onChange={handleProfileChange} />
+                <input type="text" value={profile} onChange={handleProfileChange}/>
             </label>
             <button type="submit">수정하기</button>
         </form>
