@@ -27,6 +27,11 @@ function Profile() {
 
     const [member, setMember] = useState([]);
 
+    const [follow, setFollow] = useState([]);
+    const [follower, setFollower] = useState([]);
+    const [followNum, setFollowNum] = useState(0);
+    const [followerNum, setFollowerNum] = useState(0);
+
     useEffect(() => {
         axios.get('http://localhost:3000/members/findmember')
             .then((response) => {
@@ -40,6 +45,35 @@ function Profile() {
             });
     }, []);
 
+    useEffect(() => {
+        axios.get('http://localhost:3000/members/follow')
+            .then((response) => {
+                setFollow(response.data.followDtoList);
+                setFollowNum(response.data.followNum);
+
+                // 데이터 확인용
+                console.log(response.data.followDtoList);
+                console.log(response.data.followNum);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:3000/members/following')
+    //         .then((response) => {
+    //             setFollower(response.data.list);
+    //
+    //             // 데이터 확인용
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // }, []);
+
     return (
         <div>
             <h2>Profile</h2>
@@ -51,8 +85,8 @@ function Profile() {
                 <li>
                     <div>닉네임 : {member.nickname}</div>
                 </li>
-                <li><Link to="/mypage/follower">팔로워 0(follow)</Link></li>
-                <li><Link to="/mypage/following">팔로잉 0(follow)</Link></li>
+                <li><Link to="/mypage/follower">팔로워 0</Link></li>
+                <li><Link to="/mypage/following">팔로잉 {followNum}</Link></li>
                 <li><Link to="/mypage/setting">설정</Link></li>
                 <hr></hr>
 
@@ -73,6 +107,11 @@ function Bodycom() {
 
     const [member, setMember] = useState([]);
 
+    const [follow, setFollow] = useState([]);
+    const [follower, setFollower] = useState([]);
+    const [followNum, setFollowNum] = useState(0);
+    const [followerNum, setFollowerNum] = useState(0);
+
     useEffect(() => {
         axios.get('http://localhost:3000/members/findmember')
             .then((response) => {
@@ -86,6 +125,35 @@ function Bodycom() {
             });
     }, []);
 
+    useEffect(() => {
+        axios.get('http://localhost:3000/members/follow')
+            .then((response) => {
+                setFollow(response.data.followDtoList);
+                setFollowNum(response.data.followNum);
+
+                // 데이터 확인용
+                console.log(response.data.followDtoList);
+                console.log(response.data.followNum);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:3000/members/following')
+    //         .then((response) => {
+    //             setFollower(response.data.list);
+    //
+    //             // 데이터 확인용
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // }, []);
+
     return (
         <div>
             <h2>Bodycom</h2>
@@ -97,8 +165,8 @@ function Bodycom() {
                 <li>
                     <div>닉네임 : {member.nickname}</div>
                 </li>
-                <li><Link to="/mypage/follower">팔로워 0(follow)</Link></li>
-                <li><Link to="/mypage/following">팔로잉 0(follow)</Link></li>
+                <li><Link to="/mypage/follower">팔로워 0</Link></li>
+                <li><Link to="/mypage/following">팔로잉 {followNum}</Link></li>
                 <li><Link to="/mypage/setting">설정</Link></li>
                 <hr></hr>
 
@@ -291,7 +359,7 @@ function EditProfile() {
                 프로필 이미지:
                 <input type="text" value={profile} onChange={handleProfileChange}/>
             </label>
-            <button type="submit">수정하기</button>
+            <button type="submit">회원 정보 수정</button>
         </form>
     );
 }
