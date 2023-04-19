@@ -3,6 +3,28 @@ import "./Mypage.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+function Follower() {
+    return (
+        <div>
+            <hr></hr>
+            <h3>팔로워</h3>
+            <p>팔로워가 없습니다</p>
+            <hr></hr>
+        </div>
+    )
+}
+
+function Following() {
+    return (
+        <div>
+            <hr></hr>
+            <h3>팔로잉</h3>
+            <p>팔로잉하는 유저가 없습니다</p>
+            <hr></hr>
+        </div>
+    )
+}
+
 function Nav() {
     return (
         <div>
@@ -23,8 +45,7 @@ function Nav() {
     )
 }
 
-function Profile() {
-
+function ProfileCard() {
     const [member, setMember] = useState([]);
 
     // 팔로우 유저 리스트
@@ -79,22 +100,58 @@ function Profile() {
             });
     }, []);
 
+    const [isFollowerOpen, setIsFollowerOpen] = useState(false);
+    const [isFollowingOpen, setIsFollowingOpen] = useState(false);
+
+    const followerOpen = () => {
+        setIsFollowerOpen(true);
+        setIsFollowingOpen(false);
+    };
+
+    const followingOpen = () => {
+        setIsFollowerOpen(false);
+        setIsFollowingOpen(true);
+    };
+
     return (
         <div>
-            <h2>Profile</h2>
             <ul>
                 <li>
                     <hr></hr>
+                    <h3>Profile Card</h3>
                     <div>프로필 이미지 : {member.profile}</div>
                 </li>
                 <li>
                     <div>닉네임 : {member.nickname}</div>
                 </li>
-                <li><Link to="/mypage/follower">팔로워 {followerNum}</Link></li>
-                <li><Link to="/mypage/following">팔로잉 {followNum}</Link></li>
-                <li><Link to="/mypage/setting">설정</Link></li>
-                <hr></hr>
+                {/*<li><Link to="/mypage/follower">팔로워 {followerNum}</Link></li>*/}
+                <div>
+                <li>
+                    <Link onClick={followerOpen}>팔로워 {followerNum}</Link>
+                </li>
 
+            </div>
+                {/*<li><Link to="/mypage/following">팔로잉 {followNum}</Link></li>*/}
+                <li>
+                    <Link onClick={followingOpen}>팔로잉 {followNum}</Link>
+                </li>
+                <li><Link to="/mypage/setting">설정</Link></li>
+                {isFollowerOpen && <Follower setIsFollowerOpen={setIsFollowerOpen} />}
+                {isFollowingOpen && <Following setIsFollowingOpen={setIsFollowingOpen} />}
+                <hr></hr>
+            </ul>
+        </div>
+    )
+}
+
+function Profile() {
+
+    return (
+        <div>
+            <ul>
+                <hr></hr>
+                <h2>Profile</h2>
+                <ProfileCard/>
                 <li>
                     <div>나의 헬친</div>
                 </li>
@@ -110,76 +167,12 @@ function Profile() {
 
 function Bodycom() {
 
-    const [member, setMember] = useState([]);
-
-    // 팔로우 유저 리스트
-    // const [follow, setFollow] = useState([]);
-    // const [follower, setFollower] = useState([]);
-
-    const [followNum, setFollowNum] = useState(0);
-    const [followerNum, setFollowerNum] = useState(0);
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/members/findmember')
-            .then((response) => {
-                setMember(response.data);
-
-                // 데이터 확인용
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/members/follow')
-            .then((response) => {
-                //setFollow(response.data.followDtoList);
-                setFollowNum(response.data.followNum);
-
-                // 데이터 확인용
-                console.log(response.data.followDtoList);
-                console.log(response.data.followNum);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/members/follower')
-            .then((response) => {
-                //setFollower(response.data.followDtoList);
-                setFollowerNum(response.data.followerNum);
-
-                // 데이터 확인용
-                console.log(response.data.followDtoList);
-                console.log(response.data.followerNum);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
     return (
         <div>
-            <h2>Bodycom</h2>
             <ul>
-                <li>
-                    <hr></hr>
-                    <div>프로필 이미지 : {member.profile}</div>
-                </li>
-                <li>
-                    <div>닉네임 : {member.nickname}</div>
-                </li>
-                <li><Link to="/mypage/follower">팔로워 {followerNum}</Link></li>
-                <li><Link to="/mypage/following">팔로잉 {followNum}</Link></li>
-                <li><Link to="/mypage/setting">설정</Link></li>
                 <hr></hr>
-
+                <h2>Bodycom</h2>
+                <ProfileCard/>
                 <li>
                     <div>체성분검사 업로드</div>
                 </li>
@@ -415,3 +408,6 @@ function Mypage() {
 }
 
 export default Mypage;
+
+
+
