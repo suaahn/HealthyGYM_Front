@@ -11,7 +11,7 @@ import Login from "./components/login";
 import Regi from "./components/regi";
 import Bbsanswer from "./components/Bbsanswer";
 import Bbsupdate from "./components/Bbsupdate";
-import Mypage from "./components/Mypage";
+import MyPage from "./components/Mypage/MyPage";
 
 import Multicampus from "./asset/multicampus.png";
 
@@ -84,7 +84,7 @@ function App() {
 
                   <Route path="/bbsupdate/:seq" exact element={<Bbsupdate />}></Route>
 
-                  <Route path="/mypage/*" element={<Mypage />}></Route>
+                  <Route path="/mypage/*" element={<MyPage />}></Route>
 
                   <Route path="/write" element={<ToastEditor />}></Route>
 
