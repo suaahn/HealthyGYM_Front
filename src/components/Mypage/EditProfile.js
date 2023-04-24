@@ -11,11 +11,9 @@ function EditProfile() {
     const [age, setAge] = useState('');
     const [phone, setPhone] = useState('');
     const [mbti, setMbti] = useState('');
-    const [profile, setProfile] = useState('');
+    const [profile, setProfile] = useState('default.png');
     const [image, setImage] = useState(null);
-
     const [previewUrl, setPreviewUrl] = useState(null);
-
     const fileInputRef = useRef();
 
     useEffect(() => {
@@ -224,7 +222,7 @@ function EditProfile() {
                 ) : (
                     <div>
                         <img
-                            src={`http://localhost:3000/images/${profile}`}
+                            src={`http://localhost:3000/images/profile/${profile}`}
                             alt="프로필 이미지"
                             onClick={handleClick}
                             style={{cursor: "pointer"}}
