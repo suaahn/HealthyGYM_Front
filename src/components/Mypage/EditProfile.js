@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 
 function EditProfile() {
@@ -16,9 +16,12 @@ function EditProfile() {
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef();
 
+    const authToken = localStorage.getItem("auth_token");
+    const token = useMemo(() => ({ authToken: authToken }), [authToken]);
+
     useEffect(() => {
         axios
-            .get("http://localhost:3000/members/findmember")
+            .post("http://localhost:3000/members/findmember",token)
             .then((response) => {
                 setMemberseq(response.data.memberseq);
                 setEmail(response.data.email);
@@ -28,11 +31,11 @@ function EditProfile() {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/members/findmemberinfo")
+            .post("http://localhost:3000/members/findmemberinfo",token)
             .then((response) => {
                 setName(response.data.name);
                 setAge(response.data.age);
@@ -43,7 +46,7 @@ function EditProfile() {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [token]);
 
     const handleNameChange = (event) => {
         setName(event.target.value);

@@ -1,0 +1,18 @@
+.card-container {
+    max-width: 560px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 40px auto;
+    min-width: 300px;
+}
+
+.box1 {
+    border: 1px dashed #ccc;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px auto 30px;
+}
+
+

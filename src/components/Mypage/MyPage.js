@@ -1,56 +1,34 @@
-import {Link, Routes, Route, NavLink} from "react-router-dom";
+import {Routes, Route, NavLink} from "react-router-dom";
 import "./MyPage.css";
-import ProfileCard from "./ProfileCard";
 import Setting from "./Setting";
 import BodyCom from "./BodyCom";
+import {useState} from "react";
+import Profile from "./Profile";
 
 function Nav() {
     return (
         <div>
-            <ul>
-                <li>
+            <ul className="nav-ul">
+                <li className="nav-li">
                     <NavLink to="/mypage/profile">프로필</NavLink>
                 </li>
-                <li>
+                <li className="nav-li">
                     <NavLink to="/mypage/bodycom">체성분</NavLink>
                 </li>
-                <li>
+                <li className="nav-li">
                     <NavLink to="/mypage/mywrite">내가 쓴 글</NavLink>
                 </li>
-                <li>
-                    <NavLink to="/mypage/setting">설정</NavLink>
+                <li className="nav-li">
+                    <NavLink to="/mypage/setting/editprofile">설정</NavLink>
                 </li>
             </ul>
+            <hr></hr>
             <Routes>
                 <Route path="profile" element={<Profile/>}/>
                 <Route path="bodycom" element={<BodyCom/>}/>
                 <Route path="mywrite" element={<Mywrite/>}/>
                 <Route path="setting/*" element={<Setting/>}/>
             </Routes>
-        </div>
-    );
-}
-
-function Profile() {
-    return (
-        <div>
-            <hr/>
-            <h2>Profile</h2>
-            <ProfileCard/>
-            <ul>
-                <li>
-                    <div>나의 헬친</div>
-                </li>
-                <li>
-                    <Link to="/mypage/mate">+나의 헬친을 등록해주세요</Link>
-                </li>
-                <li>
-                    <div>나의 체성분 변화</div>
-                </li>
-                <li>
-                    <Link to="/mypage/bodycom">+나의 체성분을 등록해주세요</Link>
-                </li>
-            </ul>
         </div>
     );
 }
@@ -67,11 +45,56 @@ function Mywrite() {
     );
 }
 
-function MyPage() {
+function TempLogin() {
+
+    const [authToken, setAuthToken] = useState(localStorage.getItem('auth_token') || '');
+    const handleChange = (event) => {
+        setAuthToken(event.target.value);
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        localStorage.setItem("auth_token", authToken);
+        window.location.reload();
+
+    }
+
+    const handleLogout = (event) => {
+        event.preventDefault();
+
+        localStorage.removeItem('auth_token');
+        window.location.reload();
+    }
+
     return (
         <div>
-            <h1>마이페이지</h1>
+            {localStorage.getItem('auth_token') ? (
+                <div>
+                <label>MemberSeq : {authToken} </label>
+                <button onClick={handleLogout}>로그아웃</button>
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        MemberSeq :
+                        <input type="text" value={authToken} onChange={handleChange}/>
+                    </label>
+                    <button type="submit">임시 로그인</button>
+                </form>
+            )}
+            <hr></hr>
+        </div>
+    )
+}
+
+
+function MyPage() {
+
+    return (
+        <div>
             <Nav/>
+            <TempLogin/>
         </div>
     );
 }
