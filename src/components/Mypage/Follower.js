@@ -1,12 +1,15 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
 function Follower() {
 
     const [followerList, setFollowerList] = useState([]);
 
+    const authToken = localStorage.getItem("auth_token");
+    const token = useMemo(() => ({ authToken: authToken }), [authToken]);
+
     useEffect(() => {
-        axios.get('http://localhost:3000/members/follower')
+        axios.post('http://localhost:3000/members/follower',token)
             .then((response) => {
                 setFollowerList(response.data.followDtoList);
 
@@ -14,7 +17,7 @@ function Follower() {
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, [token]);
 
     return (
         <div>
