@@ -12,14 +12,11 @@ import Regi from "./components/regi";
 import Bbsanswer from "./components/Bbsanswer";
 import Bbsupdate from "./components/Bbsupdate";
 import MyPage from "./components/Mypage/MyPage";
-<<<<<<< HEAD
 import Header from "./components/Header";
 import LoginCallback from "./components/auth/LoginCallback";
 import Signup from "./components/auth/Signup";
-=======
 import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
->>>>>>> b8bf6bb57ee7a7946d8ead8cd8f91e6c0214a034
 
 import Multicampus from "./asset/multicampus.png";
 
@@ -57,8 +54,6 @@ function App() {
                     <Link className="nav-link" to="/write">write</Link>
                   </li>
 
-<<<<<<< HEAD
-=======
                   <li className="nav-item">
                     <Link className="nav-link" to="/viewer/1">viewer</Link>
                   </li>
@@ -67,7 +62,6 @@ function App() {
                   <Link className="nav-link" to="/mealviews">식단 공유 게시판</Link>
                   </li>
 
->>>>>>> b8bf6bb57ee7a7946d8ead8cd8f91e6c0214a034
                 </ul>
               </div>
             </div>
@@ -100,19 +94,15 @@ function App() {
 
                   <Route path="/write" element={<ToastEditor />}></Route>
 
-<<<<<<< HEAD
                   <Route path="/viewer/:bbsseq" exact element={<ToastViewer />}></Route>
 
                   <Route path="/login/callback/:provider" exact element={<LoginCallback />}></Route>
 
                   <Route path="/signup" element={<Signup />}></Route>
-=======
-                  <Route path="/viewer/:seq" exact element={<ToastViewer />}></Route>
 
                   <Route path="/meallist" element={<Meallist />}></Route>
 
                   <Route path="/mealviews" exact element={<MealViews />}></Route>
->>>>>>> b8bf6bb57ee7a7946d8ead8cd8f91e6c0214a034
                 </Routes>
 
               </div>

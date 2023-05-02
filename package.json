@@ -19,11 +19,8 @@
     "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "react-session-api": "^1.1.0",
-<<<<<<< HEAD
     "styled-components": "^5.3.9",
-=======
     "semantic-ui-react": "^2.1.4",
->>>>>>> b8bf6bb57ee7a7946d8ead8cd8f91e6c0214a034
     "web-vitals": "^2.1.4"
   },
   "scripts": {
