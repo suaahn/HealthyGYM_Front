@@ -12,6 +12,8 @@ import Regi from "./components/regi";
 import Bbsanswer from "./components/Bbsanswer";
 import Bbsupdate from "./components/Bbsupdate";
 import MyPage from "./components/Mypage/MyPage";
+import Meallist from "./components/Meal/Meallist";
+import MealViews from "./components/Meal/MealViews";
 
 import Multicampus from "./asset/multicampus.png";
 
@@ -56,6 +58,10 @@ function App() {
                     <Link className="nav-link" to="/viewer/1">viewer</Link>
                   </li>
 
+                  <li className="nav-item">
+                  <Link className="nav-link" to="/mealviews">식단 공유 게시판</Link>
+                  </li>
+
                 </ul>
               </div>
             </div>
@@ -89,6 +95,10 @@ function App() {
                   <Route path="/write" element={<ToastEditor />}></Route>
 
                   <Route path="/viewer/:seq" exact element={<ToastViewer />}></Route>
+
+                  <Route path="/meallist" element={<Meallist />}></Route>
+
+                  <Route path="/mealviews" exact element={<MealViews />}></Route>
                 </Routes>
 
               </div>
