@@ -1,59 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Moment from 'react-moment'; // npm i moment react-moment
+import 'moment/locale/ko';
 
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
-import BbsComment from "./BbsComment.js";
+import BbsComment from "./bbs/BbsComment.js";
 
 import clockicon from "../asset/icon_clock.png";
 import readicon from "../asset/icon_readcount.png";
 import doticon from "../asset/icon_dot.png";
 import likeicon from "../asset/icon_like.png";
 import likefilledicon from "../asset/icon_like_filled.png";
-import commenticon from "../asset/icon_comment.png";
 
 function ToastViewer() {
     let history = useNavigate();
 
-    const [memberseq, setMemberseq] = useState(1);  // 로그인 아이디로 세팅해야함!!!
+    const [memberseq, setMemberseq] = useState(localStorage.getItem("memberseq"));  // 로그인 아이디로 세팅해야함!!!
     const [detail, setDetail] = useState();
     const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
-    const [like, setLike] = useState(false);      // 로그인한 유저의 좋아요 여부
+    const [liking, setLiking] = useState(false);      // 로그인한 유저의 좋아요 여부
     const [likecount, setLikecount] = useState(0);  // 게시글의 좋아요 수
 
-    let params = useParams();
-    console.log(params.seq);
+    const { bbsseq } = useParams();
 
+    useEffect(()=>{
+      const s = localStorage.getItem("memberseq");
+      if(s !== null) setMemberseq(s);
+
+      detailData(bbsseq);
+    }, [bbsseq]);
+
+    // 게시글 가져오기
     const detailData = async(seq) => {
-        const response = await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq} });
-
+        const response = await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq, "memberseq":memberseq} });
+        console.log(memberseq);
         console.log(JSON.stringify(response.data));
         setDetail(response.data[0]);
         setLikecount(response.data[0].likecount);
-        // setLike();
+        setLiking(response.data[0].liking);
 
         setLoading(true);   // 여기서 rendering해줌
     }
 
-    useEffect(()=>{
-        detailData(params.seq);
-    }, [params.seq])
+    // 좋아요 기능
+    const likeHandler = async () => {
+      if(memberseq !== null && memberseq !== 0) {
 
-    const likeHandler = async() => {
-      if(like) {
-
-      } else {
-        await axios.get('http://localhost:3000/likebbs', { params:{"bbsseq":params.seq, "memberseq":memberseq} })
-            .then(function(res){
-                console.log(res.data);
-                // setLikecount(likecount + 1);
-                // setLike(!like);
-            })
-            .catch(function(err){
-                console.log(err);
-            })
+        if(liking) {  // 좋아요 해제
+          await axios.post('http://localhost:3000/unlikebbs', null, { params:{"bbsseq":bbsseq, "memberseq":memberseq} })
+              .then(function(res){
+                  // console.log(res.data);
+                  setLikecount(likecount - 1);
+                  setLiking(!liking);
+              })
+              .catch(function(err){
+                  console.log(err);
+              })
+        } else {  // 좋아요 누름
+          await axios.post('http://localhost:3000/likebbs', null, { params:{"bbsseq":bbsseq, "memberseq":memberseq} })
+              .then(function(res){
+                  // console.log(res.data);
+                  setLikecount(likecount + 1);
+                  setLiking(!liking);
+              })
+              .catch(function(err){
+                  console.log(err);
+              })
+        }
       }
     }
 
@@ -68,7 +84,7 @@ function ToastViewer() {
           <p>{detail.nickname}</p>
           <span>
             <img alt="clock" src={clockicon} width="15"/>
-            {detail.wdate}
+            <Moment fromNow>{detail.wdate}</Moment>
           </span>
           <span>
             <img alt="eye" src={readicon} width="15"/>
@@ -77,18 +93,40 @@ function ToastViewer() {
           <span><img alt="dot" src={doticon} width="15"/></span>
         </div><hr/>
 
-        <Viewer initialValue={detail.content || ''} />
+        <Viewer 
+          initialValue={detail.content || ''} 
+          // 유튜브를 보기 위한 설정(iframe)
+          customHTMLRenderer={{
+            htmlBlock: {
+              iframe(node) {
+                return [
+                  {
+                    type: "openTag",
+                    tagName: "iframe",
+                    outerNewLine: true,
+                    attributes: node.attrs,
+                  },
+                  { type: "html", content: node.childrenHTML },
+                  {
+                    type: "closeTag",
+                    tagName: "iframe",
+                    outerNewLine: false
+                  }
+                ];
+            }}
+          }}
+        />
 
         <span>
-          {like?
-          <img alt="thumb" src={likefilledicon} width="15" onClick={likeHandler}/>
-          :<img alt="thumb" src={likeicon} width="15" onClick={likeHandler}/>}
-          
+          <img alt="thumb" 
+            src={liking?likefilledicon:likeicon} 
+            width="15" 
+            onClick={likeHandler}/>
           {likecount}
         </span>
 
         <hr/>
-        <BbsComment bbsseq={params.seq} />
+        <BbsComment bbsseq={bbsseq} />
       </div>
     );
 }

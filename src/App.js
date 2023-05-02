@@ -4,30 +4,30 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import ToastEditor from "./components/ToastEditor";
 import ToastViewer from "./components/ToastViewer";
 import Home from "./components/Home";
-import Bbslist from "./components/Bbslist";
+import BbsList from "./components/bbs/BbsList";
 import Bbswrite from "./components/Bbswrite";
 import Bbsdetail from "./components/Bbsdetail";
-import Login from "./components/login";
+import Login from "./components/auth/Login";
 import Regi from "./components/regi";
 import Bbsanswer from "./components/Bbsanswer";
 import Bbsupdate from "./components/Bbsupdate";
 import MyPage from "./components/Mypage/MyPage";
+import Header from "./components/Header";
+import LoginCallback from "./components/auth/LoginCallback";
+import Signup from "./components/auth/Signup";
 import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
 
 import Multicampus from "./asset/multicampus.png";
 
 function App() {
+  
   return (
       <div>
-        <header className="py-4">
-          <div className="container text-center">
-            <img alt="" src={Multicampus} width="300"/>
-          </div>
-        </header>
 
         <BrowserRouter>
-
+        <Header />
+          
           <nav className="navbar navbar-expand-md navbar-dark bg-info sticky-top">
             <div className="container">
 
@@ -39,7 +39,7 @@ function App() {
                   </li>
 
                   <li className="nav-item">
-                    <Link className="nav-link" to="/bbslist">게시판</Link>
+                    <Link className="nav-link" to="topics/0">게시판</Link>
                   </li>
 
                   <li className="nav-item">
@@ -73,8 +73,8 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
 
-                  <Route path="/bbslist" element={<Bbslist />}></Route>
-                  <Route path="/bbslist/:choice/:search" element={<Bbslist />}></Route>
+                  <Route path="topics/:bbstag" element={<BbsList />}></Route>
+                  <Route path="/bbslist/:choice/:search" element={<BbsList />}></Route>
 
                   <Route path="/bbswrite" element={<Bbswrite />}></Route>
 
@@ -94,7 +94,11 @@ function App() {
 
                   <Route path="/write" element={<ToastEditor />}></Route>
 
-                  <Route path="/viewer/:seq" exact element={<ToastViewer />}></Route>
+                  <Route path="/viewer/:bbsseq" exact element={<ToastViewer />}></Route>
+
+                  <Route path="/login/callback/:provider" exact element={<LoginCallback />}></Route>
+
+                  <Route path="/signup" element={<Signup />}></Route>
 
                   <Route path="/meallist" element={<Meallist />}></Route>
 
