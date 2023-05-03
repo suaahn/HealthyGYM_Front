@@ -12,7 +12,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 function Meallist() {
   
-
+  
   const [search, setSearch] = useState('');
   const [result, setResult] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);

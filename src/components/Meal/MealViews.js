@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+
 import { Icon, Popup, Card, Input, Dropdown } from 'semantic-ui-react'
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
@@ -183,6 +184,7 @@ function MealViews() {
   
 
   return (
+    
     <div>
     <Input
       action={
