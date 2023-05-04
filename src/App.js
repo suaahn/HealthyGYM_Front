@@ -19,6 +19,7 @@ import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
 
 import Multicampus from "./asset/multicampus.png";
+import LandingPage from "./components/FindGym/LandingPage";
 
 function App() {
   
@@ -62,6 +63,10 @@ function App() {
                   <Link className="nav-link" to="/mealviews">식단 공유 게시판</Link>
                   </li>
 
+                  <li className="nav-item">
+                  <Link className="nav-link" to="/LandingPage">GYM찾기</Link>
+                  </li>
+
                 </ul>
               </div>
             </div>
@@ -103,6 +108,9 @@ function App() {
                   <Route path="/meallist" element={<Meallist />}></Route>
 
                   <Route path="/mealviews" exact element={<MealViews />}></Route>
+
+                  <Route path="/LandingPage" exact element={<LandingPage />}></Route>
+
                 </Routes>
 
               </div>
