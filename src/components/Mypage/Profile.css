@@ -1,18 +1,24 @@
-.card-container {
-    max-width: 560px;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 40px auto;
-    min-width: 300px;
+.profile-container-01 {
+    margin-left: 80px;
+    margin-top: 40px;
+    width: 560px;
 }
 
-.box1 {
+.profile-container-box {
     border: 1px dashed #ccc;
     padding: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 16px auto 30px;
+    margin-top: 12px;
 }
 
+.profile-container-box-01{
+    color: #666;
+    font-size: 0.8rem;
+}
 
+.profile-container-box-02{
+    font-size: 18px;
+    font-weight: normal;
+}
