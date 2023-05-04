@@ -49,10 +49,17 @@ export default function BbsList() {
         <div>
             <div>
                 <Link to="/topics/0">토픽 베스트</Link>
+                &nbsp;&nbsp;&nbsp;
                 <Link to="/topics/1">운동루틴</Link>
+                &nbsp;&nbsp;&nbsp;
                 <Link to="/topics/2">바디갤러리</Link>
+                &nbsp;&nbsp;&nbsp;
                 <Link to="/topics/3">정보게시판</Link>
+                &nbsp;&nbsp;&nbsp;
                 <Link to="/topics/4">자유게시판</Link>
+                &nbsp;&nbsp;&nbsp;
+                <Link to="/topics/11">식단추천게시판</Link>
+                &nbsp;&nbsp;&nbsp;
                 <select value={order} onChange={(e) => setOrder(e.target.value)}>
                     <option value='wdate'>최신순</option>
                     <option value='likecount desc, wdate'>추천순</option>

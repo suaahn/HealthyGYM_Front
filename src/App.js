@@ -17,6 +17,7 @@ import LoginCallback from "./components/auth/LoginCallback";
 import Signup from "./components/auth/Signup";
 import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
+import Message from "./components/Message/Message";
 
 import Multicampus from "./asset/multicampus.png";
 import LandingPage from "./components/FindGym/LandingPage";
@@ -29,7 +30,7 @@ function App() {
         <BrowserRouter>
         <Header />
           
-          <nav className="navbar navbar-expand-md navbar-dark bg-info sticky-top">
+          <nav className="navbar navbar-expand-md navbar-dark bg-info">
             <div className="container">
 
               <div className="collapse navbar-collapse" id="navbar-content">
@@ -70,6 +71,8 @@ function App() {
                 </ul>
               </div>
             </div>
+
+            <Message />
           </nav>
 
           <main>
@@ -117,6 +120,7 @@ function App() {
             </div>
           </main>
 
+          
         </BrowserRouter>
 
         <footer className="py-4 bg-info text-light">
