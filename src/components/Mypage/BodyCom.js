@@ -1,4 +1,3 @@
-import ProfileCard from "./ProfileCard";
 import {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 import "./BodyCom.css";
@@ -25,8 +24,8 @@ function BodyCom() {
         setSelectedImg(null);
     };
 
-    const authToken = localStorage.getItem("auth_token");
-    const token = useMemo(() => ({authToken: authToken}), [authToken]);
+    const authToken = localStorage.getItem("memberseq");
+    const token = useMemo(() => ({ memberseq: authToken }), [authToken]);
 
     useEffect(() => {
         axios.post('http://localhost:3000/inbodylist', token)
@@ -81,8 +80,6 @@ function BodyCom() {
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-            <ProfileCard/>
             <div className="upload-container">
                 <b>체성분검사 업로드</b>
                 <div className="upload-box1">
@@ -114,6 +111,7 @@ function BodyCom() {
                     </form>
                 </div>
                 <div className="inbody-list-container">
+                    <br></br>
                     <b>업로드 이력</b>
                     <div className="inbody-list-wrapper">
                         <ul className="inbody-list">
@@ -156,7 +154,6 @@ function BodyCom() {
                     )}
                 </div>
             </div>
-        </div>
     )
 }
 

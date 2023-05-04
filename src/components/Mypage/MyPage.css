@@ -1,9 +1,3 @@
-.active {
-    font-weight: bold;
-    color: #333333;
-    text-decoration: none;
-}
-
 .nav-ul {
     display: flex;
     list-style: none;
