@@ -1,22 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from '../utils/CustomAxios';
+import axios from 'axios';
 
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button, Dropdown } from 'semantic-ui-react';
-import youtubeicon from '../asset/icon_youtube.png';
 
-export default function ToastEditor() {
+import ADDRESS_LIST from '../../asset/region.json';
+import { Form, Button } from 'semantic-ui-react';
+import SelectBodyPart from './SelectBodyPart';
+
+export default function HealthEditor() {
     let navigate = useNavigate();
 
     const [memberseq, setMemberseq] = useState(0);
-    const [bbstag, setBbstag] = useState();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+
+    const [addressFirst, setAddressFirst] = useState(0);
+    const [addressSecond, setAddressSecond] = useState(0);
+    const [center, setCenter] = useState('');
+    const [mdate, setMdate] = useState('');
+    const [mtime, setMtime] = useState('');
+    const [bodyPart, setBodyPart] = useState([false,false,false,false,false,false,false]);
+
     const [imageArr, setImageArr] = useState([]);
 
     // login 되어 있는지 검사하고 member_seq 얻기
@@ -30,12 +39,6 @@ export default function ToastEditor() {
         }
     }, []);
 
-    const handleBbstag = (value) => {
-        if(value == 5) navigate("/mate/health/write");
-        if(value == 10) navigate("/meallist");
-        setBbstag(value);
-    } ;
-
     // Editor DOM 선택용
     const editorRef = useRef();
 
@@ -43,10 +46,7 @@ export default function ToastEditor() {
     const handleRegisterButton = () => {
         let markdown = editorRef.current.getInstance().getMarkdown();
 
-        if(bbstag === 0) {
-            alert('토픽을 선택해주세요');
-            return;
-        } else if(title.trim() === ''){
+        if(title.trim() === ''){
             alert('제목을 입력해주세요.');
             return;
         } else if(markdown.length === 0) {
@@ -71,20 +71,24 @@ export default function ToastEditor() {
 
         let paramsObj = {
             "memberseq":memberseq, 
+            "bbstag":5,
             "title":title, 
             "content":content, 
-            "bbstag":bbstag,
-            "thumnail":contentImg[0]
+            "addressfirst":addressFirst,
+            "addresssecond":addressSecond,
+            "center":center,
+            "mdate":mdate,
+            "mtime":mtime,
+            "bodypart":bodyPart.join(",")
         };
 
-        // post
-        axios.post("http://localhost:3000/writefreebbs", null, 
+        axios.post("http://localhost:3000/mate/write", null, 
                     { params:paramsObj })
              .then(res => {
                 console.log(res.data);
-                if(res.data === "OK"){
+                if(res.data){
                     alert("성공적으로 등록되었습니다");
-                    navigate(`/community/${bbstag}`);
+                    navigate(`/mate/health`);
                 }else{
                     alert("등록되지 않았습니다");
                 }
@@ -155,74 +159,80 @@ export default function ToastEditor() {
         }
        return contentStr;
     }
-    
-    // 유튜브 삽입을 위한 커스텀 툴바 아이템 생성
-    const myCustomEl = document.createElement('span');
-    myCustomEl.style = 'cursor: pointer;'
-
-    const icon = document.createElement('img');
-    icon.setAttribute('src', youtubeicon);
-    icon.setAttribute('width', '32');
-    myCustomEl.appendChild(icon);
-    
-    // 팝업 바디 생성
-    const container = document.createElement('div');
-    const description = document.createElement('p');
-    description.innerText = "Youtube 주소를 입력하고 Enter를 누르세요!";
-
-    const urlInput = document.createElement('input');
-    urlInput.style.width = '100%';
-
-    // 팝업 input 창에 내용 입력 시 호출됨
-    urlInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {    // 엔터를 누르면, 입력값이 Youtube 주소인지 정규식으로 검사
-            if((/https:\/\/youtu.be\/.{11,}/).test(e.target.value)
-                || (/https:\/\/www.youtube.com\/watch\?v=.{11,}/).test(e.target.value)) {
-
-                let str = '<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/'
-                + e.target.value.slice(-11)
-                + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
-                
-                // 마크다운 모드에서 iframe 태그 삽입 후, 팝업을 닫고 위지윅 모드로 변환 
-                editorRef.current.getInstance().changeMode('markdown');
-                editorRef.current.getInstance().insertText(str);
-                editorRef.current.getInstance().eventEmitter.emit('closePopup');
-                editorRef.current.getInstance().changeMode('wysiwyg');
-            }
-        }
-    });
-    
-    container.appendChild(description);
-    container.appendChild(urlInput);
 
     return (
         <div className="edit_wrap">
             <br/>
             <h2>글쓰기</h2>
             <Form>
-                <Dropdown
-                    className='topic-select'
-                    value={bbstag} onChange={(e, { value }) => handleBbstag(value)}
-                    placeholder='토픽을 선택해주세요'
-                    fluid
-                    selection
-                    options={[{key:0, value:0, text:'커뮤니티', disabled:true, icon:'discussions'},
-                            {key:2, value:2, text:'바디갤러리'},
-                            {key:3, value:3, text:'정보게시판'},
-                            {key:4, value:4, text:'자유게시판'},
-                            {key:100, value:100, text:'헬친', disabled:true, icon:'child'},
-                            {key:5, value:5, text:'헬스메이트'},
-                            {key:10, value:10, text:'식단메이트'},
-                            {key:11, value:11, text:'식단추천'}]}
-                /><br/>
+                <select onChange={(e) => {if(e.target.value < 5) navigate("/write");}}>
+                    <optgroup label='커뮤니티'>
+                        <option value={2}>바디갤러리</option>
+                        <option value={3}>정보</option>
+                        <option value={4}>자유</option>
+                    </optgroup>
+                    <optgroup label='헬친'>
+                        <option value={5} selected>헬스메이트</option>
+                        <option value={10}>식단메이트</option>
+                    </optgroup>
+                </select><br/>
+
                 <input
                     type="text"
-                    id="title"
-                    name="title"
                     placeholder="제목을 입력해주세요"
                     value={title}
                     onChange={(e)=>setTitle(e.target.value)}
-                />
+                /><br/><br/>
+
+                <Form.Group widths='equal'>
+                    <Form.Field>
+                        <label>시도명</label>
+                        <select value={addressFirst} onChange={(e) => setAddressFirst(e.target.value)}>
+                            {ADDRESS_LIST.data.map((r, i) => {
+                                return (
+                                    <option key={i} value={i}>{r[0]}</option>
+                                );
+                            })}
+                        </select>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>시군구명</label>
+                        <select value={addressSecond} onChange={(e) => setAddressSecond(e.target.value)}>
+                            {ADDRESS_LIST.data[addressFirst][1].map((r, i) => {
+                                return (
+                                    <option key={i} value={i}>{r}</option>
+                                );
+                            })}
+                        </select>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>헬스장</label>
+                        <input
+                            type="text"
+                            placeholder="헬스장을 입력해주세요"
+                            value={center}
+                            onChange={(e)=>setCenter(e.target.value)}
+                        />
+                    </Form.Field>
+                </Form.Group>
+                
+                <Form.Group widths='equal'>
+                    <Form.Field required>
+                        <label>날짜</label>
+                        <input type='date' onChange={(e) => {setMdate(e.target.value)}} />
+                    </Form.Field>
+                    <Form.Field required>
+                        <label>시간</label>
+                        <input type='time' onChange={(e) => {setMtime(e.target.value)}}/>
+                    </Form.Field>
+                </Form.Group>
+
+                <Form.Field>
+                    <label>운동 부위 선택</label>
+                    <div style={{ backgroundColor:'#f7f9fc', borderRadius:'3px', padding:'9.5px 14px'}}>
+                        <SelectBodyPart bodyPart={bodyPart} setBodyPart={setBodyPart} />
+                    </div>
+                </Form.Field>
             </Form><br/>
 
             <Editor
@@ -238,42 +248,17 @@ export default function ToastEditor() {
                     ['ul', 'ol', 'task'],
                     ['table', 'image', 'link'],
                     ['code', 'codeblock'],
-                    [{
-                        name: 'Youtube',
-                        tooltip: 'Youtube 삽입',
-                        el: myCustomEl,
-                        popup: {
-                            body: container,
-                            style: { width: 'auto' },
-                          }
-                    }],
                     ['scrollSync']
                 ]}
                 useCommandShortcut={false} // 키보드 입력 컨트롤 방지
                 ref={editorRef}
                 onChange={() => setContent(editorRef.current.getInstance().getHTML())}
                 hooks={{ addImageBlobHook: onUploadImage }}
-                // 유튜브 삽입 및 미리보기를 위한 설정(iframe)
-                customHTMLRenderer={{
-                    htmlBlock: {iframe(node) {
-                        return [
-                        {
-                            type: 'openTag',
-                            tagName: 'iframe',
-                            outerNewLine: true,
-                            attributes: node.attrs
-                        },
-                        { type: 'html', content: node.childrenHTML },
-                        { type: 'closeTag', tagName: 'iframe', outerNewLine: true }
-                        ];
-                    }}
-                }}
             /><br/>
             <Button onClick={handleRegisterButton} 
-                style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
+                style={{ color:'white', backgroundColor:'#5271FF', display: 'flex', margin: 'auto' }}>
                 등 록
             </Button>
-
         </div>
     );
 }

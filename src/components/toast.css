@@ -1,0 +1,8 @@
+.tie-btn-delete {
+    cursor: not-allowed!important;
+    pointer-events: none;
+}
+.color-picker-control {
+    height: 160px!important;
+    top: -170px!important;
+}
