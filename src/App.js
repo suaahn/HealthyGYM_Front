@@ -23,7 +23,6 @@ import LandingPage from "./components/FindGym/LandingPage";
 import HealthEditor from "./components/health/HealthEditor";
 import HealthList from "./components/health/HealthList";
 import HealthViews from "./components/health/HealthViews";
-import ToastImage from "./components/ToastImage";
 
 function App() {
   
@@ -62,7 +61,7 @@ function App() {
                   <Route path="/mate/health" element={<HealthList />}></Route>
                   <Route path="/mate/health/write" element={<HealthEditor />}></Route>
                   <Route path="/mate/health/view/:bbsseq" exact element={<HealthViews />}></Route>
-                  <Route path="/image" element={<ToastImage />}></Route>
+                  
                 </Routes>
 
               </div>
