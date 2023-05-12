@@ -1,15 +1,16 @@
 // 식단공유 작성
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+import { Button, Icon } from 'semantic-ui-react'
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
-
+ 
 function Meallist() {
   
   
@@ -18,37 +19,81 @@ function Meallist() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCalories, settotalCalories] = useState(0);
 
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalpagenum, settotalpagenum] = useState(0);
+
   let history = useNavigate();
 
-  const [memberseq, setMemberseq] = useState(1);  // 1로 가정 했습니다. // 경고
+  const [memberseq, setMemberseq] = useState(1); 
   const bbstag = 10;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
+  const [pageno, setPageno] = useState(1);
 
-  // login 되어 있는지 검사하고 member_seq 얻기  세션 추가 해야함.
+    // login 되어 있는지 검사하고 member_seq 얻기
+    useEffect(() => {
+      
 
+      const s = parseInt(localStorage.getItem("memberseq"), 10);
+      if(s !== null){
+          setMemberseq(s);
+      } else {
+          alert('로그인 후 글 작성이 가능합니다.');
+          history('/login');
+      }
+    }, []);
 
   // Editor DOM 선택용
   const editorRef = useRef();  
 
-  // 공공데이터 포털 API / JSON 형태로 받기
-  const SearchMealList = () => {
-    if(search === undefined || search.trim() === ""){
-      alert("검색어를 입력해주세요");
-      return;
-    }
-    console.log(search);
-    axios.get("http://localhost:3000/FindMealList", { params: { "search":search } })
-    .then(function(resp){
-      console.log(resp);
-      console.log(resp.data);
-      setResult(resp.data);
-    })
-    .catch(function(err){
-      alert(err);
-    })
+  const handleSearch = (searchTerm) => {
+    setSearch(searchTerm);
+    setPageno(1);
   }
+
+  // 공공데이터 포털 API / JSON 형태로 받기
+  const SearchMealList = (activePage) => {
+    if (search === undefined || search.trim() === "") {
+      alert("검색어를 입력해주세요");
+      return Promise.reject("검색어를 입력해주세요"); // Promise.reject를 사용하여 실패한 Promise 객체 반환
+    }
+  
+    console.log(search);
+    console.log(pageno);
+  
+    return axios
+      .get("http://localhost:3000/FindMealList", { params: { "search": search, "pageNo": pageno } })
+      .then(function(resp) {
+        // console.log(resp);
+        // console.log(resp.data);
+        // console.log(resp.data.totalCount);
+        setTotalCount(resp.data.totalCount);
+        
+        const totalcnt = resp.data.totalCount;
+        // console.log(totalcnt);
+  
+        if (totalcnt === 0) {
+          alert("검색결과가 존재하지 않습니다.");
+          setTotalCount(0);
+          setSearch("");
+          return; // Promise.resolve를 사용하여 성공한 Promise 객체 반환
+        } else {
+          setResult(resp.data.foodDtoList);
+          return Promise.resolve(); // Promise.resolve를 사용하여 성공한 Promise 객체 반환
+        }
+      })
+      .catch(function(err) {
+        alert("오류가 발생했습니다. 잠시후 다시 실행해주세요.");
+        return Promise.reject(err); // Promise.reject를 사용하여 실패한 Promise 객체 반환
+      });
+  }
+  
+  
+  
+  
+  
+  
 
   const addToSelectedItems = (item) => {
     setSelectedItems([...selectedItems, item]);
@@ -107,6 +152,8 @@ function Meallist() {
             // console.log("title : " + title);
             // console.log("content : "+ content);
             // console.log("bbstag : " + bbstag);
+            const bbsseq = res.data;
+
             if(selectedItems.length !== 0){
                // DB에 저장하기 위해 선택된 항목들을 JSON으로 담기.
                 const selectedItemsJson = JSON.stringify(selectedItems);
@@ -115,22 +162,20 @@ function Meallist() {
                 headers: {
                   'Content-Type': 'application/json',
                 },
+                params:{
+                  bbsseq: bbsseq  // writemeal1의 반환값
+                }
               })
               .then(response => {
-                if(res.data === "OK"){
-                    alert("성공적으로 등록되었습니다");
-                    history('/mealviews');
-                }else{
-                    alert("등록되지 않았습니다");
-                }
+
               })
               .catch(error => {
                 console.error(error);
               });
             } // 2중 axios 끝
 
-
-            if(res.data === "OK"){
+            console.log(res.data);
+            if(res.data !== 1){
                 alert("성공적으로 등록되었습니다");
                 history('/mealviews');
             }else{
@@ -144,6 +189,8 @@ function Meallist() {
 
     // 파이어베이스 설정
     const firebaseConfig = {
+      
+
       apiKey: "AIzaSyDpYZJPtXWK2JyTQW9vxbxiiysDhOGhx7k",
       authDomain: "healthygym-8f4ca.firebaseapp.com",
       projectId: "healthygym-8f4ca",
@@ -153,8 +200,21 @@ function Meallist() {
       measurementId: "G-HBKWRZVGEQ"
   };
 
-    const firebaseApp = initializeApp(firebaseConfig); 
-    const storage = getStorage(firebaseApp); 
+  
+  // const firebaseApp = initializeApp(firebaseConfig); 
+  // const storage = getStorage(firebaseApp); 
+
+  let storage;
+
+  if(getApps().length === 0){
+    const firebaseApp = initializeApp(firebaseConfig);
+    storage = getStorage(firebaseApp);  
+  } else {
+    storage = getStorage(getApp());
+  }
+  
+  
+    
 
     // 이미지 업로드 핸들러
     const onUploadImage = async (blob, dropImage) => {
@@ -226,14 +286,17 @@ function Meallist() {
 
 
       <br/> <br/><br/> <br/>
-      <input type="text" value={search} size="30" onChange={(e) => setSearch(e.target.value)} placeholder="검색 리스트" />
+      <input type="text" value={search} size="30" onChange={(e) => handleSearch(e.target.value)} placeholder="검색 리스트" />
 
       <br />
       <br />
 
       <button type="button" onClick={() => SearchMealList()} className="btn btn-primary">검색</button>
 
-      <br />
+      <br /><br />
+
+      
+
       <div className="d-flex flex-wrap">
         {result.map((item, index) => (
           <div className="card m-2" style={{ width: "200px" }} key={index} onClick={() => addToSelectedItems(item)}>
@@ -244,6 +307,8 @@ function Meallist() {
           </div>
         ))}
       </div>
+
+      
       <p></p>
 
       <div>

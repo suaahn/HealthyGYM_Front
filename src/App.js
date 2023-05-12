@@ -34,7 +34,7 @@ function App() {
 
           <main style={{ height : "auto", minHeight: "calc(100% - 115px)" }}>
             <div className="py-4">
-              <div style={{ width:"720px", margin:"auto" }}>
+              <div style={{ width:"1100px", margin:"auto" }}>
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
 
@@ -61,6 +61,7 @@ function App() {
                   <Route path="/mate/health" element={<HealthList />}></Route>
                   <Route path="/mate/health/write" element={<HealthEditor />}></Route>
                   <Route path="/mate/health/view/:bbsseq" exact element={<HealthViews />}></Route>
+                  
                   
                 </Routes>
 

@@ -20,6 +20,8 @@ export default function BbsNav(props) {
             setActiveItem("정보게시판");
           } else if(path === "/community/4") {
             setActiveItem("자유게시판");
+          } else if(path === "/community/11") {
+            setActiveItem("식단추천")
           }
     }, [window.location.pathname]);
 
@@ -34,6 +36,8 @@ export default function BbsNav(props) {
             navigate('/community/3');
         } else if(name === '자유게시판') {
             navigate('/community/4');
+        } else if(name === '식단추천'){
+            navigate('/community/11');
         }
     };
 
@@ -63,6 +67,11 @@ export default function BbsNav(props) {
                 <Menu.Item
                     name='자유게시판'
                     active={activeItem === '자유게시판'}
+                    onClick={handleItemClick}
+                />
+                <Menu.Item
+                    name="식단추천"
+                    active={activeItem === '식단추천'}
                     onClick={handleItemClick}
                 />
                 <Menu.Menu position='right'>

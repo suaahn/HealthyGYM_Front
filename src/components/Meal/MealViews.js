@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-
 import { Icon, Popup, Card, Input, Dropdown } from 'semantic-ui-react'
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
@@ -160,7 +159,7 @@ function MealViews() {
   };
 
   const handleWriteClick = () => {
-    history("/meallist");
+    history("/mate/meal/write");
     // console.log("클릭");
   };
 
@@ -180,11 +179,11 @@ function MealViews() {
   //   setPosts([]); // 게시물 초기화
   // };
 
+  console.log(posts);
 
   
 
   return (
-    
     <div>
     <Input
       action={
@@ -233,7 +232,8 @@ function MealViews() {
         <div key={`${post.id}-${index}`} className="post">
           <div>
           <h2>{post.bbsdto.title}</h2>
-          {/* 게시물 작성자의 프로필 이미지 불러오기 추가해야함. */}
+          
+          {/* <img src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${selectedMessage.profile}?alt=media`} /> */}
           <p>{post.bbsdto.nickname}</p>
 
           <span style={{ whiteSpace: "nowrap" }}>
