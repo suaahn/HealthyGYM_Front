@@ -10,15 +10,101 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 12px;
+    margin-top: 25px;
+    width: 560px;
+}
+
+.profile-container-box-04 {
+    border: 1px dashed #ccc;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
+    width: 560px;
 }
 
 .profile-container-box-01{
     color: #666;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .profile-container-box-02{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: normal;
+}
+
+.count-blue{
+    padding-left: 3px;
+    color: #007bff;
+}
+
+.mypage-bbs-image{
+    display: flex;
+}
+
+.profile-container-box-03 {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    color: #333;
+}
+.inbody-item-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    margin-right: 40px;
+}
+
+.inbody-item-component{
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.inbody-item-component-01{
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.bbs-image-container{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.bbs-image-container-01{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.mypage-bbs-image-01{
+    width: 127px;
+    height: 127px;
+    background-color: rgb(245,245,245);
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.bbs-image-container-02{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bbs-image-blue-text{
+    font-weight: bold;
+    font-size: 11px;
+    color: #007bff;
 }

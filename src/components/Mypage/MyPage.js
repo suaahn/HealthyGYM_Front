@@ -5,8 +5,13 @@ import Setting from "./Setting";
 import BodyCom from "./BodyCom";
 import Profile from "./Profile";
 import ProfileCard from "./ProfileCard";
+import MyCommunity from "./MyCommunity";
+import {useMemo} from "react";
 
 function Nav() {
+
+    const authToken = localStorage.getItem("memberseq");
+    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     return (
         <div>
@@ -18,7 +23,7 @@ function Nav() {
                     <NavLink to="/mypage/profilecard/bodycom">체성분</NavLink>
                 </li>
                 <li className="nav-li">
-                    <NavLink to="/mypage/mywrite">내가 쓴 글</NavLink>
+                    <NavLink to="/mypage/profilecard/mycommunity">커뮤니티</NavLink>
                 </li>
                 <li className="nav-li">
                     <NavLink to="/mypage/setting">설정</NavLink>
@@ -26,24 +31,12 @@ function Nav() {
             </ul>
             <hr></hr>
             <Routes>
-                <Route path="profilecard/*" element={<ProfileCard/>}/>
-                <Route path="profile" element={<Profile/>}/>
-                <Route path="bodycom" element={<BodyCom/>}/>
-                <Route path="mywrite" element={<Mywrite/>}/>
-                <Route path="setting/*" element={<Setting/>}/>
+                <Route path="profilecard/*" element={<ProfileCard token={token}/>}/>
+                <Route path="profile" element={<Profile token={token}/>}/>
+                <Route path="bodycom" element={<BodyCom token={token}/>}/>
+                <Route path="mycommunity/*" element={<MyCommunity token={token}/>}/>
+                <Route path="setting/*" element={<Setting token={token}/>}/>
             </Routes>
-        </div>
-    );
-}
-
-function Mywrite() {
-    return (
-        <div>
-            <h2>Mywrite</h2>
-            <hr/>
-            <div>
-                <h3>내가 쓴 글</h3>
-            </div>
         </div>
     );
 }

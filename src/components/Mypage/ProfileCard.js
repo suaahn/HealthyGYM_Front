@@ -1,19 +1,19 @@
 import {Link, Route, Routes} from "react-router-dom";
-import {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Follower from "./Follower";
 import Following from "./Following";
 import "./ProfileCard.css";
 import Profile from "./Profile";
 import BodyCom from "./BodyCom";
+import MyCommunity from "./MyCommunity";
+import MyAllBbs from "./MyAllBbs";
 
-function ProfileCard() {
+function ProfileCard({token}) {
+
     const [member, setMember] = useState({});
     const [followNum, setFollowNum] = useState(0);
     const [followerNum, setFollowerNum] = useState(0);
-
-    const authToken = localStorage.getItem("memberseq");
-    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         // member 정보 가져오기
@@ -78,10 +78,12 @@ function ProfileCard() {
             </div>
             <div className='connect'>
                 <Routes>
-                    <Route path="profile" element={<Profile/>}/>
-                    <Route path="bodycom" element={<BodyCom/>}/>
-                    <Route path="follower" element={<Follower/>}/>
-                    <Route path="following" element={<Following/>}/>
+                    <Route path="profile" element={<Profile token={token}/>}/>
+                    <Route path="bodycom" element={<BodyCom token={token}/>}/>
+                    <Route path="follower" element={<Follower token={token}/>}/>
+                    <Route path="following" element={<Following token={token}/>}/>
+                    <Route path="mycommunity/*" element={<MyCommunity token={token} profile = {member.profile}/>}/>
+                    <Route path="myallbbs/:communitytag/:bbstag" element={<MyAllBbs token={token} profile = {member.profile}/>}/>
                 </Routes>
             </div>
         </div>

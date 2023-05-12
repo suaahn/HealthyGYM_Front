@@ -1,0 +1,160 @@
+.mypage-mycommunity-00{
+    margin-left: 60px;
+    margin-top: 40px;
+    width: 600px;
+}
+
+.mypage-mycommunity-01{
+    display: flex;
+    flex-direction: column;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    width: 600px;
+}
+
+.mypage-mycommunity-02{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 600px;
+}
+
+.mypage-mycommunity-03 {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mypage-mycommunity-04 {
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+.mypage-mycommunity-04 a {
+    color: black;
+    text-decoration: none;
+}
+
+.mypage-mycommunity-04 a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.mypage-mycommunity-05{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.mypage-mycommunity-06{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 600px;
+}
+
+.mypage-mycommunity-08{
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    width: 600px;
+}
+
+.mypage-mycommunity-09{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    cursor: pointer;
+}
+
+.mypage-mycommunity-10{
+    display: flex;
+    flex-direction: column;
+    width: 490px;
+    height: 116px;
+}
+
+.mypage-mycommunity-11{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100px;
+}
+
+.mypage-mycommunity-12 {
+    display: flex;
+    font-size: 0.74rem;
+    width: 470px;
+    height: 37px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px;
+    color: #666;
+}
+
+.mypage-mycommunity-13 {
+    display: flex;
+    width: 470px;
+    height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 3px;
+    font-size: 15px;
+    font-weight: 900;
+    margin-bottom: 2px;
+    margin-top: 7px;
+}
+
+.mypage-mycommunity-14 {
+    display: flex;
+    width: 470px;
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+    color: #666;
+    font-size: 10px;
+}
+
+.mypage-mycommunity-16{
+    padding-left: 3px;
+    color: #007bff;
+}
+
+.mypage-mycommunity-17{
+    font-size: 11px;
+    margin-left: 5px;
+    font-weight: bold;
+    color:#444;
+}
+
+.mypage-mycommunity-18{
+    margin-left: 10px;
+}
+
+.mypage-mycommunity-19{
+    margin-left: 12px;
+}
+
+.mypage-mycommunity-20{
+    border-color: #f5f5f5;
+}
+
+.mypage-mycommunity-21{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1px;
+}
+
+.mypage-mycommunity-22{
+    font-weight: bold;
+    font-size: 11px;
+    color: #007bff;
+    margin-right: 15px;
+}
+
+.mypage-mycommunity-23{
+    margin-left: 60px;
+    width: 600px;
+}

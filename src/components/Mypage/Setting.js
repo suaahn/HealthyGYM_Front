@@ -4,7 +4,7 @@ import PwdChange from "./PwdChange";
 import "./Setting.css";
 import {useEffect, useRef} from "react";
 
-function Setting() {
+function Setting({token}) {
     const editProfileLinkRef = useRef(null);
 
     useEffect(() => {
@@ -26,8 +26,8 @@ function Setting() {
                 </ul>
             </div>
             <Routes>
-                <Route path="/editprofile" element={<EditProfile />} />
-                <Route path="/pwdchange" element={<PwdChange />} />
+                <Route path="/editprofile" element={<EditProfile token={token}/>} />
+                <Route path="/pwdchange" element={<PwdChange token={token}/>} />
             </Routes>
         </div>
     );
