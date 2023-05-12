@@ -1,15 +1,12 @@
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import "./PwdChange.css";
 
-function PwdChange() {
+function PwdChange({token}) {
     const [memberseq, setMemberseq] = useState('');
     const [pwd, setPwd] = useState("");
     const [confirmPwd, setConfirmPwd] = useState("");
     const [message, setMessage] = useState("");
-
-    const authToken = localStorage.getItem("memberseq");
-    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         axios

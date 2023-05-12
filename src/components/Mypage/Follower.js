@@ -1,13 +1,10 @@
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import "./Follow.css";
 
-function Follower() {
+function Follower({token}) {
 
     const [followerList, setFollowerList] = useState([]);
-
-    const authToken = localStorage.getItem("memberseq");
-    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         axios.post('http://localhost:3000/members/follower', token)

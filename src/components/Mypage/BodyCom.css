@@ -1,5 +1,5 @@
 
-.upload-container {
+.mypage-bodycom-00 {
     margin-left: 80px;
     margin-top: 40px;
     width: 560px;
@@ -23,9 +23,6 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-}
-
-.inbody-item-text {
 }
 
 .inbody-item img {
@@ -71,25 +68,288 @@
     max-height: 100%;
 }
 
+.mypage-bodycom-01{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
 
+.mypage-bodycom-02{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1px;
+}
 
+.mypage-bodycom-03{
+    padding-left: 3px;
+    color: #007bff;
+}
 
+.mypage-bodycom-04{
+    font-weight: bold;
+    font-size: 11px;
+    color: #007bff;
+    margin-top: 5px;
+}
 
-/*.image-wrapper {*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
+.mypage-bodycom-05{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/*.uploaded-image {*/
-/*    display: block;*/
-/*    width: 200px;*/
-/*    height: 200px;*/
-/*    object-fit: cover;*/
-/*    border-radius: 10px;*/
-/*}*/
+.mypage-bodycom-06 {
+    border: 1px dashed #ccc;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 560px;
+    cursor: pointer;
+}
 
-/*.delete-button {*/
-/*    position: absolute;*/
-/*    top: 5px;*/
-/*    right: 5px;*/
-/*}*/
+.mypage-bodycom-07{
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.mypage-bodycom-08{
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.mypage-bodycom-09{
+    display: flex;
+}
+
+.mypage-bodycom-10{
+    border: solid #eee;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+    width: 127px;
+    height: 180px;
+    background-color: rgb(245,245,245);
+    border-radius: 5px;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.mypage-bodycom-11{
+    width: 127px;
+    height: 180px;
+    background-color: rgb(245,245,245);
+    border-radius: 8px;
+    margin: 8px;
+}
+.mypage-bodycom-12{
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage-bodycom-13{
+    border: 1px solid #eee;
+    border-radius: 5px;
+    display: flex;
+    width: 560px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.mypage-bodycom-13:hover {
+    background-color: rgb(245,245,245);
+    color: #666;
+}
+
+.mypage-bodycom-14{
+    font-weight: normal;
+    font-size: 19px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+}
+
+.mypage-bodycom-15{
+    border: 1px solid #eee;
+    border-radius: 5px;
+    display: flex;
+    width: 560px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+}
+
+.mypage-bodycom-16 {
+    width: 127px;
+    height: 180px;
+}
+
+.mypage-bodycom-17 {
+    border: solid #eee;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    width: 127px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mypage-bodycom-18 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    height: 120px;
+    margin-left: 20px;
+}
+
+.mypage-bodycom-19{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mypage-bodycom-20 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 110px;
+    height: 40px;
+    margin-left: 20px;
+}
+
+.mypage-bodycom-21{
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.mypage-bodycom-22{
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.mypage-bodycom-23{
+    background-color: rgb(89, 112, 246);
+    color: white;
+    border: solid #eee;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.mypage-bodycom-24{
+    color: #666;
+    border: solid #eee;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.mypage-bodycom-25 {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.mypage-bodycom-26{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mypage-bodycom-27{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.mypage-bodycom-28{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 560px;
+}
+
+.mypage-bodycom-29{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+
+}
+.mypage-bodycom-30{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+}
+.mypage-bodycom-31{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+}
+
+.mypage-bodycom-32{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.mypage-bodycom-33{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.mypage-bodycom-35{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 560px;
+    margin-top: 20px;
+    color: #666;
+}
+

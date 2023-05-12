@@ -1,8 +1,8 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import "./EditProfile.css";
 
-function EditProfile() {
+function EditProfile({token}) {
 
     const [memberseq, setMemberseq] = useState('');
     const [name, setName] = useState('');
@@ -18,9 +18,6 @@ function EditProfile() {
     const [image, setImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef();
-
-    const authToken = localStorage.getItem("memberseq");
-    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         axios
