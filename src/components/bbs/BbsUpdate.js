@@ -10,14 +10,16 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "fire
 import { Form, Button, Dropdown } from 'semantic-ui-react';
 import youtubeicon from '../asset/icon_youtube.png';
 
-export default function ToastEditor() {
+export default function BbsUpdate() {
     let navigate = useNavigate();
+    const { bbsseq } = useParams();
 
     const [memberseq, setMemberseq] = useState(0);
     const [bbstag, setBbstag] = useState();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageArr, setImageArr] = useState([]);
+    const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
 
     // login 되어 있는지 검사하고 member_seq 얻기
     useEffect(() => {
@@ -25,21 +27,43 @@ export default function ToastEditor() {
         if(s !== null){
             setMemberseq(s);
         } else {
-            alert('로그인 후 작성 가능합니다.');
+            alert('로그인 후 수정 가능합니다.');
             navigate('/login');
         }
+        detailData(bbsseq);
+        setImageArr(contentToArray(editorRef.current.getInstance().getMarkdown()));
     }, []);
 
-    const handleBbstag = (value) => {
-        if(value == 5) navigate("/mate/health/write");
-        if(value == 10) navigate("/meallist");
-        setBbstag(value);
-    } ;
+////// 게시글 가져오기
+    const detailData = async(seq) => {
+        const response = await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq} })
+        .then((res) => {
+            console.log(JSON.stringify(res.data));
+            console.log(memberseq);
+            if(res.data[0].memberseq !== localStorage.getItem("memberseq")) {
+                alert('작성자 본인만 수정할 수 있습니다.');
+                navigate('/login');
+            }
+
+            if(res.data[0].del === 1) {
+                alert("삭제된 글입니다.");
+                navigate(-1);
+            }
+            setTitle(res.data[0].title);
+            setContent(res.data[0].content);
+            setBbstag(res.data[0].bbstag);
+
+            setLoading(true);   // 여기서 rendering해줌
+        })
+        .catch((error) => {
+            alert(error);
+          });
+    }
 
     // Editor DOM 선택용
     const editorRef = useRef();
 
-    // 등록 버튼 핸들러
+////// 등록 버튼 핸들러
     const handleRegisterButton = () => {
         let markdown = editorRef.current.getInstance().getMarkdown();
 
@@ -78,15 +102,15 @@ export default function ToastEditor() {
         };
 
         // post
-        axios.post("http://localhost:3000/writefreebbs", null, 
+        axios.post("http://localhost:3000/updatefreebbs", null, 
                     { params:paramsObj })
              .then(res => {
                 console.log(res.data);
                 if(res.data === "OK"){
-                    alert("성공적으로 등록되었습니다");
+                    alert("수정되었습니다.");
                     navigate(`/community/${bbstag}`);
                 }else{
-                    alert("등록되지 않았습니다");
+                    alert("다시 시도해주세요.");
                 }
              })
              .catch(function(err){
@@ -156,7 +180,7 @@ export default function ToastEditor() {
        return contentStr;
     }
     
-    // 유튜브 삽입을 위한 커스텀 툴바 아이템 생성
+////// 유튜브 삽입을 위한 커스텀 툴바 아이템 생성
     const myCustomEl = document.createElement('span');
     myCustomEl.style = 'cursor: pointer;'
 
@@ -195,6 +219,10 @@ export default function ToastEditor() {
     container.appendChild(description);
     container.appendChild(urlInput);
 
+    if(loading === false){
+        return <Loader active />
+    }
+
     return (
         <div className="edit_wrap">
             <br/>
@@ -202,18 +230,13 @@ export default function ToastEditor() {
             <Form>
                 <Dropdown
                     className='topic-select'
-                    value={bbstag} onChange={(e, { value }) => handleBbstag(value)}
+                    value={bbstag} onChange={(e, { value }) => setBbstag(value)}
                     placeholder='토픽을 선택해주세요'
                     fluid
                     selection
                     options={[{key:0, value:0, text:'커뮤니티', disabled:true, icon:'discussions'},
-                            {key:2, value:2, text:'바디갤러리'},
                             {key:3, value:3, text:'정보게시판'},
-                            {key:4, value:4, text:'자유게시판'},
-                            {key:100, value:100, text:'헬친', disabled:true, icon:'child'},
-                            {key:5, value:5, text:'헬스메이트'},
-                            {key:10, value:10, text:'식단메이트'},
-                            {key:11, value:11, text:'식단추천'}]}
+                            {key:4, value:4, text:'자유게시판'}]}
                 /><br/>
                 <input
                     type="text"
@@ -271,7 +294,7 @@ export default function ToastEditor() {
             /><br/>
             <Button onClick={handleRegisterButton} 
                 style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
-                등 록
+                수 정
             </Button>
 
         </div>
