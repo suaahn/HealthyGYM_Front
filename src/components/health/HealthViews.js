@@ -8,12 +8,15 @@ import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import BbsDropdown from "../bbs/BbsDropdown";
 import { shareKakao } from "../../utils/shareKakao.js";
 import ADDRESS_LIST from '../../asset/region.json';
 import styled from 'styled-components';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Divider, Grid, Icon, Label, Loader } from 'semantic-ui-react';
 import kakao from "../../asset/btn_kakao.png";
+import { InfoSpan, URLShareButton, KakaoShareButton } from '../bbs/bbsStyle';
+import { HealthTable, ProfileDiv } from './healthStyle';
+import { Cookies } from 'react-cookie';
+import HealthDropdown from './HealthDropdown';
 
 export default function HealthViews() {
     const [memberseq, setMemberseq] = useState(0);
@@ -23,12 +26,24 @@ export default function HealthViews() {
     const { bbsseq } = useParams();
     const currentUrl = `http://localhost:9100/mate/health/view/${bbsseq}`;
     const koBody = ["등", "가슴", "어깨", "팔", "복근", "하체", "유산소"];
+    const cookies = new Cookies();
 
     useEffect(()=>{
       const s = localStorage.getItem("memberseq");
       if(s !== null) setMemberseq(s);
-
-      detailData(bbsseq);
+      
+      // 오늘 해당 게시글을 조회했는지 쿠키로 확인
+      if(cookies.get(bbsseq) === undefined) {
+        detailData(bbsseq, true); // 첫 조회일 경우 조회수 up
+        // 다음날 0시까지 쿠키 저장
+        let d = new Date();
+        cookies.set(bbsseq, 1, { 
+          path: '/', 
+          expires: new Date(d.getFullYear(), d.getMonth(), d.getDate()+1, 0, 0)
+        });
+      } else {
+        detailData(bbsseq, false);
+      }
 
       // 카카오톡 sdk 추가
       const script = document.createElement("script");
@@ -40,12 +55,12 @@ export default function HealthViews() {
     }, [bbsseq]);
 
     // 게시글 가져오기
-    const detailData = async(seq) => {
-        await axios.get('http://localhost:3000/mate/getdetail', { params:{"bbsseq":seq} })
+    const detailData = async (seq, visit) => {
+        await axios.get('http://localhost:3000/mate/getdetail', { params:{"bbsseq":seq, "visit":visit} })
         .then((res) => {
 
-            console.log(memberseq);
-            console.log(JSON.stringify(res.data));
+            //console.log(memberseq);
+            //console.log(JSON.stringify(res.data));
             setDetail(res.data[0]);
             setBodyPart([res.data[0].back, res.data[0].chest, res.data[0].shoulder, res.data[0].arm, res.data[0].abs, res.data[0].leg, res.data[0].run]);
             setLoading(true);   // 여기서 rendering해줌
@@ -55,87 +70,92 @@ export default function HealthViews() {
         });
     }
     if(loading === false){
-        return <div>Loading...</div>
+        return <Loader active inline='centered' />
     }
 
     return (
         <div>
             <div>
                 <h3>{detail.title}</h3>
-                <img
-                    src={`http://localhost:3000/images/${detail.profile}`}
-                    alt="프로필 이미지"
-                    width="30"
-                    height="30"
-                />
-                <p>{detail.nickname}</p>
-                <span>
-                    <Icon name='clock outline' />
-                    <Moment fromNow>{detail.wdate}</Moment>
-                </span>
-                <span>
-                    <Icon name='globe' />
-                    {detail.readcount}
-                </span>
+                <ProfileDiv>
+                    <img
+                        src={`http://localhost:3000/images/profile/${detail.profile}`}
+                        alt="프로필 이미지"
+                        width="30"
+                        height="30"
+                    />
+                    <span style={{ fontWeight:'400'}}>{detail.nickname}</span>
+                </ProfileDiv>
+                <InfoSpan>
+                    <span>
+                        <Icon name='clock outline' />
+                        <Moment fromNow>{detail.wdate}</Moment>
+                    </span>
+                    <span>
+                        <Icon name='eye' />
+                        <span>{detail.readcount}</span>
+                    </span>
 
-                <BbsDropdown bbsseq={bbsseq} memberseq={detail.memberseq} />
-            </div><hr/>
-
-            <div style={{ display:'inline-block', width:'50%' }}>
-                <Viewer initialValue={detail.content || ''} />
-            </div>
-
-            <div style={{ display:'inline-block', width:'50%' }}>
-                <div>지역 {ADDRESS_LIST.data[detail.addressfirst][0]} {ADDRESS_LIST.data[detail.addressfirst][1][detail.addresssecond]}</div>
-                <div>헬스장 {detail.center ? <span>{detail.center}</span> : <span>-</span>}</div>
-                <div>날짜 시간 {detail.mdate} {detail.mtime}</div>
-                <div>운동 부위 {bodyPart.map((v, i) => {
-                    if(v == 0) return;
-                    return (
-                        <Button active basic circular size='mini' color='grey' key={i}>{koBody[i]}</Button>
-                    );
-                })}</div>
-            </div>
+                    <HealthDropdown bbsseq={bbsseq} memberseq={detail.memberseq} />
+                </InfoSpan>
+            </div><Divider /><br/>
             
+            <Grid divided>
+                <Grid.Column width={10}>
+                    <Viewer initialValue={detail.content || ''} />
+                </Grid.Column>
+                <Grid.Column width={6}>
+                    <HealthTable>
+                        <tbody>
+                        <tr>
+                            <th>지역</th>
+                            <td>
+                            {ADDRESS_LIST.data[detail.addressfirst][0]}&nbsp;
+                            {ADDRESS_LIST.data[detail.addressfirst][0] !== "전체" && 
+                            ADDRESS_LIST.data[detail.addressfirst][1][detail.addresssecond]
+                            }</td>
+                        </tr>
+                        <tr>
+                            <th>헬스장</th>
+                            {detail.center ? <td>{detail.center}</td> : <td>-</td>}
+                        </tr>
+                        <tr>
+                            <th>시간</th>
+                            <td>{detail.mdate} {detail.mtime}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th colSpan={2}>운동부위</th>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>{bodyPart.map((v, i) => {
+                                if(v == 0) return;
+                                return (
+                                    <Label circular key={i}>{koBody[i]}</Label>
+                                );
+                            })}</td>
+                        </tr>
+                        </tbody>
+                    </HealthTable>
+                </Grid.Column>
+            </Grid>
+
             <div style={{ height:'35px', marginTop:'30px' }}>
 
-                
-                <div style={{ float:'right'}}>
-                    <CopyToClipboard text={currentUrl}>
-                    <URLShareButton>URL</URLShareButton>
+                <div style={{ float:'right' }}>
+                    <CopyToClipboard text={currentUrl} style={{ verticalAlign: "top"}}>
+                        <URLShareButton>URL</URLShareButton>
                     </CopyToClipboard>
                     
                     <KakaoShareButton onClick={() => shareKakao(currentUrl, detail.title)}>
-                    <img alt='share to kakao' src={kakao} width={35} />
+                        <img alt='share to kakao' src={kakao} width={35} />
                     </KakaoShareButton>
-
                 </div>
+                <Button style={{ color:'white', backgroundColor:'#5271FF'}}>
+                    <Icon name='envelope' /> 쪽지 보내기
+                </Button>
             </div>
             
-            <Button>쪽지 보내기</Button>
         </div>
     );
 }
-const URLShareButton = styled.button`
-	width: 35px;
-	height: 35px;
-	color: white;
-	border-radius: 24px;
-	border: 0px;
-  margin-right: 5px;
-	font-weight: 700;
-	font-size: 12px;
-	cursor: pointer;
-	background-color: #5271FF;
-	&:hover {
-		background-color: #9EBFFF;
-	}
-`;
-const KakaoShareButton = styled.a`
-  display: inline-block;
-  width: 35px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
-`;

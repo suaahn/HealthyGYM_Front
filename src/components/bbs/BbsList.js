@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from '../../utils/CustomAxios';
 import { useParams } from 'react-router-dom';
-import styled from "styled-components"; // npm i styled-components
-import BbsBox from './BbsBox';
 import useInfiniteScroll from '../../utils/useInfiniteScroll';
+import BbsBox from './BbsBox';
 import BbsNav from './BbsNav';
-import { BbsWrapper } from './bbsStyle';
+import Carousel from './Carousel';
 import { Loader } from 'semantic-ui-react';
+import { BbsWrapper } from './bbsStyle';
 import { Description } from '../auth/authStyle';
 
 export default function BbsList() {
@@ -23,11 +23,11 @@ export default function BbsList() {
 
         await axios.get('http://localhost:3000/bbslist', { params:{ "bbstag":bbstag, "page":page, "order":order  } })
             .then(function(res) {
-                console.log(res.data);
+                //console.log(res.data);
 
                 setPage(page + 1);
                 setBbsList(prev => [...prev, ...res.data]);
-                setHasMore(res.data.length === 3);
+                setHasMore(res.data.length === 10);
             })
             .catch(function(err){
                 console.log(err);    
@@ -50,6 +50,8 @@ export default function BbsList() {
 
     return (
         <div>
+            <Carousel />
+            <br/>
             <BbsNav setOrder={setOrder} order={order} />
 
             <BbsWrapper>
@@ -60,7 +62,7 @@ export default function BbsList() {
 
             {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
             {hasMore ? 
-                <div ref={target}>target</div> : 
+                <div ref={target}>(〜￣▽￣)〜</div> : 
                 <Description><br/>마지막 게시글입니다.</Description>}
         </div>
     );

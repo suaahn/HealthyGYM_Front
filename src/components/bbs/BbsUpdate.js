@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import axios from '../utils/CustomAxios';
+import { useNavigate, useParams } from "react-router-dom";
+import axios from '../../utils/CustomAxios';
 
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button, Dropdown } from 'semantic-ui-react';
-import youtubeicon from '../asset/icon_youtube.png';
+import { Form, Button, Dropdown, Loader } from 'semantic-ui-react';
+import youtubeicon from '../../asset/icon_youtube.png';
 
 export default function BbsUpdate() {
     let navigate = useNavigate();
@@ -21,6 +21,9 @@ export default function BbsUpdate() {
     const [imageArr, setImageArr] = useState([]);
     const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
 
+    // Editor DOM 선택용
+    const editorRef = useRef();
+
     // login 되어 있는지 검사하고 member_seq 얻기
     useEffect(() => {
         const s = localStorage.getItem("memberseq");
@@ -31,7 +34,7 @@ export default function BbsUpdate() {
             navigate('/login');
         }
         detailData(bbsseq);
-        setImageArr(contentToArray(editorRef.current.getInstance().getMarkdown()));
+        
     }, []);
 
 ////// 게시글 가져오기
@@ -39,10 +42,10 @@ export default function BbsUpdate() {
         const response = await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq} })
         .then((res) => {
             console.log(JSON.stringify(res.data));
-            console.log(memberseq);
-            if(res.data[0].memberseq !== localStorage.getItem("memberseq")) {
+
+            if(res.data[0].memberseq != parseInt(localStorage.getItem("memberseq"), 10)) {
                 alert('작성자 본인만 수정할 수 있습니다.');
-                navigate('/login');
+                navigate(-1);
             }
 
             if(res.data[0].del === 1) {
@@ -52,16 +55,15 @@ export default function BbsUpdate() {
             setTitle(res.data[0].title);
             setContent(res.data[0].content);
             setBbstag(res.data[0].bbstag);
-
+            
             setLoading(true);   // 여기서 rendering해줌
         })
         .catch((error) => {
             alert(error);
-          });
+        });
     }
 
-    // Editor DOM 선택용
-    const editorRef = useRef();
+    
 
 ////// 등록 버튼 핸들러
     const handleRegisterButton = () => {
@@ -94,7 +96,7 @@ export default function BbsUpdate() {
         }
 
         let paramsObj = {
-            "memberseq":memberseq, 
+            "bbsseq":bbsseq, 
             "title":title, 
             "content":content, 
             "bbstag":bbstag,
@@ -129,7 +131,7 @@ export default function BbsUpdate() {
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
     };
 
-    const firebaseApp = initializeApp(firebaseConfig); 
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const storage = getStorage(firebaseApp); 
     
     // 이미지 업로드 핸들러

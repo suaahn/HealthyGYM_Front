@@ -1,4 +1,5 @@
 import { Button } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 export default function SelectBodyPart(props) {
     
@@ -13,16 +14,16 @@ export default function SelectBodyPart(props) {
     };
 
     return (
-        <div>
+        <>
             {koBody.map((value, i) => {
                 return (
-                    <Button circular basic size='mini' key={i}
+                    <Button circular basic size='small' key={i} style={{ fontWeight:'600'}}
                         onClick={() => {changeButton(i)}}
                         className={props.bodyPart[i] ? "active":""}>
-                        {value}
+                        &nbsp;{value}&nbsp;
                     </Button>
                 );
             })}
-        </div>
+        </>
     );
 }

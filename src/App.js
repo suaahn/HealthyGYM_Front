@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ToastEditor from "./components/ToastEditor";
 import ToastViewer from "./components/ToastViewer";
@@ -23,6 +23,7 @@ import LandingPage from "./components/FindGym/LandingPage";
 import HealthEditor from "./components/health/HealthEditor";
 import HealthList from "./components/health/HealthList";
 import HealthViews from "./components/health/HealthViews";
+import BbsUpdate from "./components/bbs/BbsUpdate";
 
 function App() {
   
@@ -30,16 +31,17 @@ function App() {
       <>
 
         <BrowserRouter>
-        <Header style={{ height : "55px"}} />
+          <Header style={{ height : "70px"}} />
 
-          <main style={{ height : "auto", minHeight: "calc(100% - 115px)" }}>
-            <div className="py-4">
+          <main style={{ height : "auto", minHeight: "calc(100% - 167px)", position:'relative', top:'70px', padding:'20px 0' }}>
+
               <div style={{ width:"1100px", margin:"auto" }}>
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
 
                   {/* 토픽베스트, 바디갤러리 추가해야함 */}
                   <Route path="/community/:bbstag" element={<BbsList />}></Route>
+                  <Route path="/community/update/:bbsseq" element={<BbsUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
 
@@ -60,21 +62,25 @@ function App() {
 
                   <Route path="/mate/health" element={<HealthList />}></Route>
                   <Route path="/mate/health/write" element={<HealthEditor />}></Route>
+                  <Route path="/mate/health/update/:bbsseq" exact element={<HealthEditor />}></Route>
                   <Route path="/mate/health/view/:bbsseq" exact element={<HealthViews />}></Route>
                   
                   
                 </Routes>
 
               </div>
-            </div>
+            
           </main>
 
           
         </BrowserRouter>
 
-        <footer style={{ height:"60px", textAlign:"center", backgroundColor:"#e0e1e2" }}>
+        <footer style={{ height:"100px", textAlign:"center", backgroundColor:"#e0e1e2", position:'relative', top:'70px' }}>
           <div>
-            <small>Copyright</small>
+            <br/>
+            <small>건강해GYM</small><br/>
+            <small>1:1 문의 &nbsp; healthygym@gmail.com</small><br/>
+            <small>이미지 출처 &nbsp; Freepik</small>
           </div>
         </footer>
 
