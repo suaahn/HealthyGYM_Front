@@ -106,16 +106,14 @@ function Profile({token}) {
                             {bbsImageList.slice(0, 4).map((bbs, i) => (
                                 <div key={i}>
                                     {bbs.thumnail ? (
-                                        // 디테일 페이지로 이동하도록 수정해야함
-                                        <Link to={`/viewer/${bbs.bbsseq}`}>
+                                        <Link to={`/view/${bbs.bbsseq}`}>
                                             <img className='mypage-bbs-image-01'
                                                  src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
                                                  alt=''
                                             />
                                         </Link>
                                     ) : (
-                                        // 디테일 페이지로 이동하도록 수정해야함
-                                        <Link to={`/viewer/${bbs.bbsseq}`}>
+                                        <Link to={`/view/${bbs.bbsseq}`}>
                                             <div className='mypage-bbs-image-01'
                                             />
                                         </Link>

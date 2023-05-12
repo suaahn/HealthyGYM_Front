@@ -51,8 +51,9 @@ function MyLikeBbs({token, profile}) {
                             <div  className="mypage-mycommunity-21">
                                 <b>
                                     {title}
-                                    <b className="mypage-mycommunity-16"> {totalCount}</b>
-                                </b>
+                                    <Link to={`/mypage/profilecard/myallbbs/mylikebbs/${bbstag}`}><b className="mypage-mycommunity-16"> {totalCount}</b>
+                                    </Link>
+                                    </b>
                                 <div className="mypage-mycommunity-22">
                                     <Link to={`/mypage/profilecard/myallbbs/mylikebbs/${bbstag}`}>
                                         전체보기
@@ -61,14 +62,14 @@ function MyLikeBbs({token, profile}) {
                             </div>
                         </div>
                         <div>
-                            <hr className="mypage-mycommunity-20"/>
+                            <div className="mypage-mycommunity-20"/>
                         </div>
                     </div>
                     <div className="mypage-mycommunity-06">
                         {filteredBbs.map((bbs, i) => (
                             <div key={i}>
                                 <div className="mypage-mycommunity-09">
-                                    <Link to={`/viewer/${bbs.bbsseq}`}>
+                                    <Link to={`/view/${bbs.bbsseq}`}>
                                         <div className="mypage-mycommunity-08">
                                             <div className="mypage-mycommunity-10">
                                                 <div className="mypage-mycommunity-13">{bbs.title}</div>
@@ -114,7 +115,7 @@ function MyLikeBbs({token, profile}) {
                                             </div>
                                         </div>
                                         <div>
-                                            <hr className="mypage-mycommunity-20"/>
+                                            <div className="mypage-mycommunity-20"/>
                                         </div>
                                     </Link>
                                 </div>

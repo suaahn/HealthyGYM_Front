@@ -1,6 +1,6 @@
 .mypage-mycommunity-00{
     margin-left: 60px;
-    margin-top: 40px;
+    margin-top: 30px;
     width: 600px;
 }
 
@@ -138,7 +138,9 @@
 }
 
 .mypage-mycommunity-20{
-    border-color: #f5f5f5;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .mypage-mycommunity-21{
@@ -157,4 +159,10 @@
 .mypage-mycommunity-23{
     margin-left: 60px;
     width: 600px;
+}
+
+.mypage-mycommunity-24{
+    margin-top: 20px;
+    margin-left: 140px;
+    width: 290px;
 }
