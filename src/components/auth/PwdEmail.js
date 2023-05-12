@@ -44,9 +44,9 @@ export default function PwdEmail() {
     };
 
     return (
-        <div style={{ width:'350px', margin:'0 210px' }}>
+        <div style={{ width:'350px', margin:'40px auto' }}>
             <h2>비밀번호를 잊어버리셨나요?</h2>
-            <p>가입한 이메일 주소를 입력해주세요.<br/>비밀번호를 재설정할 수 있는 이메일을 보내드립니다.</p>
+            <p>가입한 이메일 주소를 입력해주세요.<br/>비밀번호를 재설정할 수 있는 이메일을 보내드립니다.</p><br/>
             <Input style={{width:'350px'}} type="email" value={email} onChange={onChangeEmail} placeholder="이메일"/>
             <Msg>{msg}</Msg>
             

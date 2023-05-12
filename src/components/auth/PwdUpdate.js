@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Input, Button } from 'semantic-ui-react';
+import { Input, Button, Icon } from 'semantic-ui-react';
 import { Msg } from "./authStyle";
 
 export default function PwdUpdate() {
@@ -71,9 +71,9 @@ export default function PwdUpdate() {
     };
 
     return (
-        <div style={{ width:'350px', margin:'0 210px' }}>
+        <div style={{ width:'350px', margin:'40px auto' }}>
             <h2>비밀번호 재설정</h2>
-            <p>새로운 비밀번호를 입력해주세요.<br/>(영문, 숫자 포함한 8자 이상)</p>
+            <p>새로운 비밀번호를 입력해주세요.<br/>(영문, 숫자 포함한 8자 이상)</p><br/>
 
             <Input style={{width:'350px'}} type="password" value={pwd} onChange={onChangePwd} placeholder="비밀번호" />
             <Msg>{pwdMsg}</Msg>
@@ -82,7 +82,7 @@ export default function PwdUpdate() {
             <Msg>{confirmPwdMsg}</Msg>
 
             <Button style={{width:'350px'}} onClick={updateBtn} disabled={!checkPwd}>
-                {isLoading ? <span>loading</span> : <span>변경하기</span>}
+                {isLoading ? <Icon loading name='spinner' /> : <span>변경하기</span>}
             </Button>
         </div>
     );

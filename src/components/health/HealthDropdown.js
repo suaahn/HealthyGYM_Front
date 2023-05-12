@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Dropdown, Modal } from 'semantic-ui-react'
 import { useReducer } from 'react';
 
-export default function BbsDropdown(props) {
+export default function HealthDropdown(props) {
     const [memberseq, setMemberseq] = useState(0);
     const [isWriter, setIsWriter] = useState(false);
 
@@ -17,7 +17,7 @@ export default function BbsDropdown(props) {
     });
     // 게시글 수정
     const handleUpdateClick = async () => {
-        window.location.href = `http://localhost:9100/community/update/${props.bbsseq}`;
+        window.location.href = `http://localhost:9100/mate/health/update/${props.bbsseq}`;
     };
     // 게시글 삭제
     const handleDeleteClick = async () => {

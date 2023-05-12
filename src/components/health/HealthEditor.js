@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 import ADDRESS_LIST from '../../asset/region.json';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Loader } from 'semantic-ui-react';
 import SelectBodyPart from './SelectBodyPart';
+import styled from 'styled-components';
+import { BodyWrap } from './healthStyle';
 
 export default function HealthEditor() {
     let navigate = useNavigate();
@@ -25,9 +27,9 @@ export default function HealthEditor() {
     const [mdate, setMdate] = useState('');
     const [mtime, setMtime] = useState('');
     const [bodyPart, setBodyPart] = useState([false,false,false,false,false,false,false]);
-
+    const [loading, setLoading] = useState(false);
     const [imageArr, setImageArr] = useState([]);
-
+    const { bbsseq } = useParams();
     // login 되어 있는지 검사하고 member_seq 얻기
     useEffect(() => {
         const s = localStorage.getItem("memberseq");
@@ -37,7 +39,44 @@ export default function HealthEditor() {
             alert('로그인 후 작성 가능합니다.');
             navigate('/login');
         }
+        // 게시글 수정인 경우
+        //console.log(bbsseq);
+        if(bbsseq !== undefined) {
+            detailData(bbsseq);
+        } else {
+            setLoading(true);   // 여기서 rendering해줌
+        }
     }, []);
+
+////// 게시글 가져오기
+    const detailData = async (seq) => {
+        const response = await axios.get('http://localhost:3000/mate/getdetail', { params:{"bbsseq":seq, "visit":false} })
+        .then((res) => {
+            //console.log(JSON.stringify(res.data));
+
+            if(res.data[0].memberseq != parseInt(localStorage.getItem("memberseq"), 10)) {
+                alert('작성자 본인만 수정할 수 있습니다.');
+                navigate(-1);
+            }
+
+            if(res.data[0].del === 1) {
+                alert("삭제된 글입니다.");
+                navigate(-1);
+            }
+            setTitle(res.data[0].title);
+            setContent(res.data[0].content);
+            setAddressFirst(res.data[0].addressfirst);
+            setAddressSecond(res.data[0].addresssecond);
+            setCenter(res.data[0].center);
+            setMdate(res.data[0].mdate);
+            setMtime(res.data[0].mtime);
+            setBodyPart([res.data[0].back, res.data[0].chest, res.data[0].shoulder, res.data[0].arm, res.data[0].abs, res.data[0].leg, res.data[0].run]);
+            setLoading(true);   // 여기서 rendering해줌
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    }
 
     // Editor DOM 선택용
     const editorRef = useRef();
@@ -63,7 +102,7 @@ export default function HealthEditor() {
                 let imageRef = ref(storage, "https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%"+img+"?alt=media");
                 deleteObject(imageRef).then(() => {
                     console.log("이미지 삭제 완료");
-                }).catch((error) => {
+                }).catch(() => {
                     console.log("이미지 삭제 실패"); 
                 });
             });
@@ -81,9 +120,12 @@ export default function HealthEditor() {
             "mtime":mtime,
             "bodypart":bodyPart.join(",")
         };
-
-        axios.post("http://localhost:3000/mate/write", null, 
-                    { params:paramsObj })
+        let url = "http://localhost:3000/mate/write";
+        if(bbsseq !== undefined) {
+            url = "http://localhost:3000/mate/update";
+            paramsObj.bbsseq = bbsseq;
+        }
+        axios.post(url, null, { params:paramsObj })
              .then(res => {
                 console.log(res.data);
                 if(res.data){
@@ -108,8 +150,7 @@ export default function HealthEditor() {
         appId: process.env.REACT_APP_FIREBASE_APP_ID,
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
     };
-
-    const firebaseApp = initializeApp(firebaseConfig); 
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const storage = getStorage(firebaseApp); 
     
     // 이미지 업로드 핸들러
@@ -159,20 +200,31 @@ export default function HealthEditor() {
         }
        return contentStr;
     }
+    const handleBbstag = (e) => {
+        if(e.target.value < 5) {
+            navigate("/write");
+        } else if (e.target.value == 10) {
+            navigate("/mate/meal/write");
+        }
+    }
+
+    if(loading === false){
+        return <Loader active inline='centered' />
+    }
 
     return (
         <div className="edit_wrap">
             <br/>
             <h2>글쓰기</h2>
             <Form>
-                <select onChange={(e) => {if(e.target.value < 5) navigate("/write");}}>
+                <select defaultValue={5} onChange={(e) => {handleBbstag(e);}}>
                     <optgroup label='커뮤니티'>
                         <option value={2}>바디갤러리</option>
                         <option value={3}>정보</option>
                         <option value={4}>자유</option>
                     </optgroup>
                     <optgroup label='헬친'>
-                        <option value={5} selected>헬스메이트</option>
+                        <option value={5}>운동메이트</option>
                         <option value={10}>식단메이트</option>
                     </optgroup>
                 </select><br/>
@@ -219,19 +271,19 @@ export default function HealthEditor() {
                 <Form.Group widths='equal'>
                     <Form.Field required>
                         <label>날짜</label>
-                        <input type='date' onChange={(e) => {setMdate(e.target.value)}} />
+                        <input type='date' value={mdate} onChange={(e) => {setMdate(e.target.value)}} />
                     </Form.Field>
                     <Form.Field required>
                         <label>시간</label>
-                        <input type='time' onChange={(e) => {setMtime(e.target.value)}}/>
+                        <input type='time' value={mtime} onChange={(e) => {setMtime(e.target.value); console.log(e.target.value);}}/>
                     </Form.Field>
                 </Form.Group>
 
                 <Form.Field>
                     <label>운동 부위 선택</label>
-                    <div style={{ backgroundColor:'#f7f9fc', borderRadius:'3px', padding:'9.5px 14px'}}>
+                    <BodyWrap>
                         <SelectBodyPart bodyPart={bodyPart} setBodyPart={setBodyPart} />
-                    </div>
+                    </BodyWrap>
                 </Form.Field>
             </Form><br/>
 
@@ -239,7 +291,7 @@ export default function HealthEditor() {
                 placeholder="내용을 입력해주세요."
                 initialValue={content}
                 previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
-                height="300px" // 에디터 창 높이
+                height="400px" // 에디터 창 높이
                 initialEditType="wysiwyg" // 초기 입력모드 설정
                 language="ko-KR"
                 toolbarItems={[           // 툴바 옵션 설정
