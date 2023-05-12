@@ -16,6 +16,8 @@ import { Icon, Loader } from 'semantic-ui-react';
 
 import kakao from "../asset/btn_kakao.png";
 
+import MealRecommend from './Message/MealRecommend.js';
+
 function ToastViewer() {
     let history = useNavigate();
 
@@ -24,6 +26,7 @@ function ToastViewer() {
     const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
     const [liking, setLiking] = useState(false);      // 로그인한 유저의 좋아요 여부
     const [likecount, setLikecount] = useState(0);  // 게시글의 좋아요 수
+    const [bbstag, setBbstag] = useState(0);      // Bbstag 몇번인지.
 
     const { bbsseq } = useParams();
     const currentUrl = `http://localhost:9100/viewer/${bbsseq}`;
@@ -53,6 +56,7 @@ function ToastViewer() {
             alert("삭제된 글입니다.");
             history(-1);
           }
+          setBbstag(res.data[0].bbstag);
           setDetail(res.data[0]);
           setLikecount(res.data[0].likecount);
           setLiking(res.data[0].liking);
@@ -136,6 +140,17 @@ function ToastViewer() {
             }}
           }}
         />
+
+        <br/>
+        {/* 11번 만 보이게 */}
+        {bbstag === 11 && (
+          <div>
+            <MealRecommend detail={detail}/>
+          </div>
+        )}
+        <br/>
+
+
         <div style={{ height:'35px', marginTop:'30px' }}>
 
           <span style={{ display:'inline-block', margin:'7.5px 0px'}}>
