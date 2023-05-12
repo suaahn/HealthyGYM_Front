@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthenticationService from "./auth/AuthenticationService"; 
 
-import { Button, Dropdown } from "semantic-ui-react";
+import { Button, Dropdown, Icon } from "semantic-ui-react";
 import logo from "../asset/logo_gym.png";
 import styled from "styled-components";
 import Message from "./Message/Message";
@@ -11,7 +11,7 @@ import { MenuItem, MenuSpan } from "./homeStyle";
 export default function Header() {
     const [menuItem, setMenuItem] = useState(0);
     //const [memberseq, setMemberseq] = useState(localStorage.getItem("memberseq"));
-
+    const [search, setSearch] = useState("");
     const navigate = useNavigate();
     let profile = null;
 
@@ -54,6 +54,10 @@ export default function Header() {
           <Link to="/write">
             <Button size="mini" style={{ color:'white', backgroundColor:'#5271FF'}}>글쓰기</Button>
           </Link>
+
+          <Link to="/imageEdit">
+            <Icon className="camera" />
+          </Link>
         </>
         
       );
@@ -88,6 +92,16 @@ export default function Header() {
               <MenuItem className={menuItem === 2 && "active"} to="/community/1">커뮤니티</MenuItem>
               <MenuItem className={menuItem === 3 && "active"} to="/mate/health">헬친</MenuItem>
             </span>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              navigate(`/search/${search}`);
+              }} style={{textAlign:'center'}}>
+              <div className="ui icon input">
+                <input type="text" placeholder="검색어를 입력하세요" onChange={(e) => setSearch(e.target.value)} required/>
+                <i className="search icon"></i>
+              </div>
+            </form>
 
             <div style={{ float:"right", display: 'flex', marginLeft:'auto'}}>
               {localStorage.getItem("memberseq") == null ? handleGuest():handleMember()}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Map from './Map';
+import MateNav from '../health/MateNav';
 
 const LandingPage = () => {
     // 입력 폼 변화 감지하여 입력 값 관리
@@ -16,21 +17,16 @@ const LandingPage = () => {
         e.preventDefault();
         setKeyword(Value);
     };
-    // 검색어를 입력하지 않고 검색 버튼을 눌렀을 경우
-    const valueChecker = () => {
-        if (Value === "") {
-            alert("검색어를 입력해주세요.");
-        }
-    };
     return (
     <div>
       <div>
+        <MateNav />
         <div>
-          <form onSubmit={ submitKeyword }>
+          <form onSubmit={ submitKeyword } style={{textAlign:'center', margin:'15px'}}>
+              <div class="ui large icon input">
               <input type="text" onChange={ keywordChange } placeholder="검색어를 입력하세요" required />
-              <div>
-                <input type="submit" value="검색" onClick={ valueChecker }/>
-              </div>
+              <i class="search icon"></i>
+            </div>
           </form>
         </div>
         {/* 제출한 검색어 넘기기 */}
