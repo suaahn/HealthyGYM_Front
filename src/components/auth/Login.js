@@ -75,8 +75,8 @@ export default function Login() {
     }, [cookies]);
 
     return (
-        <div style={{ width:'300px', margin:'0 210px' }}>
-            <img alt="건강해ZYM" src={logo} style={{ width:"180px", margin: "40px auto", display: "block" }} />
+        <div style={{ width:'350px', margin:'20px auto', overflow:'hidden' }}>
+            <img alt="건강해ZYM" src={logo} style={{ width:"180px", margin: "50px auto", display: "block" }} />
             <Form>
                 <Form.Field>
                     <input type="email" value={id} onChange={idChange} placeholder="이메일" />
@@ -91,7 +91,7 @@ export default function Login() {
                     checked={saveId} onChange={checkHandler}
                 />
                 
-                <Button style={{ width:'300px', marginBottom:'20px' }} type="button" onClick={loginClicked}>로그인</Button>
+                <Button style={{ width:'100%', marginBottom:'20px' }} type="button" onClick={loginClicked}>로그인</Button>
             </Form>
             
             <section style={{ textAlign:'center'}}>

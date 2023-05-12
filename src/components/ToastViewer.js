@@ -10,32 +10,44 @@ import { CopyToClipboard } from "react-copy-to-clipboard"; // npm i react-copy-t
 import BbsComment from "./bbs/BbsComment.js";
 import BbsDropdown from "./bbs/BbsDropdown";
 import { shareKakao } from "../utils/shareKakao.js";
+import MealRecommend from './Message/MealRecommend.js';
 
 import styled from 'styled-components';
-import { Icon, Loader } from 'semantic-ui-react';
+import { Divider, Icon, Loader } from 'semantic-ui-react';
 
 import kakao from "../asset/btn_kakao.png";
-
-import MealRecommend from './Message/MealRecommend.js';
+import { Cookies } from 'react-cookie';
 
 function ToastViewer() {
     let history = useNavigate();
+    const cookies = new Cookies();
 
     const [memberseq, setMemberseq] = useState(0);
     const [detail, setDetail] = useState();
     const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
     const [liking, setLiking] = useState(false);      // 로그인한 유저의 좋아요 여부
     const [likecount, setLikecount] = useState(0);  // 게시글의 좋아요 수
-    const [bbstag, setBbstag] = useState(0);      // Bbstag 몇번인지.
+    const [bbstag, setBbstag] = useState(0);
 
     const { bbsseq } = useParams();
-    const currentUrl = `http://localhost:9100/viewer/${bbsseq}`;
+    const currentUrl = `http://localhost:9100/view/${bbsseq}`;
 
     useEffect(()=>{
       const s = localStorage.getItem("memberseq");
       if(s !== null) setMemberseq(s);
 
-      detailData(bbsseq);
+      // 오늘 해당 게시글을 조회했는지 쿠키로 확인
+      if(cookies.get(bbsseq) === undefined) {
+        detailData(bbsseq, true); // 첫 조회일 경우 조회수 up
+        // 다음날 0시까지 쿠키 저장
+        let d = new Date();
+        cookies.set(bbsseq, 1, { 
+          path: '/', 
+          expires: new Date(d.getFullYear(), d.getMonth(), d.getDate()+1, 0, 0)
+        });
+      } else {
+        detailData(bbsseq, false);
+      }
 
       // 카카오톡 sdk 추가
       const script = document.createElement("script");
@@ -47,10 +59,10 @@ function ToastViewer() {
     }, [bbsseq]);
 
     // 게시글 가져오기
-    const detailData = async(seq) => {
-        await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq, "memberseq":memberseq} })
+    const detailData = async (seq, visit) => {
+        await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq, "memberseq":memberseq, "visit":visit} })
         .then((res) => {
-          console.log(JSON.stringify(res.data));
+          //console.log(JSON.stringify(res.data));
 
           if(res.data[0].del === 1) {
             alert("삭제된 글입니다.");
@@ -105,19 +117,22 @@ function ToastViewer() {
         <div>
           <h3>{detail.title}</h3>
           <p>{detail.nickname}</p>
-          <span>
-            <Icon name='clock outline' />
-            <Moment fromNow>{detail.wdate}</Moment>
-          </span>
-          <span>
-            <Icon name='globe' />
-            {detail.readcount}
-          </span>
-
+          <InfoSpan>
+            <span>
+              <Icon name='clock outline' />
+              <Moment fromNow>{detail.wdate}</Moment>
+            </span>
+            <span>
+              <Icon name='eye' />
+              <span>{detail.readcount}</span>
+            </span>
+          
           <BbsDropdown bbsseq={bbsseq} memberseq={detail.memberseq} />
-        </div><hr/>
-
-        <Viewer 
+          </InfoSpan>
+        </div><Divider />
+        
+        <div style={{ minHeight:'150px'}}>
+        <Viewer
           initialValue={detail.content || ''} 
           // 유튜브를 보기 위한 설정(iframe)
           customHTMLRenderer={{
@@ -139,7 +154,7 @@ function ToastViewer() {
                 ];
             }}
           }}
-        />
+        /></div>
 
         <br/>
         {/* 11번 만 보이게 */}
@@ -150,11 +165,10 @@ function ToastViewer() {
         )}
         <br/>
 
-
         <div style={{ height:'35px', marginTop:'30px' }}>
 
           <span style={{ display:'inline-block', margin:'7.5px 0px'}}>
-            <Icon name={liking ? 'thumbs up' : 'thumbs up outline'} onClick={likeHandler} />
+            <Icon name={liking ? 'thumbs up' : 'thumbs up outline'} onClick={likeHandler} style={{ cursor:'pointer'}} />
             {likecount}
           </span>
           
@@ -170,11 +184,20 @@ function ToastViewer() {
           </div>
         </div>
 
-        <hr/>
+        <Divider />
         <BbsComment bbsseq={bbsseq} />
       </div>
     );
 }
+const InfoSpan = styled.span`
+  color:#94969b;
+  &>span {
+    margin-right: 8px;
+  }
+  &>span>span {
+    margin: 0 3px;
+  }
+`;
 const URLShareButton = styled.button`
 	width: 35px;
 	height: 35px;

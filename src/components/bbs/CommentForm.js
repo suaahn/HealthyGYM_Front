@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import axios from '../../utils/CustomAxios';
 import styled from "styled-components"; // npm i styled-components
+import { Button, Form, Icon } from "semantic-ui-react";
 
 export default function CommentForm(props) {
     const [text, setText] = useState('');
@@ -18,6 +19,10 @@ export default function CommentForm(props) {
     }, []);
     
     const textHandler = (e) => {
+        if(localStorage.getItem('memberseq') === undefined) {
+            alert('로그인 후 댓글을 작성할 수 있습니다.');
+            return;
+        }
         setText(e.target.value);
         handleResizeHeight();
     }
@@ -37,17 +42,19 @@ export default function CommentForm(props) {
                  .then(res => {
                     console.log(res.data);
                     if(res.data === "OK"){
-                        alert("성공적으로 등록되었습니다");
+                        alert("댓글이 등록되었습니다");
                         setText("");
-                        props.getComments();
+                        props.setCmtList([]);
+                        props.getComments(0);
                         props.setDisplay(false);
+                        props.setPage(0);
                     }else{
-                        alert("등록되지 않았습니다");
+                        alert("다시 시도해주세요");
                     }
                  })
                  .catch(function(err){
                     alert(err);
-                 })
+                 });
 
         // 댓글 등록
         } else {
@@ -57,45 +64,34 @@ export default function CommentForm(props) {
                  .then(res => {
                     console.log(res.data);
                     if(res.data === "OK"){
-                        alert("성공적으로 등록되었습니다");
-                        props.getComments();
+                        alert("댓글이 등록되었습니다");
+                        props.setCmtList([]);
+                        props.getComments(0);
                         setText("");
+                        props.setPage(0);
                     }else{
-                        alert("등록되지 않았습니다");
+                        alert("다시 시도해주세요");
                     }
                  })
                  .catch(function(err){
                     alert(err);
-                 })
+                 });
             
         }
     }
 
     return(
-        <div>
-            <TextArea
+        <Form>
+            <textarea style={{ height:'auto', minHeight: '76px', resize: 'none', overflow: 'hidden'}}
                 value={text}
                 onChange={(e) => textHandler(e)} 
                 ref={textAreaRef}
                 placeholder='댓글을 남겨주세요.'
             />
-            <button type='button' onClick={submitHandler}>등록</button>
-        </div>
+            <Button onClick={submitHandler} style={{ display: 'block', margin: '5px 0px 20px auto'}}>
+                <Icon name='edit' />
+                등 록
+            </Button>
+        </Form>
     );
 }
-const TextArea = styled.textarea`
-  resize: none;
-  overflow: hidden;
-  display: block;
-  box-sizing: border-box;
-  min-height: 76px;
-  width: 100%;
-  padding: 12px;
-  outline: none;
-  line-height: 20px;
-  border-radius: 3px;
-  caret-color: black;
-  &:focus {
-    background: white;
-  }
-`;

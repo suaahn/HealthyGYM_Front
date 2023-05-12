@@ -5,7 +5,7 @@ import axios from '../utils/CustomAxios';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { Form, Button, Dropdown } from 'semantic-ui-react';
 import youtubeicon from '../asset/icon_youtube.png';
@@ -32,7 +32,7 @@ export default function ToastEditor() {
 
     const handleBbstag = (value) => {
         if(value == 5) navigate("/mate/health/write");
-        if(value == 10) navigate("/meallist");
+        if(value == 10) navigate("/mate/meal/write");
         setBbstag(value);
     } ;
 
@@ -105,7 +105,7 @@ export default function ToastEditor() {
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
     };
 
-    const firebaseApp = initializeApp(firebaseConfig); 
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const storage = getStorage(firebaseApp); 
     
     // 이미지 업로드 핸들러
@@ -210,10 +210,10 @@ export default function ToastEditor() {
                             {key:2, value:2, text:'바디갤러리'},
                             {key:3, value:3, text:'정보게시판'},
                             {key:4, value:4, text:'자유게시판'},
+                            {key:11, value:11, text:'식단추천'},
                             {key:100, value:100, text:'헬친', disabled:true, icon:'child'},
-                            {key:5, value:5, text:'헬스메이트'},
-                            {key:10, value:10, text:'식단메이트'},
-                            {key:11, value:11, text:'식단추천'}]}
+                            {key:5, value:5, text:'운동메이트'},
+                            {key:10, value:10, text:'식단메이트'}]}
                 /><br/>
                 <input
                     type="text"
@@ -229,7 +229,7 @@ export default function ToastEditor() {
                 placeholder="내용을 입력해주세요."
                 initialValue={content}
                 previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
-                height="300px" // 에디터 창 높이
+                height="500px" // 에디터 창 높이
                 initialEditType="wysiwyg" // 초기 입력모드 설정
                 language="ko-KR"
                 toolbarItems={[           // 툴바 옵션 설정

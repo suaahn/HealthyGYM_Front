@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment'; // npm i moment react-moment
 import 'moment/locale/ko';
 import { Icon } from 'semantic-ui-react';
-import readicon from "../../asset/icon_readcount.png";
-import styled from 'styled-components';
 import { ImgLayer, InfoDiv, TitleLink } from './bbsStyle';
 
 export default function BbsBox(props) {
