@@ -1,3 +1,4 @@
+import { findByLabelText } from '@testing-library/react';
 import React, { useEffect } from 'react';
 // head에 작성한 Kakao API 불러오기
 const { kakao } = window;
@@ -92,25 +93,28 @@ const Map = (props) => {
         function getListItem(index, places) {
             const el = document.createElement('li');
             let itemStr = `
-                <div class="info">
-                <a href="${places.place_url}" target="_blank">
+            <div class="info">
+            <span class="marker marker_${index+1}">
+                ${index+1}
+            </span>
+            <a href="${places.place_url}">
                 <h5 class="info-item place-name">${places.place_name}</h5>
                 ${
-                    places.road_address_name 
-                    ? `<span class="info-item road-address-name">
-                        ${places.road_address_name}
+                places.road_address_name 
+                ? `<span class="info-item road-address-name">
+                    ${places.road_address_name}
                     </span>
                     <span class="info-item address-name">
-                        ${places.address_name}
+                 	${places.address_name}
+               	    </span>`
+                : `<span class="info-item address-name">
+             	    ${places.address_name}
                     </span>`
-                    : `<span class="info-item address-name">
-                        ${places.address_name}
-                    </span>`
-                }
+              }
                 <span class="info-item tel">
-                    ${places.phone}
+                ${places.phone}
                 </span>
-                </a>
+            </a>
             </div>
             `;
             el.innerHTML = itemStr;
@@ -188,21 +192,25 @@ const Map = (props) => {
         <div>
             <div id="map" 
             style={{
-                width: '500px',
-                height: '500px',
+                width: '1100px',
+                height: '500px'
                 }}>
             </div>
-            <div>
-                <p>
-                <span>
+            <div style={{width:'100%'}}>
+                <h3 style={{textAlign:'center', padding: '10px', background:'#E8F5FF'}}>
+                <span style={{color:'#5271FF', fontWeight:'bolder'}}>
                     { props.searchKeyword }
                 </span>
-                검색 결과
-                </p>
+                &nbsp;&nbsp;
+                검색 결과를 클릭해보세요
+                </h3>
                 <div>
-                <ul id="places-list"></ul>
+                <ul id="places-list" 
+                style ={{borderBottom: '1px solid #eee',
+                        paddingLeft: '3rem',
+                        position: 'relative'}}></ul>
                 </div>
-                <div id="pagination"></div>
+                <div id='pagination'></div>
             </div>
         </div>
     );
