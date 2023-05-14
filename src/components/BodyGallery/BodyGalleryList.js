@@ -15,22 +15,25 @@ export default function BodyGalleryList() {
     const [order, setOrder] = useState('wdate');
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    let { bbstag: bbstag} = useParams();
+    let { bbstag } = useParams();
 
     const getBbs = useCallback(async () => {
         setIsLoading(true);
 
-        await axios.get('http://localhost:3000/findAllBody', { params:{ "bbstag":bbstag, "page":page, "order":order  } })
-            .then(function(res) {
-                console.log(res.data);
+        await axios
+        .get('http://localhost:3000/BodyGallery/findAllBody', {
+            params: { bbstag: bbstag, page: page, order: order },
+        })
+        .then(function (res) {
+            console.log(res.data);
 
-                setPage(page + 1);
-                setBbsList(prev => [...prev, ...res.data]);
-                setHasMore(res.data.length === 3);
-            })
-            .catch(function(err){
-                console.log(err);    
-            });
+            setPage(page + 1);
+            setBbsList((prev) => [...prev, ...res.data]);
+            setHasMore(res.data.length === 3);
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 
         setIsLoading(false);
     }, [page]);
@@ -42,27 +45,37 @@ export default function BodyGalleryList() {
     }, [order, bbstag]);
 
     const target = useInfiniteScroll(async (entry, observer) => {
-        if(hasMore && !isLoading) {
-            await getBbs()
+        if (hasMore && !isLoading) {
+        await getBbs();
         }
-    })
+    });
 
     return (
         <div>
-            <Carousel />
-            <br/>
-            <div className="ui container" style={{ marginTop: '20px'}}>
+        <Carousel />
+        <br />
+        <div className="ui container" style={{ marginTop: '20px' }}>
             <BbsNav setOrder={setOrder} order={order} />
-            <div className="ui three cards" style={{ margin: '15px'}}>
-                {bbsList.map(bbs => (
-                <Card key={bbs.id} data={bbs} />
-                ))}
+            <div className="ui three cards" style={{ margin: '15px' }}>
+            {bbsList.map((bbs) => (
+                <Card key={bbs.seq} data={bbs} />
+            ))}
             </div>
-            </div>
-            {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
-            {hasMore ? 
-                <div ref={target}>target</div> : 
-                <Description><br/>마지막 게시글입니다.</Description>}
+        </div>
+        {isLoading && hasMore && (
+            <>
+            <br />
+            <Loader active inline="centered" />
+            </>
+        )}
+        {hasMore ? (
+            <div ref={target}>target</div>
+        ) : (
+            <Description>
+            <br />
+            마지막 게시글입니다.
+            </Description>
+        )}
         </div>
     );
-}
+    }

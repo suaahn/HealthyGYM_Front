@@ -22,6 +22,8 @@ import TopicBestList from "./components/TopicBest/TopicBestList"
 import SearchList from "./components/TopicBest/SearchList";
 import BodyGalleryEditor from "./components/BodyGallery/BodyGalleryEditor";
 import BodyGalleryList from "./components/BodyGallery/BodyGalleryList";
+import BodyGalleryDetail from "./components/BodyGallery/BodyGalleryDetail";
+import BodyGalleryEditorUpdate from "./components/BodyGallery/BodyGalleryEditorUpdate";
 
 import LandingPage from "./components/FindGym/LandingPage";
 import ToastImage from "./components/ToastImage";
@@ -52,6 +54,8 @@ function App() {
                   <Route path="/community/1" element={<TopicBestList />}></Route>
                   <Route path="/community/2" element={<BodyGalleryList />}></Route>
                   <Route path="/community/BodyGallery/write" element={<BodyGalleryEditor />}></Route>
+                  <Route path="/community/BodyGallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
+                  <Route path="/community/BodyGallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
 

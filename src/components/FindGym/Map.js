@@ -93,25 +93,25 @@ const Map = (props) => {
         function getListItem(index, places) {
             const el = document.createElement('li');
             let itemStr = `
-            <div class="info">
-            <span class="marker marker_${index+1}">
+            <div>
+            <span>
                 ${index+1}
             </span>
-            <a href="${places.place_url}">
-                <h5 class="info-item place-name">${places.place_name}</h5>
+            <a href="${places.place_url}" target="_blank">
+                <h5>${places.place_name}</h5>
                 ${
                 places.road_address_name 
-                ? `<span class="info-item road-address-name">
+                ? `<span>
                     ${places.road_address_name}
                     </span>
-                    <span class="info-item address-name">
+                    <span>
                  	${places.address_name}
                	    </span>`
-                : `<span class="info-item address-name">
+                : `<span>
              	    ${places.address_name}
                     </span>`
               }
-                <span class="info-item tel">
+                <span>
                 ${places.phone}
                 </span>
             </a>
@@ -121,6 +121,7 @@ const Map = (props) => {
             el.className = 'item';
             return el;
         }
+        
         // 마커를 생성하고 지도 위에 마커를 표시하는 함수
         function addMarker(position, idx, title) {
             var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
@@ -158,6 +159,7 @@ const Map = (props) => {
                 const el = document.createElement('a');
                 el.href = "#";
                 el.innerHTML = i.toString();
+                el.style.marginRight = "25px"; // 숫자 간격을 조정합니다.
                 if (i === pagination.current) {
                     el.className = 'on';
                 }
@@ -189,30 +191,30 @@ const Map = (props) => {
     }, [props.searchKeyword]);
 
     return (
-        <div>
-            <div id="map" 
-            style={{
-                width: '1100px',
-                height: '500px'
+        <div style={{display: 'flex'}}>
+            <div style={{width: '700px'}}>
+                <div id="map" 
+                style={{
+                    width: '100%',
+                    height: '500px'
                 }}>
+                </div>
             </div>
-            <div style={{width:'100%'}}>
-                <h3 style={{textAlign:'center', padding: '10px', background:'#E8F5FF'}}>
+            <div style={{width: '400px'}}>
+                <h4 style={{textAlign:'center', padding: '10px', background:'#E8F5FF'}}>
                 <span style={{color:'#5271FF', fontWeight:'bolder'}}>
                     { props.searchKeyword }
                 </span>
-                &nbsp;&nbsp;
-                검색 결과를 클릭해보세요
-                </h3>
-                <div>
+                &nbsp;검색 결과를 클릭하세요
+                </h4>
+                <div style={{width: '400px', height: '427px', overflowY: 'scroll'}}>
                 <ul id="places-list" 
-                style ={{borderBottom: '1px solid #eee',
-                        paddingLeft: '3rem',
-                        position: 'relative'}}></ul>
+                style ={{listStyleType: 'none'}}></ul>
                 </div>
-                <div id='pagination'></div>
+                <div id='pagination' style={{textAlign: 'center', background:'#E8F5FF'}} />
             </div>
-        </div>
+        </div>     
     );
+    
 };
 export default Map;

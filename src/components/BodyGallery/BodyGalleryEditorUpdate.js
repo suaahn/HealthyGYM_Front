@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 
 import { Editor } from '@toast-ui/react-editor';
@@ -7,15 +7,20 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button} from 'semantic-ui-react';
+import { Form, Button, Loader } from 'semantic-ui-react';
 
 export default function BodyGalleryEditor() {
     let navigate = useNavigate();
+    const { bbsseq } = useParams();
 
     const [memberseq, setMemberseq] = useState(0);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageArr, setImageArr] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    // Editor DOM 선택용
+    const editorRef = useRef();
 
     // login 되어 있는지 검사하고 member_seq 얻기
     useEffect(() => {
@@ -23,17 +28,29 @@ export default function BodyGalleryEditor() {
         if(s !== null){
             setMemberseq(s);
         } else {
-            alert('로그인 후 작성 가능합니다.');
+            alert('로그인 후 수정 가능합니다.');
             navigate('/login');
         }
-    }, []);
 
-    // Editor DOM 선택용
-    const editorRef = useRef();
+        const fetchBodyDetail = async() => {
+            const response = await axios.get(`http://localhost:3000/BodyGallery/findBodyById/${bbsseq}`, { params:{"bbsseq":bbsseq} })
+                .then((res) => {
+                    console.log(JSON.stringify(res.data));
+                    setTitle(res.data.title);
+                    setContent(res.data.content);
+                    setLoading(true);   // 여기서 rendering해줌
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+        }
+
+        fetchBodyDetail();
+    }, [bbsseq, navigate]);
 
     // 등록 버튼 핸들러
-    const handleRegisterButton = () => {
-        let markdown = editorRef.current.getInstance().getMarkdown();
+    const handleUpdateButton = () => {
+        let markdown = editorRef.current?.getInstance()?.getMarkdown();
         
         if(title.trim() === ''){
             alert('제목을 입력해주세요.');
@@ -48,7 +65,7 @@ export default function BodyGalleryEditor() {
 
         // 이미지 배열 비교 및 삭제 
         // 유저가 게시글 작성하는 과정에서 등록한 이미지를 삭제하는 경우가 있기 때문에 최종 등록된 내용과 비교한다.
-        let [deleteImg, contentImg] = imageFilter(markdown);
+        let [deleteImg, contentImgUpdate] = imageFilter(markdown);
         
         if(deleteImg !== null) {
             deleteImg.forEach(img => {
@@ -64,28 +81,29 @@ export default function BodyGalleryEditor() {
 
         // 요청 parameter 객체로 만들기
         const BbsDto = {
+            "bbsseq": bbsseq, // 반드시 반드시 반드시 parameter로 넣어야 한다!!
             "memberseq":memberseq, 
-            "title":title, 
-            "content":content, 
+            "title":title,
+            "content":content,
             "bbstag":2,
-            "thumnail":contentImg[0]
+            "thumnail":contentImgUpdate[0]
         };
 
-        // saveBody 실행 확인
-        // 요청 헤더에 Content-Type을 명시, 요청 본문이  JSON 형태인 경우 요청 헤더에 "Content-Type: application/json"을 명시
-        // @RequestBody를 사용하여 요청 본문에서 데이터를 받고 있음
-        // 요청 parameter JSON으로 직렬화하여 요청 본문에 추가
-        axios.post("http://localhost:3000/BodyGallery/saveBody", BbsDto, {
+         // updateBody 실행 확인
+         axios.post("http://localhost:3000/BodyGallery/updateBody", BbsDto, {
             headers: {
               'Content-Type': 'application/json'
             }
           })
             .then(res => {
                 console.log(res.data);
-                if(res.data === "Successfully saved"){
+                if(res.data === "Successfully updated"){
+                    setTitle(title);
+                    setContent(editorRef.current.getInstance().getHTML()); // 수정된 게시글 내용을 저장함
+                    setImageArr(imageArr);
                     navigate(`/community/2`);
                 }else{
-                    alert("등록되지 않았습니다");
+                    alert("수정되지 않았습니다");
                 }
               })
               .catch(function(err){
@@ -137,17 +155,17 @@ export default function BodyGalleryEditor() {
     // 본문과 imageArr 비교하여 삭제할 이미지들 반환
     const imageFilter = (ele) => {
         let deleteImg = imageArr;
-        let contentImg = contentToArray(ele);
+        let contentImgUpdate = contentToArray(ele);
 
         for(let i = 0; i < imageArr.length; i++) {
-            for(let j = 0; j < contentImg.length; j++) {
-                if(imageArr[i] === contentImg[j]) {
+            for(let j = 0; j < contentImgUpdate.length; j++) {
+                if(imageArr[i] === contentImgUpdate[j]) {
                     deleteImg.splice(i, 1);
                 }
             }
         }
         console.log(deleteImg);
-        return [deleteImg, contentImg];
+        return [deleteImg, contentImgUpdate];
     }
     // 본문 마크다운에서 이미지 이름을 배열로 빼내기
     const contentToArray = (ele) => {
@@ -156,6 +174,10 @@ export default function BodyGalleryEditor() {
             contentStr[j] = contentStr[j].substring(contentStr[j].indexOf("%")+1, contentStr[j].indexOf("?"));
         }
        return contentStr;
+    }
+
+    if(loading === false){
+        return <Loader active />
     }
     
     return (
@@ -204,10 +226,11 @@ export default function BodyGalleryEditor() {
                 onChange={() => setContent(editorRef.current.getInstance().getHTML())}
                 hooks={{ addImageBlobHook: onUploadImage }}
             /><br/>
-            <Button onClick={handleRegisterButton} 
+            <Button onClick={handleUpdateButton} 
                 style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
-                등 록
+                수 정
             </Button>
+
         </div>
     );
 }
