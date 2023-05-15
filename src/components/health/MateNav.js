@@ -47,6 +47,7 @@ export default function MateNav() {
                     active={activeItem === '식단메이트'}
                     onClick={handleItemClick}
                 />
+                
             </Menu>
         </>
     );

@@ -75,7 +75,6 @@ export default function BbsNav(props) {
                                     key: '추천순',
                                     text: '추천순',
                                     value: 'likecount desc, wdate'}]}
-                        defaultValue={'wdate'}
                         value={props.order}
                         onChange={(e, { value }) => props.setOrder(value)}
                         style={{ padding:'9px 16px', borderColor:'none'}} />

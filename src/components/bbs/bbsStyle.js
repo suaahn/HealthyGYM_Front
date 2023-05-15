@@ -25,11 +25,27 @@ export const ImgLayer = styled.div`
 `;
 export const TitleLink = styled(Link)`
     color: black;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     width:420px; 
-    height:45px; 
-    margin-bottom:14px;
+    height:40px; 
+    margin-bottom: 4px;
+    word-wrap:break-word; 
+    white-space:normal; 
+    overflow:hidden; 
+    display:-webkit-box; 
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    :hover {
+        color: black;
+    }
+`;
+export const ContentLink = styled(Link)`
+    color: black;
+    width:420px; 
+    height:35px; 
+    margin-bottom: 14px;
+    word-wrap:break-word; 
     white-space:normal; 
     overflow:hidden; 
     display:-webkit-box; 
@@ -77,7 +93,7 @@ export const URLShareButton = styled.button`
 	cursor: pointer;
 	background-color: #5271FF;
 	&:hover {
-		background-color: #9EBFFF;
+		background-color: #80AAFF;
 	}
 `;
 export const KakaoShareButton = styled.a`

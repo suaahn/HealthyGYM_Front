@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '../utils/CustomAxios';
 import Moment from 'react-moment'; // npm i moment react-moment
 import 'moment/locale/ko';
@@ -7,16 +7,16 @@ import 'moment/locale/ko';
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { CopyToClipboard } from "react-copy-to-clipboard"; // npm i react-copy-to-clipboard
+import { Cookies } from 'react-cookie';
 import BbsComment from "./bbs/BbsComment.js";
 import BbsDropdown from "./bbs/BbsDropdown";
 import { shareKakao } from "../utils/shareKakao.js";
 import MealRecommend from './Message/MealRecommend.js';
 
-import styled from 'styled-components';
 import { Divider, Icon, Loader } from 'semantic-ui-react';
-
+import { InfoSpan, KakaoShareButton, URLShareButton } from './bbs/bbsStyle';
 import kakao from "../asset/btn_kakao.png";
-import { Cookies } from 'react-cookie';
+import { ProfileDiv } from './health/healthStyle';
 
 function ToastViewer() {
     let history = useNavigate();
@@ -38,7 +38,7 @@ function ToastViewer() {
 
       // 오늘 해당 게시글을 조회했는지 쿠키로 확인
       if(cookies.get(bbsseq) === undefined) {
-        detailData(bbsseq, true); // 첫 조회일 경우 조회수 up
+        detailData(bbsseq, s, true); // 첫 조회일 경우 조회수 up
         // 다음날 0시까지 쿠키 저장
         let d = new Date();
         cookies.set(bbsseq, 1, { 
@@ -46,7 +46,7 @@ function ToastViewer() {
           expires: new Date(d.getFullYear(), d.getMonth(), d.getDate()+1, 0, 0)
         });
       } else {
-        detailData(bbsseq, false);
+        detailData(bbsseq, s, false);
       }
 
       // 카카오톡 sdk 추가
@@ -59,7 +59,7 @@ function ToastViewer() {
     }, [bbsseq]);
 
     // 게시글 가져오기
-    const detailData = async (seq, visit) => {
+    const detailData = async (seq, memberseq, visit) => {
         await axios.get('http://localhost:3000/freebbsdetail', { params:{"bbsseq":seq, "memberseq":memberseq, "visit":visit} })
         .then((res) => {
           //console.log(JSON.stringify(res.data));
@@ -116,7 +116,18 @@ function ToastViewer() {
       <div>
         <div>
           <h3>{detail.title}</h3>
-          <p>{detail.nickname}</p>
+          <ProfileDiv>
+              <Link to={`/userpage/${detail.memberseq}/profile`}>
+              <img
+                  src={`http://localhost:3000/images/profile/${detail.profile}`}
+                  alt="프로필"
+                  width="30"
+                  height="30"
+              />
+              <span style={{ fontWeight:'400'}}>{detail.nickname}</span>
+              </Link>
+          </ProfileDiv>
+          
           <InfoSpan>
             <span>
               <Icon name='clock outline' />
@@ -189,36 +200,5 @@ function ToastViewer() {
       </div>
     );
 }
-const InfoSpan = styled.span`
-  color:#94969b;
-  &>span {
-    margin-right: 8px;
-  }
-  &>span>span {
-    margin: 0 3px;
-  }
-`;
-const URLShareButton = styled.button`
-	width: 35px;
-	height: 35px;
-	color: white;
-	border-radius: 24px;
-	border: 0px;
-  margin-right: 5px;
-	font-weight: 700;
-	font-size: 12px;
-	cursor: pointer;
-	background-color: #5271FF;
-	&:hover {
-		background-color: #9EBFFF;
-	}
-`;
-const KakaoShareButton = styled.a`
-  display: inline-block;
-  width: 35px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
-`;
+
 export default ToastViewer;
