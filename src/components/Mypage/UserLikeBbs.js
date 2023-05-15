@@ -1,50 +1,30 @@
-import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 import "./MyCommunity.css";
 
-function MyAllBbs({token, profile}) {
-    let params = useParams();
-
+function UserLikeBbs({token, profile}) {
     const [bbsImageList, setBbsImageList] = useState([]);
-    const [bbsTitle, setBbsTitle] = useState("");
 
     const requestBody = useMemo(
         () => ({
-            bbstag: params.bbstag,
+            bbstag: 0,
             memberseq: token.memberseq,
         }),
-        [params.bbstag, token.memberseq]
+        [token.memberseq]
     );
 
     useEffect(() => {
         axios
-            .post(`http://localhost:3000/mypage/${params.communitytag}`, requestBody, {
+            .post("http://localhost:3000/mypage/mylikebbs", requestBody, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
             .then((response) => {
                 setBbsImageList(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
             });
-    }, [params.communitytag, requestBody]);
-
-    useEffect(() => {
-        if (params.bbstag === "1") {
-            setBbsTitle("운동루틴");
-        } else if (params.bbstag === "3") {
-            setBbsTitle("정보게시판");
-        } else if (params.bbstag === "4") {
-            setBbsTitle("자유게시판");
-        } else if (params.bbstag === "10") {
-            setBbsTitle("식단공유 게시판??");
-        } else if (params.bbstag === "11") {
-            setBbsTitle("식단추천 게시판");
-        }
-    }, [params.bbstag]);
+    }, [requestBody]);
 
     const removeImageTags = (content) => {
         const imgRegex = /<img\b[^>]*>/gi;
@@ -56,19 +36,29 @@ function MyAllBbs({token, profile}) {
         return date.toLocaleDateString("ko-KR");
     };
 
-    const totalCount = bbsImageList.length;
+    const renderBbsImageList = (bbstag, title) => {
+        const filteredBbs = bbsImageList
+            .filter((bbs) => bbs.bbstag === bbstag)
+            .slice(0, 2);
+        const totalCount = bbsImageList.filter((bbs) => bbs.bbstag === bbstag)
+            .length;
 
-    return (
-        <div className="mypage-mycommunity-23">
-            <div className="mypage-mycommunity-01">
+        if (filteredBbs.length > 0) {
+            return (
                 <div className="mypage-mycommunity-02">
                     <div className="mypage-mycommunity-05">
                         <div className="mypage-mycommunity-15">
-                            <div className="mypage-mycommunity-21">
+                            <div  className="mypage-mycommunity-21">
                                 <b>
-                                    {bbsTitle}
-                                    <b className="mypage-mycommunity-16"> {totalCount}</b>
+                                    {title}
+                                    <Link to={`/userpage/${token.memberseq}/all/mylikebbs/${bbstag}`}><b className="mypage-mycommunity-16"> {totalCount}</b>
+                                    </Link>
                                 </b>
+                                <div className="mypage-mycommunity-22">
+                                    <Link to={`/userpage/${token.memberseq}/all/mylikebbs/${bbstag}`}>
+                                        전체보기
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                         <div>
@@ -76,10 +66,10 @@ function MyAllBbs({token, profile}) {
                         </div>
                     </div>
                     <div className="mypage-mycommunity-06">
-                        {bbsImageList.map((bbs, i) => (
+                        {filteredBbs.map((bbs, i) => (
                             <div key={i}>
                                 <div className="mypage-mycommunity-09">
-                                    <Link to={`/viewer/${bbs.bbsseq}`}>
+                                    <Link to={`/view/${bbs.bbsseq}`}>
                                         <div className="mypage-mycommunity-08">
                                             <div className="mypage-mycommunity-10">
                                                 <div className="mypage-mycommunity-13">{bbs.title}</div>
@@ -133,9 +123,21 @@ function MyAllBbs({token, profile}) {
                         ))}
                     </div>
                 </div>
-            </div>
+            );
+        }
+
+        return null;
+    };
+
+    return (
+        <div className="mypage-mycommunity-01">
+            {renderBbsImageList(1, "운동루틴")}
+            {renderBbsImageList(3, "정보게시판")}
+            {renderBbsImageList(4, "자유게시판")}
+            {renderBbsImageList(10, "식단공유 게시판??")}
+            {renderBbsImageList(11, "식단추천 게시판")}
         </div>
     );
 }
 
-export default MyAllBbs;
+export default UserLikeBbs;

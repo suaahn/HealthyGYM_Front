@@ -84,6 +84,25 @@ function BodyCom({token}) {
         };
     }, [handleScroll]);
 
+    const handleDelete = (bodycomseq) => {
+        const requestBody = {
+            bodycomseq: bodycomseq,
+        };
+
+        // 확인 메시지 표시
+        if (window.confirm("삭제하시겠습니까?")) {
+            axios.post("http://localhost:3000/bodycomdelete", requestBody, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((response) => {
+                alert("성공적으로 삭제되었습니다.");
+                window.location.reload();
+            });
+        }
+    };
+
+
     return (
         <div className="mypage-bodycom-00">
             <div className="mypage-bodycom-01">
@@ -94,14 +113,13 @@ function BodyCom({token}) {
                         </b>
                     </div>
                     <div className="mypage-bodycom-04">
-                        <Link className="nav-link" to="/">
+                        <Link to="/">
                             전체보기
                         </Link>
                     </div>
                 </div>
                 <div className="mypage-bodycom-05">
                     {inbodyList.length !== 0 && (
-                        <div className="mypage-bodycom-12">
                             <div className="mypage-bodycom-09">
                                 {renderedList.slice(0, 4).map((inbody) => (
                                     <div key={`inbody-${inbody.bodycomseq}`}>
@@ -125,7 +143,6 @@ function BodyCom({token}) {
                                         )}
                                     </div>
                                 ))}
-                            </div>
                         </div>
                     )}
                 </div>
@@ -150,12 +167,12 @@ function BodyCom({token}) {
                         </div>
                         <div className="mypage-bodycom-31"></div>
                     </div>
-                    <div className="mypage-bodycom-28">
+                    <div className="mypage-bodycom-37">
                         <div>
                             {renderedList.map((bodycom) => (
                                 <div key={`bodycom-${bodycom.bodycomseq}`} className="mypage-bodycom-35">
                                     <div className="mypage-bodycom-29">
-                                        {bodycom.bodycomseq}
+                                        {inbodyList.length - renderedList.indexOf(bodycom)}
                                     </div>
                                     <div className="mypage-bodycom-30">
                                         <div className="mypage-bodycom-32">
@@ -168,10 +185,9 @@ function BodyCom({token}) {
                                     <div className="mypage-bodycom-31">{bodycom.weight}</div>
                                     <div className="mypage-bodycom-31">{bodycom.musclemass}</div>
                                     <div className="mypage-bodycom-31">{bodycom.bodyfatmass}</div>
-                                    <div className="mypage-bodycom-31"><div className="mypage-bodycom-33">삭제</div></div>
+                                    <div className="mypage-bodycom-31"><div className="mypage-bodycom-33" onClick={() => handleDelete(bodycom.bodycomseq)}>삭제</div></div>
                                 </div>
                             ))}
-
                         </div>
                     </div>
                 </div>

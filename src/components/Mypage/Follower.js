@@ -19,19 +19,28 @@ function Follower({token}) {
 
     return (
         <div className='follow-container'>
-            <b>팔로워</b>
+            <div className='mypage-follow-01'>팔로워</div>
             <div className='follow-list'>
                 {followerList.length > 0 ? (
                     followerList.map((follower) => (
                         <div className='follow-list-01' key={follower.memberseq}>
+                            <div className='mypage-follow-02'>
                             <img
                                 src={`http://localhost:3000/images/profile/${follower.profile}`}
                                 alt="이미지"
-                                width="30"
-                                height="30"
+                                width="40"
+                                height="40"
                             />
+                            </div>
                             <div className='follow-list-02'>
-                                <div className='follow-list-03'>{follower.foltarget}</div>
+                                <div className='mypage-follow-03'>
+                                    <div className='follow-list-03'>{follower.foltarget}</div>
+                                    <div className='mypage-follow-04'>
+                                        {follower.mbti === "선택" || follower.mbti === null ? "비공개" : follower.mbti}{" "}
+                                        {follower.gender === "female" ? "여자" : follower.gender === "male" ? "남자" : ""}
+                                    </div>
+
+                                </div>
                                 <div className='follow-list-04'>팔로잉</div>
                             </div>
                         </div>

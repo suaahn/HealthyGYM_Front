@@ -22,6 +22,7 @@
     "react-scripts": "5.0.1",
     "react-session-api": "^1.1.0",
     "react-slick": "^0.29.0",
+    "recharts": "^2.6.2",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
     "slick-carousel": "^1.8.1",
@@ -39,7 +40,16 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-restricted-globals": [
+        "error",
+        {
+          "name": "confirm",
+          "message": "Please use a custom dialog component instead of confirm()"
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [

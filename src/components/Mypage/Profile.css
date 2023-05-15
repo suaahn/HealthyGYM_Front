@@ -1,7 +1,7 @@
 .profile-container-01 {
-    margin-left: 80px;
-    margin-top: 40px;
-    width: 560px;
+    margin-left: 35px;
+    margin-right: 35px;
+    width: 700px;
 }
 
 .profile-container-box {
@@ -11,7 +11,8 @@
     justify-content: center;
     align-items: center;
     margin-top: 25px;
-    width: 560px;
+    width: 700px;
+    height: 180px;
 }
 
 .profile-container-box-04 {
@@ -21,50 +22,53 @@
     justify-content: center;
     align-items: center;
     margin-top: 1px;
-    width: 560px;
+    width: 700px;
+    height: 180px;
 }
 
-.profile-container-box-01{
+.profile-container-box-01 {
     color: #666;
     font-size: 0.9rem;
 }
 
-.profile-container-box-02{
+.profile-container-box-02 {
     font-size: 15px;
     font-weight: normal;
 }
 
-.count-blue{
+.count-blue {
     padding-left: 3px;
     color: #007bff;
 }
 
-.mypage-bbs-image{
+.mypage-bbs-image {
     display: flex;
+    width: 700px;
+    justify-content: space-between;
 }
 
 .profile-container-box-03 {
-    border: 1px solid #eee;
-    border-radius: 8px;
+    border-radius: 4px;
+    border: 1px solid rgb(218, 220, 224);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 12px;
     color: #333;
-}
-.inbody-item-text{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 15px;
-    margin-right: 40px;
+    height: 200px;
 }
 
-.inbody-item-component{
+.inbody-item-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.inbody-item-component {
     display: flex;
     flex-direction: column;
     width: 80px;
-    height: 80px;
+    height: 200px;
     margin: 20px;
     justify-content: center;
     align-items: center;
@@ -72,39 +76,84 @@
     font-size: 1.5rem;
 }
 
-.inbody-item-component-01{
+.inbody-item-component-01 {
     font-weight: normal;
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
 
-.bbs-image-container{
+.bbs-image-container {
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
-.bbs-image-container-01{
+.bbs-image-container-01 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
 }
 
-.mypage-bbs-image-01{
-    width: 127px;
-    height: 127px;
-    background-color: rgb(245,245,245);
+.mypage-bbs-image-01 {
+    width: 160px;
+    height: 160px;
+    background-color: rgb(245, 245, 245);
     border-radius: 8px;
-    margin: 8px;
 }
 
-.bbs-image-container-02{
+.bbs-image-container-02 {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.bbs-image-blue-text{
+.bbs-image-blue-text {
     font-weight: bold;
     font-size: 11px;
     color: #007bff;
 }
+
+.mypage-profile-02{
+    font-size: 16px;
+}
+
+.mypage-profile-03{
+    font-size: 13px;
+}
+
+.mypage-profile-04{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.mypage-profile-05{
+    cursor: pointer;
+}
+
+.mypage-profile-06{
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+.mypage-profile-07{
+    color: lightseagreen;
+}
+
+.mypage-profile-08{
+    color: tomato;
+}
+
+.mypage-profile-09 {
+    height: 30px; /* 부모 요소의 높이를 100%로 설정 */
+    display: flex; /* Flexbox 레이아웃을 사용 */
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: flex-end; /* 우측 정렬 */
+    font-size: 12px;
+    color: #6c757d;
+}
+

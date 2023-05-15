@@ -1,0 +1,8 @@
+.mypage-graph-01{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 200px;
+    font-size: 10px;
+}

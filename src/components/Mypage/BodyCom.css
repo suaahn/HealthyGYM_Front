@@ -1,8 +1,7 @@
 
 .mypage-bodycom-00 {
-    margin-left: 80px;
-    margin-top: 40px;
-    width: 560px;
+    margin-left: 35px;
+    width: 700px;
 }
 
 .upload-box1 {
@@ -69,14 +68,14 @@
 }
 
 .mypage-bodycom-01{
-    margin-top: 30px;
     margin-bottom: 10px;
 }
 
 .mypage-bodycom-02{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1px;
+margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .mypage-bodycom-03{
@@ -86,7 +85,7 @@
 
 .mypage-bodycom-04{
     font-weight: bold;
-    font-size: 11px;
+    font-size: 13px;
     color: #007bff;
     margin-top: 5px;
 }
@@ -99,11 +98,11 @@
 
 .mypage-bodycom-06 {
     border: 1px dashed #ccc;
-    padding: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 560px;
+    width: 700px;
+    height: 180px;
     cursor: pointer;
 }
 
@@ -118,17 +117,18 @@
 }
 
 .mypage-bodycom-09{
+    width: 700px;
     display: flex;
+    justify-content: space-between;
 }
 
 .mypage-bodycom-10{
-    border: solid #eee;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
-    width: 127px;
-    height: 180px;
+    border-radius: 4px;
+    border: 1px solid rgb(218, 220, 224);
+    box-shadow: rgba(63, 71, 77, 0.06) 0px 2px 4px 0px;
+    width: 160px;
+    height: 225px;
     background-color: rgb(245,245,245);
-    border-radius: 5px;
-    margin: 8px;
     cursor: pointer;
 }
 
@@ -139,21 +139,18 @@
     border-radius: 8px;
     margin: 8px;
 }
-.mypage-bodycom-12{
-    display: flex;
-    flex-direction: column;
-}
 
 .mypage-bodycom-13{
-    border: 1px solid #eee;
-    border-radius: 5px;
+    border-radius: 4px;
+    border: 1px solid rgb(218, 220, 224);
+    box-shadow: rgba(63, 71, 77, 0.06) 0px 2px 4px 0px;
     display: flex;
-    width: 560px;
+    width: 700px;
     height: 50px;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    font-size: 13px;
+    margin-top: 20px;
+    font-size: 15px;
     font-weight: bold;
     color: #666;
     cursor: pointer;
@@ -166,16 +163,16 @@
 
 .mypage-bodycom-14{
     font-weight: normal;
-    font-size: 19px;
+    font-size: 26px;
     margin-right: 5px;
-    padding-bottom: 3px;
+
 }
 
 .mypage-bodycom-15{
     border: 1px solid #eee;
     border-radius: 5px;
     display: flex;
-    width: 560px;
+    width: 700px;
     height: 200px;
     justify-content: center;
     align-items: center;
@@ -246,7 +243,7 @@
 .mypage-bodycom-23{
     background-color: rgb(89, 112, 246);
     color: white;
-    border: solid #eee;
+    border: 1px solid #eee;
     border-radius: 5px;
     font-size: 13px;
     font-weight: 700;
@@ -260,7 +257,7 @@
 
 .mypage-bodycom-24{
     color: #666;
-    border: solid #eee;
+    border: 1px solid #eee;
     border-radius: 5px;
     font-size: 13px;
     font-weight: 700;
@@ -307,7 +304,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 560px;
+    width: 700px;
+    font-size: 16px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #bbb;
 }
 
 .mypage-bodycom-29{
@@ -346,10 +346,26 @@
 
 .mypage-bodycom-35{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 560px;
-    margin-top: 20px;
+    width: 700px;
+    margin-top: 10px;
+    padding-bottom: 10px;
     color: #666;
+    font-size: 15px;
+    border-bottom: 1px solid rgb(234, 235, 239)
 }
 
+.mypage-bodycom-36{
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-bodycom-37{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 700px;
+    font-size: 16px;
+    padding-bottom: 15px;
+}
