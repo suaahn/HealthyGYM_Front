@@ -198,7 +198,7 @@ function MealComment(props) {
             <Comment.Avatar as='a' src={`http://localhost:3000/images/profile/${comment.memberdto.profile}`} />
             <Comment.Content>
             <div style={{ width:"800px"}}>
-              <Comment.Author as='a' href={`http://localhost:3000/userpage/${comment.memberdto.memberseq}`}>{comment.memberdto.nickname} </Comment.Author>
+              <Comment.Author as='a' href={`http://localhost:9100/userpage/${comment.memberdto.memberseq}/profile`}>{comment.memberdto.nickname} </Comment.Author>
               
               <Comment.Metadata>
               <div style={{ display: "flex", width: "700px", justifyContent: "space-between" }}>
@@ -240,7 +240,7 @@ function MealComment(props) {
                                 <Comment.Avatar as='a' src={`http://localhost:3000/images/profile/${subComment.memberdto.profile}`} />
                                 <Comment.Content>
                                   <div style={{ width:"800px"}}>
-                                  <Comment.Author as='a' href={`http://localhost:3000/userpage/${subComment.memberdto.memberseq}/profile`}>{subComment.memberdto.nickname}</Comment.Author>
+                                  <Comment.Author as='a' href={`http://localhost:9100/userpage/${subComment.memberdto.memberseq}/profile`}>{subComment.memberdto.nickname}</Comment.Author>
 
                                   
                                   <Comment.Metadata>
