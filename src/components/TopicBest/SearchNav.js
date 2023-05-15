@@ -19,29 +19,30 @@ export default function SearchNav(props) {
   ];
 
   return (
-    <Menu secondary>
-      <Menu.Item>
-        <Dropdown
-          selection
-          options={leftOptions}
-          defaultValue='all'
-          value={props.bbstag}
-          onChange={(e, { value }) => props.setBbstag(value)}
-          style={{ padding:'9px 16px'}}
-        />
-      </Menu.Item>
-      <Menu.Menu position='right'>
+    <div>
+      <Menu secondary style={{margin: 0}}>
         <Menu.Item>
           <Dropdown
             selection
-            options={rightOptions}
-            defaultValue='likecount desc, wdate'
-            value={props.order}
-            onChange={(e, { value }) => props.setOrder(value)}
-            style={{ padding:'9px 16px'}}
+            options={leftOptions}
+            value={props.bbstag}
+            onChange={(e, { value }) => props.setBbstag(value)}
+            style={{ padding: '9px 16px', borderRadius: 0, border: 'none' }}
           />
         </Menu.Item>
-      </Menu.Menu>
-    </Menu>
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Dropdown
+              selection
+              options={rightOptions}
+              value={props.order}
+              onChange={(e, { value }) => props.setOrder(value)}
+              style={{ padding: '9px 16px', borderRadius: 0, border: 'none' }}
+            />
+          </Menu.Item>
+        </Menu.Menu>     
+      </Menu>
+    <hr style={{ margin: 0 }} />
+    </div>
   );
 }

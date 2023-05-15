@@ -56,7 +56,7 @@ export default function Header() {
           </Link>
 
           <Link to="/imageEdit">
-            <Icon className="camera" />
+            <Icon className="camera" style={{margin:'4px'}} />
           </Link>
         </>
         

@@ -49,6 +49,9 @@ export default function SearchList() {
 
     return (
         <div>
+          <Description style={{ fontWeight: 'bold', marginLeft: '20px', fontSize:'20px', color:'black'}}>
+            {search} 검색결과
+          </Description>
             <div className="ui container" style={{ marginTop: '20px'}}>
             <SearchNav setOrder={setOrder} order={order} setBbstag={setBbstag} bbstag={bbstag}  />
             <div className="ui three cards" style={{ margin: '15px'}}>
