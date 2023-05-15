@@ -9,7 +9,7 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 import ADDRESS_LIST from '../../asset/region.json';
-import { Form, Button, Loader } from 'semantic-ui-react';
+import { Form, Button, Loader, Popup } from 'semantic-ui-react';
 import SelectBodyPart from './SelectBodyPart';
 import styled from 'styled-components';
 import { BodyWrap } from './healthStyle';
@@ -201,7 +201,9 @@ export default function HealthEditor() {
        return contentStr;
     }
     const handleBbstag = (e) => {
-        if(e.target.value < 5) {
+        if(e.target.value == 2) {
+            navigate("/community/gallery/write");
+        } else if(e.target.value < 5) {
             navigate("/write");
         } else if (e.target.value == 10) {
             navigate("/mate/meal/write");
@@ -259,15 +261,20 @@ export default function HealthEditor() {
                     </Form.Field>
                     <Form.Field>
                         <label>헬스장</label>
+                        <Popup
+                        trigger={
                         <input
                             type="text"
                             placeholder="헬스장을 입력해주세요"
                             value={center}
                             onChange={(e)=>setCenter(e.target.value)}
-                        />
+                        />} wide
+                        position='bottom left'
+                        on='focus'
+                        >헬스장 이름이 헷갈린다면, <a href="/mate/gym" target="_blank">GYM찾기</a></Popup>
                     </Form.Field>
                 </Form.Group>
-                
+                {/* content='헬스장 이름이 헷갈린다면, 헬친의 GYM찾기 기능을 이용해 보세요!' */}
                 <Form.Group widths='equal'>
                     <Form.Field required>
                         <label>날짜</label>
@@ -307,10 +314,10 @@ export default function HealthEditor() {
                 onChange={() => setContent(editorRef.current.getInstance().getHTML())}
                 hooks={{ addImageBlobHook: onUploadImage }}
             /><br/>
-            <Button onClick={handleRegisterButton} 
+            <Button onClick={handleRegisterButton} size='large'
                 style={{ color:'white', backgroundColor:'#5271FF', display: 'flex', margin: 'auto' }}>
-                등 록
-            </Button>
+                &nbsp;등 록&nbsp;
+            </Button><br/>
         </div>
     );
 }

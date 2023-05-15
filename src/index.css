@@ -9,6 +9,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+h1, h2, h3, h4, h5, h6, .ui {
+  font-family: 'IBM Plex Sans KR', sans-serif !important;
+  letter-spacing: 1px!important;
+}
 #root {
   height: 100%;
 }
@@ -38,4 +42,29 @@ code {
 }
 .slick-dots {
   bottom: 10px !important;
+}
+/* 헤더 버튼 */
+#write-button {
+  color: white; 
+  background-color: #5271FF;
+  border-right: 2px solid white;
+}
+#write-button:hover {
+  background-color: #80AAFF;
+}
+#image-button {
+  color: #5271FF;
+  background-color: #E6EAFF;
+}
+#image-button:hover {
+  background-color: #C2D6FF;
+}
+#login-button {
+  color: white; 
+  background-color: #5271FF;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#login-button:hover {
+  background-color: #80AAFF;
 }

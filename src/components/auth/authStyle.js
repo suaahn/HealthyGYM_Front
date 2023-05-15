@@ -1,5 +1,18 @@
 import styled from "styled-components";
 
+export const LoginOtherSection = styled.section`
+    text-align: center;
+    &>span {
+        margin-left: 20px;
+    }
+    &>a {
+        color: black;
+        font-size: 16px;
+    }
+    &>a:hover {
+        color: black;
+    }
+`;
 export const SocialButton = styled.div`
     display:inline-block;
     width:48px;

@@ -20,12 +20,14 @@ export const HomeBestDiv = styled.div`
     }
     &>ul li {
         position: relative;
+        display: flex;
     }
     &>ul a {
         max-width: 85%;
         color: black;
         font-weight: 500;
         line-height: 2em;
+        word-wrap:break-word;
         overflow:hidden; 
         display:-webkit-box; 
         -webkit-line-clamp:1;
@@ -74,6 +76,7 @@ export const UnorderedList = styled.ul`
         color: black;
         font-weight: 500;
         line-height: 2em;
+        word-wrap:break-word;
         overflow:hidden; 
         display:-webkit-box; 
         -webkit-line-clamp:1;
@@ -90,6 +93,31 @@ export const UnorderedList = styled.ul`
         margin: 3px 0;
         color: #94969b;
         font-size: 12px;
+    }
+`;
+
+export const HomeHeader = styled.header`
+    height : 70px; 
+    position: fixed;
+    width: 100%; 
+    background-color: white; 
+    z-index: 1000; 
+    border-bottom: 2px solid rgba(34,36,38,.15);
+    &>div {
+      width: 1100px; 
+      margin: auto; 
+      display: flex; 
+      align-items: center;
+    }
+    & a>img {
+      vertical-align: middle;
+      width: 150px;
+      margin: 15px 15px 15px 0;
+    }
+    &>div>div {
+      float: right;
+      display: flex;
+      margin-left: auto;
     }
 `;
 

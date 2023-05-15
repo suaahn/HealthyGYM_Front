@@ -127,7 +127,7 @@ function Message(){
               {talkinglist.map((tlist) => (
                 <li key={tlist.memberseq} onClick={() => handleMessageClick(tlist)} className="message-list-item">
                   {/* 프로필 이미지 */}
-                  <img src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${selectedMessage.profile}?alt=media`} />
+                  <img src={`http://localhost:3000/images/profile/${selectedMessage.profile}`} />
 
                   {/* <img src={selectedMessage.profile} alt="Profile" /> */}
 
@@ -438,7 +438,10 @@ function Message(){
             className="message-modal2"
             ref={scrollRef}
           >
-            <Modal.Header> <img src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${selectedMessage.profile}?alt=media`} /> "{selectedMessage.nickname}" 님과의 쪽지</Modal.Header>
+            
+            <Modal.Header style={{ display: "flex", alignItems: "center" }}> 
+              <img src={`http://localhost:3000/images/profile/${selectedMessage.profile}`} style={{ width: "30px", height: "30px" }}/>
+               &nbsp; "{selectedMessage.nickname}" 님과의 쪽지</Modal.Header>
             <Modal.Content scrolling>
               {renderModalContent()}
             </Modal.Content>

@@ -30,7 +30,7 @@ export default function HealthList() {
         setIsLoading(true);
         const paramObj = { "page":page, "addressFirst":addressFirst, "addressSecond":addressSecond,
                             "mdate":mdate, "mtime":mtime, "bodypart":bodyPart.join(",")  };
-        console.log(paramObj);
+        //console.log(paramObj);
         await axios.get('http://localhost:3000/mate/getlist', { params:paramObj })
             .then(function(res) {
                 //console.log(res.data);

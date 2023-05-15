@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Divider, Icon } from "semantic-ui-react";
+import { Divider, Icon, Label } from "semantic-ui-react";
 import HomeBbs from "./HomeBbs";
 import { HomeBestDiv, HomeHalfDiv } from "./homeStyle";
 
@@ -31,7 +31,12 @@ export default function Home() {
           {list.map((item, i) => {
             return (
               <li key={i}>
-                <Link to={`/view/${item.bbsseq}`}>{item.title}</Link>
+                <Link to={`/view/${item.bbsseq}`}>
+                  <Label size="small">
+                    {item.bbstag === 2 ? "바디갤": item.bbstag === 3 ? "정보": item.bbstag === 4 ? "자유": "식단추천"}
+                  </Label>
+                  &nbsp;&nbsp;{item.title}
+                </Link>
                 <span>
                   <Icon name='thumbs up outline' />
                   {item.likecount}

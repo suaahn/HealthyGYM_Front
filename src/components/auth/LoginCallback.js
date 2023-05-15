@@ -17,9 +17,11 @@ export default function LoginCallback() {
     useEffect(() => {
         axios.get(`http://localhost:3000/auth/${provider}`, { params: {"code":code} })
         .then(function(res){
-            console.log(res.data);
-
-            if (res.data.provider === provider) {
+            //console.log(res.data);
+            if (res.data.provider === "deactivated") {
+                alert("활동이 정지된 계정입니다.");
+                history("/login");
+            } else if (res.data.provider === provider) {
 
                 AuthenticationService.registerSuccessfulLoginForJwt(res.data.seq, res.data.profile, 
                                                                     res.data.token.accessToken, 
