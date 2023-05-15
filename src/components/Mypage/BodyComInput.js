@@ -71,7 +71,7 @@ function BodyComInput({ inbodyListLength }) {
                 bodyfatmass,
                 imgpath,
             });
-            console.log(response.data); // 전송 결과 확인
+
         } catch (error) {
             console.error(error);
         } finally {
@@ -97,7 +97,6 @@ function BodyComInput({ inbodyListLength }) {
             const formData = new FormData();
             formData.append("memberseq", memberseq);
             formData.append("uploadFile", uploadFile);
-            console.log(formData);
 
             setIsUploading(true); // 파일 업로드 중 상태로 설정
 
@@ -110,7 +109,6 @@ function BodyComInput({ inbodyListLength }) {
                     }
                 );
                 if (!isCancelled) {
-                    console.log(response.data);
                     setWeight(response.data.weight);
                     setBodyfatmass(response.data.bodyfatmass);
                     setMusclemass(response.data.musclemass);

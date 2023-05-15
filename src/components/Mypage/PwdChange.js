@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import "./PwdChange.css";
+import {Form} from "semantic-ui-react";
 
 function PwdChange({token}) {
     const [memberseq, setMemberseq] = useState('');
@@ -48,29 +49,29 @@ function PwdChange({token}) {
     return (
         <div className='pwdchange-container'>
             <div className='pwdchange-title'>비밀번호 변경</div>
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <input type="hidden" name="memberseq" value={memberseq}/>
                 <div className="pwdchange-subtitle">새 비밀번호</div>
                 <div className="pwdchange-text1">영문,숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</div>
-                <input className='pwdchange-input'
+                <input
                     type="password"
                     id="pwd"
                     value={pwd}
                     onChange={(event) => setPwd(event.target.value)}
                 />
                 <div>
-                    <div className="pwdchange-subtitle">새 비밀번호</div>
-                    <input className='pwdchange-input'
+                    <div className="mypage-pwdchange-02">새 비밀번호</div>
+                    <input
                         type="password"
                         id="confirmPwd"
                         value={confirmPwd}
                         onChange={(event) => setConfirmPwd(event.target.value)}
                     />
                 </div>
-                {message && <div>{message}</div>}
+                {message && <div className='mypage-pwdchange-01'>{message}</div>}
                 <br></br>
                 <button className='pwdchange-form-content-btn' type="submit">비밀번호 변경</button>
-            </form>
+            </Form>
         </div>
     );
 }

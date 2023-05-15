@@ -99,14 +99,14 @@ function MyLikeBbs({token, profile}) {
                                                     <img
                                                         src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
                                                         alt=""
-                                                        width={100}
-                                                        height={100}
+                                                        width={120}
+                                                        height={120}
                                                     />
                                                 ) : (
                                                     <div
                                                         style={{
-                                                            width: 100,
-                                                            height: 100,
+                                                            width: 120,
+                                                            height: 120,
                                                             backgroundColor: "rgb(237,237,237)",
                                                         }}
                                                     ></div>

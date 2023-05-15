@@ -46,15 +46,12 @@ function MyPage() {
 
     return (
         <div>
-
-
             <Menu pointing secondary style={{margin: '0px', width: '100%'}}>
                 <Menu.Item
                     name='프로필'
                     active={activeItem === '프로필'}
                     onClick={handleItemClick}
                 />
-
                 <Menu.Item
                     name='체성분'
                     active={activeItem === '체성분'}

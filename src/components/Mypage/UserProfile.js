@@ -4,7 +4,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import BodyGraph from "./BodyGraph";
 
-function Profile({token}) {
+function UsersProfile({token}) {
 
     const [inbodyList, setInbodyList] = useState([]);
     const [inbodyCount, setInbodyCount] = useState('');
@@ -53,18 +53,15 @@ function Profile({token}) {
     return (
         <div className='profile-container-01'>
             <div className=' bbs-image-container-02'>
-                <b className='mypage-profile-02'>나의 체성분<b className='count-blue'>{inbodyCount}</b></b></div>
+                <b className='mypage-profile-02'>체성분<b className='count-blue'>{inbodyCount}</b></b></div>
             <div>
                 {inbodyList.length === 0 ? (
                     <div className='profile-container-box'>
-                        <Link to="/mypage/profilecard/bodycom">
                             <div className='profile-container-box-01'>
-                                <b className='profile-container-box-02'>+ </b>나의 첫번째 체성분을 등록해보세요
+                                등록된 체성분이 없어요
                             </div>
-                        </Link>
                     </div>
                 ) : (
-                    <Link className='mypage-profile-05' to="/mypage/profilecard/bodycom">
                         <div className="profile-container-box-03">
                             <div>
                                 {inbodyList.slice(-1).map((inbody) => (
@@ -99,9 +96,7 @@ function Profile({token}) {
                                     </li>
                                 ))}
                             </div>
-
                         </div>
-                    </Link>
                 )}
             </div>
             <div className='mypage-profile-09'>* 등록된 체성분의 처음과 마지막을 비교합니다.
@@ -109,18 +104,16 @@ function Profile({token}) {
             <div className='bbs-image-container'>
                 <div className='bbs-image-container-02'>
                     <div>
-                        <b  className='mypage-profile-02'>나의 사진<b className='count-blue'> {bbsImageCount}</b></b></div>
+                        <b  className='mypage-profile-02'>사진<b className='count-blue'> {bbsImageCount}</b></b></div>
                     <div className='bbs-image-blue-text'><Link className="mypage-profile-03" to="/">전체보기</Link></div>
                 </div>
 
                 <div className='bbs-image-container-01'>
                     {bbsImageList.length === 0 ? (
                         <div className='profile-container-box-04'>
-                            <Link to="/write">
                                 <div className='profile-container-box-01'>
-                                    <b className='profile-container-box-02'>+ </b>나의 첫번째 사진을 등록해보세요
+                                   등록된 사진이 없어요
                                 </div>
-                            </Link>
                         </div>
                     ) : (
                         <div className='mypage-bbs-image'>
@@ -158,4 +151,4 @@ function Profile({token}) {
     );
 }
 
-export default Profile;
+export default UsersProfile;

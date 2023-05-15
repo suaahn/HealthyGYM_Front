@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import "./MyCommunity.css";
 
-function MyAllBbs({token, profile}) {
+function UserAllBbs({token, profile}) {
     let params = useParams();
 
     const [bbsImageList, setBbsImageList] = useState([]);
@@ -138,4 +138,4 @@ function MyAllBbs({token, profile}) {
     );
 }
 
-export default MyAllBbs;
+export default UserAllBbs;

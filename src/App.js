@@ -32,6 +32,7 @@ import HealthEditor from "./components/health/HealthEditor";
 import HealthList from "./components/health/HealthList";
 import HealthViews from "./components/health/HealthViews";
 import BbsUpdate from "./components/bbs/BbsUpdate";
+import UserPage from "./components/Mypage/UserPage";
 
 function App() {
   
@@ -58,6 +59,7 @@ function App() {
                   <Route path="/community/BodyGallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
+                  <Route path="/userpage/:memberseq/*" element={<UserPage />}></Route>
 
                   <Route path="/write" element={<ToastEditor />}></Route>
 
