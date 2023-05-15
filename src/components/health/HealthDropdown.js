@@ -37,10 +37,11 @@ export default function HealthDropdown(props) {
     };
     // 게시글 신고
     const handleReportClick = async () => {
-        await axios.post('http://localhost:3000/updatebbs', null, { params:{"bbsseq":props.bbsseq, "memberseq":memberseq} })
+        await axios.post(`http://localhost:3000/reportbbs?bbsseq=${props.bbsseq}`, null)
         .then((res) => {
-            if(res.data) {
-
+            if(res.data === "OK") {
+                alert("글이 신고되었습니다.");
+                navigate(-1)
             }
         })
         .catch((error) => {
