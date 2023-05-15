@@ -16,7 +16,7 @@ import PwdUpdate from "./components/auth/PwdUpdate";
 
 import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
-import Message from "./components/Message/Message";
+import MeallistUpdate from "./components/Meal/MeallistUpdate";
 
 import TopicBestList from "./components/TopicBest/TopicBestList"
 import SearchList from "./components/TopicBest/SearchList";
@@ -34,10 +34,24 @@ import HealthViews from "./components/health/HealthViews";
 import BbsUpdate from "./components/bbs/BbsUpdate";
 import UserPage from "./components/Mypage/UserPage";
 
+import { Icon, Popup } from 'semantic-ui-react';
+
 function App() {
+
+  const handleUpperClick = () => {
+    window.scrollTo(0, 0);
+  };
   
   return (
       <>
+
+        <div className="upper-button-container" onClick={handleUpperClick}>
+          <Popup trigger={<Icon size='large' circular name='arrow up' />} wide='very'>
+            <div >
+              맨 위로 이동하기
+            </div>
+          </Popup>
+        </div>
 
         <BrowserRouter>
           <Header style={{ height : "70px"}} />
@@ -71,6 +85,7 @@ function App() {
                   <Route path="/password" element={<PwdEmail />}></Route>
                   <Route path="/password/update" element={<PwdUpdate />}></Route>
 
+                  <Route path="/mate/meal/update/:bbsseq" exact element={<MeallistUpdate />}></Route>
                   <Route path="/mate/meal/write" element={<Meallist />}></Route>
                   <Route path="/mate/meal" exact element={<MealViews />}></Route>
 

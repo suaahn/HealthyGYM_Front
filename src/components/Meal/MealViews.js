@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-import { Icon, Popup, Card, Input, Dropdown } from 'semantic-ui-react'
+import { Icon, Popup, Card, Input, Dropdown, Loader, Divider } from 'semantic-ui-react'
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import clockicon from "../../asset/icon_clock.png";
@@ -12,8 +12,11 @@ import likefilledicon from "../../asset/icon_like_filled.png";
 import comment from "../../asset/icon_comment.png";
 import MealDropDown from "./MealDropdown";
 import MealComment from "./MealComment";
+import MateNav from "../health/MateNav";
 
 import "./MealViews.css";
+
+
 
 
 
@@ -26,15 +29,18 @@ import Modal from "@mui/material/Modal";
 */
 
 function MealViews() {
+  
   let history = useNavigate();
 
-  const [memberseq, setMemberseq] = useState(1);  // 로그인 아이디로 세팅해야함!!!
+  const [memberseq, setMemberseq] = useState(0);  // 로그인 아이디로 세팅해야함!!!
 
   const [currentPage, setCurrentPage] = useState(0);
   const [posts, setPosts] = useState([]);
   // const [view, setView] = useState(false); 
 
   const [loading, setLoading] = useState(false);
+
+  
 
   const options = [
     { key: 'all', text: '전체보기', value: 'all' },
@@ -64,14 +70,28 @@ function MealViews() {
   styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
   document.head.appendChild(styleLink);
 
+  // login 되어 있는지 검사하고 member_seq 얻기
+  useEffect(() => {
+    
+
+    const s = parseInt(localStorage.getItem("memberseq"), 10);
+    if(s !== null){
+        setMemberseq(s);
+    } else {
+        alert('로그인 후 글 작성이 가능합니다.');
+        history('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
 
   useEffect(() => {
     const loadPosts = async () => {
 
       setLoading(true); // 호출 시작을 나타내는 상태 값 설정
-      console.log('Search:', search);
-      console.log('Select:', select);
+      // console.log('Search:', search);
+      // console.log('Select:', select);
       const res = await axios.get("http://localhost:3000/posts", {
         params: { page: currentPage, limit: 5, memberseq:memberseq, search:search, select:select },
         
@@ -87,6 +107,7 @@ function MealViews() {
   }, [currentPage]);
 
   const handleScroll = () => {
+    // console.log("handleScroll");
     if(loading === false){
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
@@ -126,6 +147,7 @@ function MealViews() {
 
 
   useEffect(() => {
+    // console.log("useEffect");
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,7 +157,7 @@ function MealViews() {
   // 백엔드 구현 끝. 렌더링해주는 작업 필요.
   const likeHandler = async (bbsseq) => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:3000/likemealpost",
         null,
         { params: { bbsseq: bbsseq, memberseq: memberseq } }
@@ -148,7 +170,7 @@ function MealViews() {
           if (prevPost.bbsdto.bbsseq === bbsseq) {
             const islike = !prevPost.islike;
             const likecount = prevPost.bbsdto.likecount + (islike ? 1 : -1);
-            return { ...prevPost, islike, bbsdto: { ...prevPost.bbsdto, likecount } };
+            return { ...prevPost, key: bbsseq, islike, bbsdto: { ...prevPost.bbsdto, likecount } };
           }
           return prevPost;
         });
@@ -163,9 +185,9 @@ function MealViews() {
     // console.log("클릭");
   };
 
-  const handleUpperClick = () => {
-    window.scrollTo(0, 0);
-  };
+  // const handleUpperClick = () => {
+  //   window.scrollTo(0, 0);
+  // };
 
   // const handleShowAllClick = () => {
   //   setListstate(1);
@@ -179,12 +201,22 @@ function MealViews() {
   //   setPosts([]); // 게시물 초기화
   // };
 
-  console.log(posts);
+  // console.log(posts);
 
   
 
   return (
+    
     <div>
+      <MateNav />
+      <br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <Input
       action={
         <Dropdown
@@ -203,11 +235,12 @@ function MealViews() {
       onChange={(event, data) => setSearch(data.value)} // 검색어 입력 시 상태 업데이트
       onKeyDown={(event) => {
         if (event.key === 'Enter') {
+          event.preventDefault(); // 기본행동 막기
           handleSearch(); // 엔터 키를 누르면 검색 수행
         }
       }}
     />
-    <br/><br/><br/>
+    <br/><br/>
   
 
         <div className="write-button-container" onClick={handleWriteClick}>
@@ -218,41 +251,55 @@ function MealViews() {
           </Popup>
         </div>
           
-          <div className="upper-button-container" onClick={handleUpperClick}>
+        {/* <div className="upper-button-container" onClick={handleUpperClick}>
           <Popup trigger={<Icon size='large' circular name='arrow up' />} wide='very'>
             <div >
               맨 위로 이동하기
             </div>
           </Popup>
-        </div>
+        </div> */}
   
-
+       
+        { (loading === true) && (
+        <Loader active />
+        )}
 
        {posts.map((post, index) => (
-        <div key={`${post.id}-${index}`} className="post">
+        <div className="post-container">
+        <div  key={index}  className="post">
           <div>
-          <h2>{post.bbsdto.title}</h2>
+          <h1>{post.bbsdto.title}</h1>
           
-          {/* <img src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${selectedMessage.profile}?alt=media`} /> */}
-          <p>{post.bbsdto.nickname}</p>
+          <a href={`http://localhost:3000/images/profile/${post.bbsdto.memberseq}`} style={{color: "black", textDecoration: "none"}} onMouseEnter={(e) => e.target.style.color = "rgb(30, 160, 224)"} onMouseLeave={(e) => e.target.style.color = "black"}>
+            <img src={`http://localhost:3000/images/profile/${post.profile}`} style={{ width: 20, height: 20 }} />
+            &nbsp;&nbsp;<b style={{fontSize:"18px"}}>{post.bbsdto.nickname}</b>
+          </a>
 
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ whiteSpace: "nowrap" }}>
             <img alt="clock" src={clockicon} width="15" />
+            &nbsp;
             {post.bbsdto.wdate}
           </span>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-          {/* 로그인 유저 닉네임과 동일한 경우에만 수정 삭제 가능하도록. 확인검사해야함.*/}
-          <MealDropDown bbsdto={post.bbsdto}/>
+          {/* 로그인 유저 닉네임과 동일한 경우에만 수정 삭제 */}
+          { post.bbsdto.memberseq === memberseq && (
+            <MealDropDown style={{ display: "flex", justifyContent: "flex-end" }} bbsdto={post.bbsdto} />
+          )}
+            
+          
+
           {/* 신고 기능도 있으면 좋겠네요. */}
+          </div>
+
+
+          </div><Divider />
 
 
 
-          </div><hr/>
-
-
-
+          <br/>
           <Viewer initialValue={post.bbsdto.content || ''} />
 
           <br/><br/>
@@ -263,28 +310,28 @@ function MealViews() {
 
 
 
-
+            // 음식 추가 카드리스트
             <div>
-              <h4>Food List</h4>
-              <Card.Group>
+              
+              <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
                 {post.fooddto.map((food, index) => (
-                  <Card key={`${food.bbsseq}-${index}`} style={{ marginBottom: '1em' }}>
-                    <Card.Content>
+                  <Card  key={index} style={{ marginBottom: '3px', width: '350px' }}>
+                    <Card.Content style={{ fontSize: "12px" }}>
                       <Card.Header>{food.desckor}</Card.Header>
                       <Card.Meta>
                         <div>
+                          <b>{food.animalplant ? food.animalplant : "N/A"}</b>
+                          <br/>
                           <strong>1회 제공량:</strong> {food.servingwt}g
-                        </div>
-                        <div>
+                          &nbsp;&nbsp;&nbsp;
                           <strong>열량:</strong> {food.nutrcont1}kcal
                         </div>
+                        
                         <div>
                           <strong>탄수화물:</strong> {food.nutrcont2}g
-                        </div>
-                        <div>
+                          &nbsp;&nbsp;&nbsp;
                           <strong>단백질:</strong> {food.nutrcont3}g
-                        </div>
-                        <div>
+                          &nbsp;&nbsp;&nbsp;
                           <strong>지방:</strong> {food.nutrcont4}g
                         </div>
                       </Card.Meta>
@@ -320,20 +367,31 @@ function MealViews() {
           </span>
 
           <br /><br />
-          <hr />
+          <Divider />
 
-          
+          <div>
           {/* 댓글 삭제만 구현하려고해요.. */}
           <MealComment bbsdto={post.bbsdto} commentcnt={post.commentcnt}/>
-          
+          </div>
 
 
           
-          <br /><br /><br />
-
           
 
+          
+          
         </div>
+        
+
+        {(posts.length === 0) && (
+        <div>
+          <h2 style={{textAlign: 'center'}}>게시물이 존재하지 않습니다.</h2>
+        </div>
+       )}
+        </div>
+
+        
+        
       ))}
 
 

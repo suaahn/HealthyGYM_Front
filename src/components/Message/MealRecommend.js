@@ -45,7 +45,7 @@ function MealRecommend(props) {
   }, []);
 
   useEffect(() => {
-      settotalpagenum(totalCount/10);
+    settotalpagenum(Math.ceil(totalCount / 10));
     console.log(totalpagenum);
   }, [totalCount]);
 
@@ -53,7 +53,7 @@ function MealRecommend(props) {
     const { activePage } = data;
 
     SearchMealList(activePage);
-  }
+  };
 
   
 
@@ -95,7 +95,7 @@ function MealRecommend(props) {
         </Table.Row>
       </Table.Footer>
     );
-  }
+  };
   
 
 
@@ -116,7 +116,7 @@ function MealRecommend(props) {
       setShowForm2(false);
       setShowForm3(prevState => !prevState);
     }
-  }
+  };
 
   const addToSelectedItems = (item, state) => {
     settotalCalories(totalCalories + parseFloat(item.nutrcont1));
@@ -137,7 +137,7 @@ function MealRecommend(props) {
     }
     
     settotalCalories(totalCalories + parseFloat(item.nutrcont1));
-  }
+  };
 
 
     // Enter 입력시
@@ -387,7 +387,7 @@ function MealRecommend(props) {
                     {/* 아침 식단 추가의 끝 */}
 
                     <hr></hr>
-
+  
 
                     {/* 점심 */}
                     <h2>점심 &nbsp;&nbsp; 
@@ -395,6 +395,7 @@ function MealRecommend(props) {
                         
                     <Button icon onClick={() => handleSearchClick('점심')}>
                        <Icon name={showForm2 ? 'minus' : 'plus'} />
+
                     </Button>
                     </h2>
 
@@ -541,6 +542,7 @@ function MealRecommend(props) {
     
                           </Card.Content>
                         </Card>
+                        
                       
                         </Grid.Column>
     

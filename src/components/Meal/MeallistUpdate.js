@@ -1,64 +1,93 @@
-// 식단공유 작성
-
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import { Button, Icon, Form, Table, Card, Grid, Input, Pagination, Modal, Header } from 'semantic-ui-react'
+import { Button, Icon, Form, Table, Card, Grid, Input, Pagination, Modal, Header, Loader } from 'semantic-ui-react'
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
- 
-function Meallist() {
-  
-  
-  const [search, setSearch] = useState('');
-  const [result, setResult] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [totalCalories, settotalCalories] = useState(0);
-  const [totalCarbo, settotalCarbo] = useState(0);
-  const [totalprotein, settotalprotein] = useState(0);
-  const [totalfat, settotalfat] = useState(0);
 
-  
-
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalpagenum, settotalpagenum] = useState(0);
-
-  let history = useNavigate();
-
-  const [memberseq, setMemberseq] = useState(); 
-  const bbstag = 10;
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const [pageno, setPageno] = useState(1);
-
-  const [open, setOpen] = React.useState(false);
+import { useParams } from 'react-router-dom';
 
 
-  // 검색할때마다 totalCount 변경
-  useEffect(() => {
-    settotalpagenum(Math.ceil(totalCount / 10));
-  // console.log(totalpagenum);
-  }, [totalCount]);
+function MeallistUpdate() {
+    const { bbsseq } = useParams();
+    const parsedBbsseq = parseInt(bbsseq);
 
-  // login 되어 있는지 검사하고 member_seq 얻기
-  useEffect(() => {
+    const [search, setSearch] = useState('');
+    const [result, setResult] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [totalCalories, settotalCalories] = useState(0);
+    const [totalCarbo, settotalCarbo] = useState(0);
+    const [totalprotein, settotalprotein] = useState(0);
+    const [totalfat, settotalfat] = useState(0);
+
+    const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
+
     
 
-    const s = parseInt(localStorage.getItem("memberseq"), 10);
-    if(s !== null){
-        setMemberseq(s);
-    } else {
-        alert('로그인 후 글 작성이 가능합니다.');
-        history('/login');
-    }
-  }, []);
+    const [totalCount, setTotalCount] = useState(0);
+    const [totalpagenum, settotalpagenum] = useState(0);
 
-  // Editor DOM 선택용
+    let navigate = useNavigate();
+
+    const [memberseq, setMemberseq] = useState(); 
+    const bbstag = 10;
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    const [pageno, setPageno] = useState(1);
+
+    const [open, setOpen] = React.useState(false);
+
+
+    // 검색할때마다 totalCount 변경
+    useEffect(() => {
+        settotalpagenum(Math.ceil(totalCount / 10));
+    console.log(totalpagenum);
+    }, [totalCount]);
+
+    // login 되어 있는지 검사하고 member_seq 얻기
+    useEffect(() => {
+        const s = parseInt(localStorage.getItem("memberseq"), 10);
+        if(s !== null){
+            setMemberseq(s);
+        } else {
+            alert('로그인 후 수정이 가능합니다.');
+            navigate('/login');
+        }
+        // 세션검사 끝
+
+        // 기존 글의 초기 설정 불러오기
+
+        
+        
+        
+        axios.post('http://localhost:3000/mealupdate', {
+            bbsseq: parsedBbsseq
+            
+
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          })
+          .then(response => {
+            console.log(response);
+            console.log(response.data.bbsdto.content);
+            setContent(response.data.bbsdto.content);
+            setTitle(response.data.bbsdto.title);
+            setSelectedItems(response.data.foodlist);
+
+            setLoading(true);   // 여기서 rendering해줌
+          });
+    }, []);
+
+    
+
+   // Editor DOM 선택용
   const editorRef = useRef();  
 
   
@@ -122,7 +151,7 @@ function Meallist() {
     return axios
       .get("http://localhost:3000/FindMealList", { params: { "search": search, "pageNo": activePage } })
       .then(function(resp) {
-        // console.log(resp);
+        console.log(resp);
         // console.log(resp.data);
         // console.log(resp.data.totalCount);
         setTotalCount(resp.data.totalCount);
@@ -205,29 +234,24 @@ function Meallist() {
 
 
     // 각자 사용 시 params 변경하면 됨!!!!
-    axios.post("http://localhost:3000/writemeal1", null, 
-    {params:{  "memberseq":memberseq, "title":title, "content":content, "bbstag":bbstag}})
+    axios.post("http://localhost:3000/updatemeal1", null, 
+    {params:{  "bbsseq":parsedBbsseq, "title":title, "content":content, "bbstag":bbstag}})
           .then(res => {
-            // console.log("return data" + res.data);
-            // console.log("title : " + title);
-            // console.log("content : "+ content);
-            // console.log("bbstag : " + bbstag);
-            const bbsseq = res.data;
 
             if(selectedItems.length !== 0){
                // DB에 저장하기 위해 선택된 항목들을 JSON으로 담기.
                 const selectedItemsJson = JSON.stringify(selectedItems);
                 // console.log(selectedItemsJson);
-                axios.post('http://localhost:3000/writemeal2', selectedItemsJson, {
+                axios.post('http://localhost:3000/updatemeal2', selectedItemsJson, {
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 params:{
-                  bbsseq: bbsseq  // writemeal1의 반환값
+                  bbsseq: parsedBbsseq  
                 }
               })
               .then(response => {
-
+                console.log(response);
               })
               .catch(error => {
                 console.error(error);
@@ -235,9 +259,10 @@ function Meallist() {
             } // 2중 axios 끝
 
             // console.log(res.data);
-            if(res.data !== 1){
-                alert("성공적으로 등록되었습니다");
-                history('/mate/meal');
+            
+            if(res.data === 1){
+                alert("성공적으로 수정되었습니다");
+                navigate('/mate/meal');
             }else{
                 alert("등록되지 않았습니다");
             }
@@ -280,7 +305,7 @@ function Meallist() {
     // 이미지 업로드 핸들러
     const onUploadImage = async (blob, dropImage) => {
 
-      // console.log(blob);
+      console.log(blob);
       
       const url = await uploadImage(blob); //업로드된 이미지 서버 url
       dropImage(url, 'alt_text'); //에디터에 이미지 추가
@@ -307,11 +332,16 @@ function Meallist() {
         return randomName; 
     }
 
+
+  if(loading === false){
+      return <Loader active />
+  }
+
   // 함수 끝 구조 생성
   return (
     <div>
       <br/>
-      <h2>식단 공유 글쓰기</h2>
+      <h2>식단 공유 수정하기</h2>
       <Form>
       <input
           type="text"
@@ -323,29 +353,29 @@ function Meallist() {
       />
       </Form>
       <br/>
-
       <Editor
-          placeholder="내용을 입력해주세요."
-          initialValue={content}
-          previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
-          height="300px" // 에디터 창 높이
-          initialEditType="wysiwyg" // 초기 입력모드 설정
-          language="ko-KR"
-          toolbarItems={[           // 툴바 옵션 설정
-              ['heading', 'bold', 'italic', 'strike'],
-              ['hr', 'quote'],
-              ['ul', 'ol', 'task'],
-              ['table', 'image', 'link'],
-              ['code', 'codeblock'],
-              ['scrollSync']
-          ]}
-          useCommandShortcut={false} // 키보드 입력 컨트롤 방지
-          ref={editorRef}
-          onChange={() => setContent(editorRef.current.getInstance().getHTML())}
-          hooks={{
-              addImageBlobHook: onUploadImage
-          }}
+        placeholder="내용을 입력해주세요."
+        value={content}
+        initialValue={content}
+        previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
+        height="300px" // 에디터 창 높이
+        initialEditType="wysiwyg" // 초기 입력모드 설정
+        language="ko-KR"
+        toolbarItems={[           // 툴바 옵션 설정      ['heading', 'bold', 'italic', 'strike'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task'],
+            ['table', 'image', 'link'],
+            ['code', 'codeblock'],
+            ['scrollSync']
+        ]}
+        useCommandShortcut={false} // 키보드 입력 컨트롤 방지
+        ref={editorRef}
+        onChange={() => setContent(editorRef.current.getInstance().getHTML())}
+        hooks={{
+            addImageBlobHook: onUploadImage
+        }}
       />
+
 
       <br/> 
       
@@ -417,7 +447,7 @@ function Meallist() {
                   </div>
                 ))}
               </div>
-              
+              <br/>
               {result.length > 0 && (
                 <div style={{ textAlign: 'center' }}>
                 <Pagination
@@ -431,21 +461,17 @@ function Meallist() {
                   onPageChange={handlePageChange}
                   
                 />
-                
                 </div>
               )}
 
               
             </Card.Content>
-            
           </Card>
-          
           )}
         </Grid.Column>
         </Grid>
-        
             
-        
+      
 
       
       {/* <Button onClick={handleRegisterButton} style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
@@ -499,4 +525,4 @@ function Meallist() {
   )
 }
 
-export default Meallist;
+export default MeallistUpdate;

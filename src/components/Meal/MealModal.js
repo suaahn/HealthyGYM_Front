@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 function Modal(props) {
   const [bbsseq, setBbsseq] = useState(props.bbsseq);
 
