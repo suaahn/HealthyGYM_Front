@@ -404,20 +404,17 @@ function Message(){
 
       return (
         <div className="message-container">
-          <div>
-            <Label className="message-label" onClick={talkingList}>
+          <Label basic className="message-label">
+            <span onClick={talkingList}>
               <Icon name='mail' />
               {notreadmessage > 0 ? (
                 <span> <b>{notreadmessage}</b> </span>
               ) : (
                 <span style={{ color: 'gray' }}>0</span>
               )}
-            </Label>
-      
-            &nbsp;&nbsp;
-      
+            </span>
             <Icon name='sync alternate' onClick={handleRefresh} /> 
-          </div>
+          </Label>
       
           <Modal
             onClose={() => setFirstOpen(false)}
