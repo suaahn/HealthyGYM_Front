@@ -16,9 +16,7 @@ export default function MateNav() {
             setActiveItem('GYM 찾기');
           } else if(path === "/mate/meal") {
             setActiveItem("식단메이트");
-          } else if(path === "/mate/sharing") {
-            setActiveItem("식단공유");
-          }
+          } 
     }, [window.location.pathname]);
 
     const handleItemClick = (e, { name }) => {
@@ -28,9 +26,7 @@ export default function MateNav() {
             navigate('/mate/gym');
         } else if(name === '식단메이트') {
             navigate('/mate/meal');
-        } else if(name === '식단공유') {
-            navigate('/mate/sharing');
-        }
+        } 
     };
 
     return (
@@ -51,11 +47,7 @@ export default function MateNav() {
                     active={activeItem === '식단메이트'}
                     onClick={handleItemClick}
                 />
-                <Menu.Item
-                    name='식단공유'
-                    active={activeItem === '식단공유'}
-                    onClick={handleItemClick}
-                />
+                
             </Menu>
         </>
     );

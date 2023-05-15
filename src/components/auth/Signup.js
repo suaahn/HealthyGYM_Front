@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Icon, Form, Checkbox, Button, Dropdown } from 'semantic-ui-react';
+import { Icon, Form, Checkbox, Button, Dropdown, Divider } from 'semantic-ui-react';
 import AuthEmail from "./AuthEmail";
 import { Label, Description, SocialButton, Msg } from './authStyle';
 import { ReactComponent as Kakao } from '../../asset/logo_kakao.svg';
@@ -239,10 +239,10 @@ export default function Signup() {
     };
 
     return (
-        <div style={{ width:'400px', margin:'0 210px' }}>
+        <div style={{ width:'400px', margin:'40px auto' }}>
             <h2>회원가입</h2>
 
-            <section style={{ textAlign:'center'}}>
+            <section style={{ textAlign:'center', margin:'40px 0'}}>
                 <Description>SNS계정으로 간편 로그인/회원가입</Description>
                 <div>
                     <SocialButton onClick={loginGoogle}>
@@ -253,10 +253,10 @@ export default function Signup() {
                     </SocialButton>
                 </div>
             </section>
-            <hr/>
+            <Divider/><br/>
             <div>
                 <Form>
-                    <Label>이메일</Label>
+                    <h3>이메일</h3>
                     <Form.Group widths='equal' style={{ margin: "0em -0.5em"}}>
                         <Form.Field>
                             <input value={email} onChange={onChangeEmail} disabled={checkAuth} placeholder="이메일" />
@@ -284,35 +284,38 @@ export default function Signup() {
                 
                     
                     
-                    <Button type="button" onClick={authEmailBtn} disabled={!checkEmail || checkAuth} style={{ width:"100%"}}>
-                        {checkAuth ? <span>이메일 인증 완료</span> : isLoading ? <Icon loading name='spinner' /> : <span>이메일 인증하기</span>}
+                    <Button type="button" onClick={authEmailBtn} disabled={!checkEmail || checkAuth} 
+                        style={{ width:"100%", marginBottom:'20px'}}>
+                        {checkAuth ? 
+                        <span>이메일 인증 완료</span> : isLoading ? 
+                        <Icon loading name='spinner' /> : <span>이메일 인증하기</span>}
                     </Button>
                     {(mailKey !== '') && !checkAuth 
                         && <AuthEmail mailKey={mailKey} setCheckAuth={setCheckAuth} authEmailBtn={authEmailBtn} />}
                     
-
+                    <br/>
                     <Form.Field>
-                        <Label>비밀번호</Label>
+                        <h3>비밀번호</h3>
                         <Description>영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.</Description>
                         <input type="password" value={pwd} onChange={onChangePwd} placeholder="비밀번호" />
                         <Msg>{pwdMsg}</Msg>
                     </Form.Field>
-
+                    <br/>
                     <Form.Field>
-                        <Label>비밀번호 확인</Label>
+                        <h3>비밀번호 확인</h3>
                         <input type="password" value={confirmPwd} onChange={onChangeConfirmPwd} placeholder="비밀번호 확인" />
                         <Msg>{confirmPwdMsg}</Msg>
                     </Form.Field>
-
+                    <br/>
                     <Form.Field>
-                        <Label>닉네임</Label>
+                        <h3>닉네임</h3>
                         <Description>다른 유저와 겹치지 않도록 입력해주세요. (2~15자)</Description>
                         <input value={nickname} onChange={onChangeNickname} placeholder="별명 (2~15자)" />
                         <Msg>{nicknameMsg}</Msg>
                     </Form.Field>
-                
+                    <br/>
                     <div>
-                        <Label>약관동의</Label>
+                        <h3>약관동의</h3>
                         <div>
                             <Form.Field
                                 control={Checkbox}
@@ -333,15 +336,17 @@ export default function Signup() {
                     </div>
 
                 
-                    <Button type="button" onClick={signupBtn} style={{ width:"100%"}}
+                    <Button size="large" onClick={signupBtn} style={{ width:"100%", margin:'20px 0'}}
                         disabled={!(isAllchecked && checkEmail && checkPwd && checkNickname && checkAuth)}>
                         회원가입하기
                     </Button>
                 
                 </Form>
                 
-                <span>이미 아이디가 있으신가요?</span>
+                <p style={{ textAlign:'center'}}>
+                <span>이미 아이디가 있으신가요? </span>
                 <Link to="/login">로그인</Link>
+                </p>
             </div>
         </div>
     );

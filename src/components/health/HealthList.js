@@ -2,12 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 
 import useInfiniteScroll from "../../utils/useInfiniteScroll";
 import axios from "../../utils/CustomAxios";
-import ADDRESS_LIST from '../../asset/region.json';
-import styled from "styled-components";
-import { Form, Icon, Button } from 'semantic-ui-react';
 import SelectBodyPart from "./SelectBodyPart";
 import HealthBox from "./HealthBox";
 import MateNav from "./MateNav";
+import ADDRESS_LIST from '../../asset/region.json';
+
+import { Form, Button, Loader, Icon } from 'semantic-ui-react';
+import { BbsWrapper } from "../bbs/bbsStyle";
+import { Description } from "../auth/authStyle";
+import { BodyWrap } from "./healthStyle";
 
 export default function HealthList() {
     const [bbsList, setBbsList] = useState([]);
@@ -25,16 +28,16 @@ export default function HealthList() {
 
     const getBbs = useCallback(async () => {
         setIsLoading(true);
-        const paramObj = { "page":0, "addressFirst":addressFirst, "addressSecond":addressSecond,
+        const paramObj = { "page":page, "addressFirst":addressFirst, "addressSecond":addressSecond,
                             "mdate":mdate, "mtime":mtime, "bodypart":bodyPart.join(",")  };
-        console.log(paramObj);
+        //console.log(paramObj);
         await axios.get('http://localhost:3000/mate/getlist', { params:paramObj })
             .then(function(res) {
-                console.log(res.data);
+                //console.log(res.data);
 
                 setPage(page + 1);
                 setBbsList(prev => [...prev, ...res.data]);
-                setHasMore(res.data.length === 3);
+                setHasMore(res.data.length === 8);
             })
             .catch(function(err){
                 console.log(err);    
@@ -55,6 +58,7 @@ export default function HealthList() {
         }
     });
 
+    // 시간대 옵션 생성
     const timeLoop = () => {
         const arr = [];
         for(let i = 0; i < 24; i++) {
@@ -67,8 +71,8 @@ export default function HealthList() {
 
     return (
         <div>
-            <MateNav />
-            <Form size="mini">
+            <MateNav /><br/>
+            <Form size="tiny">
                 <Form.Group widths='equal'>
                     <Form.Field>
                         <label>시도명</label>
@@ -103,11 +107,17 @@ export default function HealthList() {
                     </Form.Field>
                 </Form.Group>
             </Form>
-            <span>운동 부위</span>
-            <div style={{ display:"inline-block", width:"400px" }}>
-                <SelectBodyPart bodyPart={bodyPart} setBodyPart={setBodyPart} />
-            </div>
-            <Button size="mini" onClick={() => {setfiltering(!filtering)}}>필터 검색</Button>
+            
+            <span style={{ fontSize:'0.95em', fontWeight:'700', marginRight:'12px' }}>운동 부위</span>
+                <BodyWrap>
+                    <SelectBodyPart bodyPart={bodyPart} setBodyPart={setBodyPart} />
+                </BodyWrap>
+            
+            <Button size="small" onClick={() => {setfiltering(!filtering)}}
+                style={{ width:'266px', height:'39px', margin:'0 0 0 12px', fontSize: '14px', letterSpacing: '5px'}}>
+                <Icon name="filter" /> 필터 검색
+            </Button>
+            <br/><br/>
 
             <BbsWrapper>
                 {bbsList.map((bbs, i) => (
@@ -115,20 +125,10 @@ export default function HealthList() {
                 ))}
             </BbsWrapper>
 
-            {isLoading && hasMore && <p>Loading</p>}
-            {hasMore ? <div ref={target}>target</div> : <div>게시글의 끝입니다.</div>}
+            {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
+            {hasMore ? 
+                <div ref={target}>(〜￣▽￣)〜</div> : 
+                <Description><br/>마지막 게시글입니다.</Description>}
         </div>
     );
 }
-
-const BbsWrapper = styled.div`
-    &>div {
-        display: inline-block; 
-        box-sizing: border-box;
-        width: 50%;
-        border-bottom: 1px solid lightgray;
-    }
-    &>div:nth-child(2n+1) {
-        border-right: 1px solid lightgray;
-    }
-`;

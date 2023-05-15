@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from '../utils/CustomAxios';
 
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button, Dropdown } from 'semantic-ui-react';
+import { Form, Button, Dropdown, Icon } from 'semantic-ui-react';
 import youtubeicon from '../asset/icon_youtube.png';
 
 export default function ToastEditor() {
@@ -31,8 +31,9 @@ export default function ToastEditor() {
     }, []);
 
     const handleBbstag = (value) => {
+        if(value == 2) navigate("/community/gallery/write");
         if(value == 5) navigate("/mate/health/write");
-        if(value == 10) navigate("/meallist");
+        if(value == 10) navigate("/mate/meal/write");
         setBbstag(value);
     } ;
 
@@ -42,8 +43,8 @@ export default function ToastEditor() {
     // 등록 버튼 핸들러
     const handleRegisterButton = () => {
         let markdown = editorRef.current.getInstance().getMarkdown();
-
-        if(bbstag === 0) {
+        console.log(bbstag);
+        if(bbstag === 0 || bbstag === undefined) {
             alert('토픽을 선택해주세요');
             return;
         } else if(title.trim() === ''){
@@ -105,7 +106,7 @@ export default function ToastEditor() {
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
     };
 
-    const firebaseApp = initializeApp(firebaseConfig); 
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const storage = getStorage(firebaseApp); 
     
     // 이미지 업로드 핸들러
@@ -210,11 +211,12 @@ export default function ToastEditor() {
                             {key:2, value:2, text:'바디갤러리'},
                             {key:3, value:3, text:'정보게시판'},
                             {key:4, value:4, text:'자유게시판'},
+                            {key:11, value:11, text:'식단추천'},
                             {key:100, value:100, text:'헬친', disabled:true, icon:'child'},
-                            {key:5, value:5, text:'헬스메이트'},
-                            {key:10, value:10, text:'식단메이트'},
-                            {key:11, value:11, text:'식단추천'}]}
+                            {key:5, value:5, text:'운동메이트'},
+                            {key:10, value:10, text:'식단메이트'}]}
                 /><br/>
+                
                 <input
                     type="text"
                     id="title"
@@ -224,19 +226,18 @@ export default function ToastEditor() {
                     onChange={(e)=>setTitle(e.target.value)}
                 />
             </Form><br/>
-
+            <div>Tip! 이미지 편집 기능을 이용해 보세요! <Link to="/image/edit" target="_blank" style={{ color:'#5271FF'}}><Icon className="camera" />이미지 에디터</Link><br/><br/></div>
             <Editor
                 placeholder="내용을 입력해주세요."
                 initialValue={content}
                 previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
-                height="300px" // 에디터 창 높이
+                height="500px" // 에디터 창 높이
                 initialEditType="wysiwyg" // 초기 입력모드 설정
                 language="ko-KR"
                 toolbarItems={[           // 툴바 옵션 설정
-                    ['heading', 'bold', 'italic', 'strike'],
-                    ['hr', 'quote'],
+                    ['heading', 'bold', 'italic', 'strike', 'quote'],
                     ['ul', 'ol', 'task'],
-                    ['table', 'image', 'link'],
+                    ['image', 'link'],
                     ['code', 'codeblock'],
                     [{
                         name: 'Youtube',
@@ -269,10 +270,10 @@ export default function ToastEditor() {
                     }}
                 }}
             /><br/>
-            <Button onClick={handleRegisterButton} 
+            <Button onClick={handleRegisterButton} size='large'
                 style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
-                등 록
-            </Button>
+                &nbsp;등 록&nbsp;
+            </Button><br/>
 
         </div>
     );

@@ -45,10 +45,7 @@
 
 
 .message-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
+  display: inline-block;
 }
 
 .message-sender {
@@ -150,4 +147,15 @@
     margin-right: 10px;
   }
  
-   
+  .message-label {
+    height: 37.9px;
+    margin: 0 10px !important;
+    padding: 1em !important;
+  }
+  .message-label>span {
+    cursor: pointer;
+  }
+  .message-label>i {
+    margin: 0 0 0 10px !important; 
+    cursor: pointer;
+  } 

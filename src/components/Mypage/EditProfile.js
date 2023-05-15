@@ -1,8 +1,10 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import "./EditProfile.css";
+import {Form, Input} from "semantic-ui-react";
+import AuthenticationService from "../auth/AuthenticationService";
 
-function EditProfile() {
+function EditProfile({token}) {
 
     const [memberseq, setMemberseq] = useState('');
     const [name, setName] = useState('');
@@ -18,9 +20,6 @@ function EditProfile() {
     const [image, setImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef();
-
-    const authToken = localStorage.getItem("memberseq");
-    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         axios
@@ -57,10 +56,6 @@ function EditProfile() {
         setName(event.target.value);
     }
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    }
-
     const handleNicknameChange = (event) => {
         setNickname(event.target.value);
     }
@@ -83,10 +78,17 @@ function EditProfile() {
 
     const handleImageChange = (event) => {
         const selectedFile = event.target.files[0];
-        setImage(selectedFile);
-        setPreviewUrl(URL.createObjectURL(selectedFile));
 
-    }
+        if (selectedFile) {
+            setImage(selectedFile);
+            setPreviewUrl(URL.createObjectURL(selectedFile));
+        } else {
+            // 이미지 첨부가 취소된 경우 처리할 코드 작성
+            setPreviewUrl(null);
+            setImage(null);
+        }
+    };
+
 
     const handleClick = () => {
         fileInputRef.current.click();
@@ -96,6 +98,25 @@ function EditProfile() {
         setPreviewUrl(null);
         setImage(null);
     }
+
+    const handleDelete = (memberseq) => {
+        const requestBody = {
+            memberseq: memberseq,
+        };
+
+        // 확인 메시지 표시
+        if (window.confirm("회원탈퇴를 진행하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+            axios.post("http://localhost:3000/memberdelete", requestBody, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((response) => {
+                AuthenticationService.logout();
+                alert("탈퇴 되었습니다.");
+                window.location.reload();
+            });
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -116,8 +137,8 @@ function EditProfile() {
             axios
                 .post("http://localhost:3000/members/profileupdate", formData)
                 .then((response) => {
-                    console.log(response.data);
                     alert("회원정보가 성공적으로 변경되었습니다.");
+                    localStorage.setItem('profile', response.data);
                     window.location.reload();
                 });
         } else {
@@ -139,7 +160,6 @@ function EditProfile() {
                     "Content-Type": "application/json",
                 },
             }).then((response) => {
-                console.log(response.data);
                 alert("회원정보가 성공적으로 변경되었습니다.");
                 window.location.reload();
             });
@@ -150,118 +170,176 @@ function EditProfile() {
         <div className='edit-container'>
             <div className='edit-head'>
                 <div className='edit-title'>회원정보수정</div>
-                <div className='edit-delete-btn'>탈퇴하기</div>
+                <div className='edit-delete-btn' onClick={() => handleDelete(memberseq)}>탈퇴하기</div>
             </div>
-            <div className='edit-form-container'>
-                <div className='edit-label'>
-                    <div className='edit-label-title1'>
-                        <div>이메일</div>
-                        <div className='small-text'>*필수항목</div>
-                    </div>
-                    <div className='edit-label-title1'>
-                        <div>별명</div>
-                        <div className='small-text'>*필수항목</div>
-                    </div>
-                    <div className='edit-label-title2'>
-                        성별
-                    </div>
-                    <div className='edit-label-title2'>
-                        이름
-                    </div>
-                    <div className='edit-label-title2'>
-                        나이
-                    </div>
-                    <div className='edit-label-title2'>
-                        전화번호
-                    </div>
-                    <div className='edit-label-title2'>
-                        Mbti
-                    </div>
-                    <div className='edit-label-title2'>
-                        프로필 이미지
-                    </div>
-                </div>
-                <div className='edit-form'>
-                    <form onSubmit={handleSubmit}>
-                        <input type="hidden" name="memberseq" value={memberseq}/>
-                        <input className='edit-input-email' type="hidden" value={email} onChange={handleEmailChange}/>
-                        <div className='edit-form-content'>
-                            <div className='email-domain-container'>
-                            <input className='edit-input-email' type="email" value={emailname} readOnly /><div className='email-domain'>@</div>
-                            <input className='edit-input-email' type="email" value={emaildomain} readOnly />
+            <Form onSubmit={handleSubmit}>
+                <input type="hidden" name="memberseq" value={memberseq}/>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            이메일
                         </div>
+                        <div className='mypage-editprofile-05'>
+                            *필수항목
                         </div>
-                        <div className='edit-form-content'>
-                            <input className='edit-input' type="text" value={nickname} onChange={handleNicknameChange}/>
-                        </div>
-                        <div className='edit-form-content'>
-                            <div className='edit-gender'>
-                                <div>
-                                    <input type="radio" name="gender" value="male" checked={gender === "male"}
-                                           onChange={handleGenderChange}/></div>
-                                <label>
-                                    <div className='edit-gender-text'>남성</div>
-                                </label>
-                                <div>
-                                    <input type="radio" name="gender" value="female" checked={gender === "female"}
-                                           onChange={handleGenderChange}/></div>
-                                <label>
-                                    <div className='edit-gender-text'>여성</div>
-                                </label>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <div className='mypage-editprofile-07'>
+                                <Input type="text" value={emailname} readOnly/>
+                                <div className='mypage-editprofile-08'>@</div>
+                                <Input type="text" value={emaildomain} readOnly/>
                             </div>
                         </div>
-                        <div className='edit-form-content'>
-                            <input className='edit-input' type="text" value={name} onChange={handleNameChange}/>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            별명
                         </div>
-                        <div className='edit-form-content'>
-                            <input className='edit-input' type="text" value={age} onChange={handleAgeChange}/>
+                        <div className='mypage-editprofile-05'>
+                            *필수항목
                         </div>
-                        <div className='edit-form-content'>
-                            <input className='edit-input' type="text" value={phone} onChange={handlePhoneChange}/>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <Input type="text" value={nickname} onChange={handleNicknameChange}/>
                         </div>
-                        <div className='edit-form-content'>
-                            <select className='edit-input-mbti' value={mbti} onChange={handleMbtiChange}>
-                                <option value={null}>선택</option>
-                                <option value="ISTJ">ISTJ</option>
-                                <option value="ISFJ">ISFJ</option>
-                                <option value="INFJ">INFJ</option>
-                                <option value="INTJ">INTJ</option>
-                                <option value="ISTP">ISTP</option>
-                                <option value="ISFP">ISFP</option>
-                                <option value="INFP">INFP</option>
-                                <option value="INTP">INTP</option>
-                                <option value="ESTP">ESTP</option>
-                                <option value="ESFP">ESFP</option>
-                                <option value="ENFP">ENFP</option>
-                                <option value="ENTP">ENTP</option>
-                                <option value="ESTJ">ESTJ</option>
-                                <option value="ESFJ">ESFJ</option>
-                                <option value="ENFJ">ENFJ</option>
-                                <option value="ENTJ">ENTJ</option>
-                            </select>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-12'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-13'>
+                            성별
                         </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <div className='mypage-editprofile-09'>
+                                <div className='mypage-editprofile-11'>
+                                    <Input type="Radio" name="gender" value="male" checked={gender === "male"}
+                                           onChange={handleGenderChange}/></div>
 
-                        <div className='edit-form-content'>
+                                <div className='mypage-editprofile-10'>남성</div>
+
+                                <div className='mypage-editprofile-11'>
+                                    <Input type="Radio" name="gender" value="female" checked={gender === "female"}
+                                           onChange={handleGenderChange}/></div>
+
+                                <div className='mypage-editprofile-10'>여성</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            이름
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <input type="text" value={name} onChange={handleNameChange}/>
+                        </div>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            나이
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <input type="text" value={age} onChange={handleAgeChange}/>
+                        </div>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            전화번호
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <input type="text" value={phone} onChange={handlePhoneChange}/>
+                        </div>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            mbti
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <div className='mypage-editprofile-14'>
+                                <select value={mbti} onChange={handleMbtiChange}>
+                                    <option value={null}>선택</option>
+                                    <option value="ISTJ">ISTJ</option>
+                                    <option value="ISFJ">ISFJ</option>
+                                    <option value="INFJ">INFJ</option>
+                                    <option value="INTJ">INTJ</option>
+                                    <option value="ISTP">ISTP</option>
+                                    <option value="ISFP">ISFP</option>
+                                    <option value="INFP">INFP</option>
+                                    <option value="INTP">INTP</option>
+                                    <option value="ESTP">ESTP</option>
+                                    <option value="ESFP">ESFP</option>
+                                    <option value="ENFP">ENFP</option>
+                                    <option value="ENTP">ENTP</option>
+                                    <option value="ESTJ">ESTJ</option>
+                                    <option value="ESFJ">ESFJ</option>
+                                    <option value="ENFJ">ENFJ</option>
+                                    <option value="ENTJ">ENTJ</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='mypage-editprofile-17'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                            프로필 이미지
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-06'>
+                        <div className='mypage-editprofile-15'>
                             {previewUrl ? (
-                                <div>
-                                    <img src={previewUrl}
+                                <div style={{position: "relative"}}>
+                                    <img className='mypage-editprofile-19'
+                                         src={previewUrl}
                                          alt="프로필 이미지"
                                          onClick={handleClick}
-                                         style={{cursor: "pointer"}}
-                                         width="130"
-                                         height="130"
+                                         style={{cursor: 'pointer'}}
+                                         width="200"
+                                         height="200"
                                     />
-                                    <button onClick={deleteClick}>삭제</button>
+                                    <button className='mypage-editprofile-20'
+                                            onClick={deleteClick}
+                                            style={{
+                                                position: "absolute",
+                                                top: 10,
+                                                right: 10
+                                            }}
+                                    >
+                                        삭제
+                                    </button>
                                 </div>
+
                             ) : (
                                 <div>
                                     <img
                                         src={`http://localhost:3000/images/profile/${profile}`}
                                         alt="프로필 이미지"
                                         onClick={handleClick}
-                                        style={{cursor: "pointer"}}
-                                        width="130"
-                                        height="130"
+                                        style={{ borderRadius: '50%', overflow:'hidden', objectFit: 'cover',cursor: 'pointer'}}
+                                        width="200"
+                                        height="200"
                                     />
                                 </div>
                             )}
@@ -272,12 +350,20 @@ function EditProfile() {
                                 style={{display: "none"}}
                             />
                         </div>
-                        <div className='edit-form-content'>
-                        <button className='edit-form-content-btn' type="submit">회원 정보 수정</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <div className='mypage-editprofile-01'>
+                    <div className='mypage-editprofile-02'>
+                        <div className='mypage-editprofile-04'>
+                        </div>
+                    </div>
+                    <div className='mypage-editprofile-03'>
+                        <div className='mypage-editprofile-06'>
+                            <button className='mypage-editprofile-18' type="submit">회원 정보 수정</button>
+                        </div>
+                    </div>
+                </div>
+            </Form>
         </div>
     );
 }

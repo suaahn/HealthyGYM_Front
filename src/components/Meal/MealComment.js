@@ -1,39 +1,100 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Comment, Form } from 'semantic-ui-react';
+import { Button, Comment, Form, Dropdown } from 'semantic-ui-react';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function MealComment(props) {
-  const [memberseq, setMemberseq] = useState(1);
+  const [memberseq, setMemberseq] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
   const [commentcontent, setCommentcontent] = useState('');
   const [comments, setComments] = useState([]);
-  const [commentcnt, setCommentcnt] = useState([]);
+  const [commentcnt, setCommentcnt] = useState();
+
+  const [loginnickname, setLoginnickname] = useState('');
+
+  // console.log(props);
+
+  
+  
 
 
   
   const [showReplies, setShowReplies] = useState(false);
 
+  const options = [
+    { key: 'm', text: '댓글 관리', value: 'm' },
+    { key: 'delete', text: '삭제', value: 'delete' },
+  ]
 
+  const handleCommentOptionChange = (comment, e, { value }) => {
+    if (value === 'delete') {
+      deleteComment(comment.bbscommentdto.commentseq);
+    } 
+  }
   
 
+  const deleteComment = async (commentseq) => {
+    // 삭제 처리 로직 구현
+    
+    // console.log(commentseq);
+
+    const res = await axios.post("http://localhost:3000/deletemealcomment", {commentseq: commentseq});
 
 
+    // console.log(res.data);
+    if(res.data === "OK"){
+      alert("삭제 되었습니다.");
+      window.location.reload();
+    }
+  }
+
+  let history = useNavigate();
+
+  const getnickname = async (s) => {
+    const res = await axios.get("http://localhost:3000/getnickname" , {
+      params: { memberseq: s},
+    });
+    
+    setLoginnickname(res.data);
+  }
 
   useEffect(() => {
-    const loadComments = async () => {
-      const res = await axios.get("http://localhost:3000/getmealcomments", {
-        params: { bbsseq: props.bbsdto.bbsseq, memberseq: memberseq },
-      });
-      const newComments = res.data;
-      const newCommentcnt = props.commentcnt;
-      setComments(newComments);
-      setCommentcnt(newCommentcnt);
-    };
-    loadComments();
+
+      
+
+      // login 되어 있는지 검사하고 member_seq 얻기
+      const s = parseInt(localStorage.getItem("memberseq"), 10);
+      if(s !== null){
+          setMemberseq(s);
+          // console.log(memberseq);
+          getnickname(s);
+      } 
+      
+    
+      
+
+      const loadComments = async () => {
+        const res = await axios.get("http://localhost:3000/getmealcomments", {
+          params: { bbsseq: props.bbsdto.bbsseq },
+        });
+        // console.log(res.data);
+        const newComments = res.data;
+        const newCommentcnt = props.commentcnt;
+        setComments(newComments);
+        setCommentcnt(newCommentcnt);
+      };
+      loadComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.bbsdto.bbsseq]);
 
   const handleCommentClick = () => {
+    const s = parseInt(localStorage.getItem("memberseq"), 10);
+    if(s === null){
+      alert('로그인 후 댓글 작성이 가능합니다.');
+      history('/login');
+    } 
+
     setShowForm(true);
     setShowForm2(false);
   };
@@ -75,8 +136,9 @@ function MealComment(props) {
               ref: 0
             },
             memberdto: {
-              nickname: "Your Nickname" // 작성자의 닉네임 (필요한 정보로 변경해야함!!!!!!!!!)
-            }
+              nickname: `${loginnickname}`, // 작성자의 닉네임 
+              profile: `${localStorage.getItem("profile")}` // 프로필 이미지 URL
+            }            
           };
           setComments(prevComments => [...prevComments, newComment]); // 새로운 댓글 추가
           setCommentcnt(prevCount => prevCount + 1); // 댓글 개수 상태 업데이트
@@ -111,8 +173,9 @@ function MealComment(props) {
               ref: parentCommentId
             },
             memberdto: {
-              nickname: "Your Nickname" // 작성자의 닉네임 (필요한 정보로 변경해야함!!!!!!!!!)
-            }
+              nickname: `${loginnickname}`, // 작성자의 닉네임
+              profile: `${localStorage.getItem("profile")}` // 프로필 이미지 URL
+            }            
           };
           setComments(prevComments => [...prevComments, newComment]); // 새로운 댓글 추가
           setCommentcnt(prevCount => prevCount + 1); // 댓글 개수 상태 업데이트
@@ -126,18 +189,29 @@ function MealComment(props) {
 
   return (
     
-    <Comment.Group>
+    <Comment.Group >
       <h4>댓글 &nbsp;{commentcnt}개</h4>
       {comments.map((comment, index) => (
         
         comment.bbscommentdto.ref === 0 && (
-          <Comment key={index}>     
-            <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+          <Comment key={index} style={{width:"840px"}}>     
+            <Comment.Avatar as='a' src={`http://localhost:3000/images/profile/${comment.memberdto.profile}`} />
             <Comment.Content>
-              <Comment.Author as='a'>{comment.memberdto.nickname}</Comment.Author>
+            <div style={{ width:"800px"}}>
+              <Comment.Author as='a' href={`http://localhost:3000/userpage/${comment.memberdto.memberseq}`}>{comment.memberdto.nickname} </Comment.Author>
+              
               <Comment.Metadata>
+              <div style={{ display: "flex", width: "700px", justifyContent: "space-between" }}>
                 <div>{comment.bbscommentdto.regdate}</div>
+                {memberseq === comment.bbscommentdto.memberseq && (
+                  <Dropdown  floating inline options={options} defaultValue='m' onChange={(e, data) => handleCommentOptionChange(comment, e, data)}/>
+                )}
+                
+              </div>
+
+                
               </Comment.Metadata>
+              </div>
               <Comment.Text>
                 <p>{comment.bbscommentdto.cmtcontent}</p>
               </Comment.Text>
@@ -153,9 +227,9 @@ function MealComment(props) {
                   {/* 대댓글 개수 */}
                   {comments.filter((subComment) => subComment.bbscommentdto.ref === comment.bbscommentdto.commentseq).length >0 && (
                     <div>
-                        <button onClick={() => toggleShowReplies(comment.bbscommentdto.commentseq)}>
+                        <Button size='mini' onClick={() => toggleShowReplies(comment.bbscommentdto.commentseq)}>
                           {showReplies[comment.bbscommentdto.commentseq] ? "답글 숨기기" : `답글 ${comments.filter((subComment) => subComment.bbscommentdto.ref === comment.bbscommentdto.commentseq).length} 개 모두보기`}
-                        </button>
+                        </Button>
 
 
                         {showReplies[comment.bbscommentdto.commentseq] && (
@@ -163,12 +237,21 @@ function MealComment(props) {
                           {comments.map((subComment, subIndex) => (
                             subComment.bbscommentdto.ref === comment.bbscommentdto.commentseq && (
                               <Comment key={subIndex}>
-                                <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg' />
+                                <Comment.Avatar as='a' src={`http://localhost:3000/images/profile/${subComment.memberdto.profile}`} />
                                 <Comment.Content>
-                                  <Comment.Author as='a'>{subComment.memberdto.nickname}</Comment.Author>
+                                  <div style={{ width:"800px"}}>
+                                  <Comment.Author as='a' href={`http://localhost:3000/userpage/${subComment.memberdto.memberseq}/profile`}>{subComment.memberdto.nickname}</Comment.Author>
+
+                                  
                                   <Comment.Metadata>
-                                    <div>{subComment.bbscommentdto.regdate}</div>
+                                  <div style={{ display: "flex", width: "650px", justifyContent: "space-between" }}>
+                                      <div>{subComment.bbscommentdto.regdate}</div>
+                                      {memberseq === subComment.bbscommentdto.memberseq && (
+                                        <Dropdown  floating inline options={options} defaultValue='m' onChange={(e, data) => handleCommentOptionChange(subComment, e, data)}/>
+                                      )}
+                                  </div>
                                   </Comment.Metadata>
+                                  </div>
                                   <Comment.Text>
                                     <p>{subComment.bbscommentdto.cmtcontent}</p>
                                   </Comment.Text>
@@ -186,7 +269,7 @@ function MealComment(props) {
 
               {showForm2 === comment.bbscommentdto.commentseq && (
                 <Form reply onSubmit={() => handleReplySubmit(comment.bbscommentdto.commentseq)}>
-                  <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} />
+                  <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} style={{width:"750px"}}/>
                   <Button content='Add Reply' labelPosition='left' icon='edit' primary />
                   <Button content='Cancel' labelPosition='right' icon='close' onClick={() => setShowForm2(false)} />
                 </Form>
@@ -205,13 +288,14 @@ function MealComment(props) {
       )}  
   
       {showForm && ( // 댓글을 작성할 수 있는 폼을 보여줌
-        <Form reply onSubmit={handleCommentSubmit}>
-          <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} />
+        <Form reply onSubmit={handleCommentSubmit} >
+          <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} style={{width: '840px'}}/>
           <Button content='Add Comment' labelPosition='left' icon='edit' primary />
           <Button content='Cancel' labelPosition='right' icon='close' onClick={handleCancelClick} />
         </Form>
       )}
     </Comment.Group>
+    
   );
 }
 

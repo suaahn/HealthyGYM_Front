@@ -1,12 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Rubik+Mono+One&family=Yaldevi:wght@600&display=swap');
+
 body {
   height: 100%;
   padding: 0px;
   margin: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'IBM Plex Sans KR', sans-serif !important;
+  letter-spacing: 1px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, h4, h5, h6, .ui {
+  font-family: 'IBM Plex Sans KR', sans-serif !important;
+  letter-spacing: 1px!important;
 }
 #root {
   height: 100%;
@@ -15,6 +20,51 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* clearfix */
+.clearfix {*zoom:1;}
+.clearfix:before, .clearfix:after {display:block; content: ''; line-height: 0;}
+.clearfix:after {clear: both;}
+
 .topic-select {
   z-index: 30!important;
+}
+.comment-box {
+  border-bottom:1px solid rgba(34, 36, 38, 0.1); 
+  padding: 14px 10px;
+}
+.reply-box {
+  border-bottom:1px solid rgba(34, 36, 38, 0.1); 
+  padding: 14px 10px;
+  background-color: #eff7ff8e;
+}
+.dropdown div.active.selected.item {
+  border: none !important;
+}
+.slick-dots {
+  bottom: 10px !important;
+}
+/* 헤더 버튼 */
+#write-button {
+  color: white; 
+  background-color: #5271FF;
+  border-right: 2px solid white;
+}
+#write-button:hover {
+  background-color: #80AAFF;
+}
+#image-button {
+  color: #5271FF;
+  background-color: #E6EAFF;
+}
+#image-button:hover {
+  background-color: #C2D6FF;
+}
+#login-button {
+  color: white; 
+  background-color: #5271FF;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#login-button:hover {
+  background-color: #80AAFF;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { Input, Button } from 'semantic-ui-react';
+import { Msg } from "./authStyle";
 
 export default function AuthEmail(props) {
     const [code, setCode] = useState('');
@@ -51,12 +52,15 @@ export default function AuthEmail(props) {
     return (
         <div>
             <p>이메일로 전송된 인증코드를 입력해주세요.</p>
-            <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="인증코드 입력" />
-            <span>{countdown}</span>
-            <Button onClick={checkCode}>확인</Button>
-            <div>{authMsg}</div>
-            <div>
-                이메일을 받지 못하셨나요?
+            <div style={{ height:'38px'}}>
+            <Input value={code} onChange={(e) => setCode(e.target.value)} 
+                placeholder="인증코드 입력" style={{ width:'320px', marginRight:'10px' }} />
+            <Button onClick={checkCode} style={{ margin:'0'}}>확인</Button>
+            <span style={{ fontWeight:'600', position:'relative', fontWeight:'600', left:'270px', bottom:'29px' }}>{countdown}</span>
+            </div>
+            <Msg>{authMsg}</Msg>
+            <div style={{ marginBottom:'40px'}}>
+                이메일을 받지 못하셨나요?&nbsp;
                 <a href="#none" onClick={resend}>이메일 재전송하기</a>
             </div>
         </div>

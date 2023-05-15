@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Form, Table, Card, Grid, Input, Pagination, Modal, Header } from 'semantic-ui-react'
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
@@ -18,40 +18,97 @@ function Meallist() {
   const [result, setResult] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCalories, settotalCalories] = useState(0);
+  const [totalCarbo, settotalCarbo] = useState(0);
+  const [totalprotein, settotalprotein] = useState(0);
+  const [totalfat, settotalfat] = useState(0);
+
+  
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalpagenum, settotalpagenum] = useState(0);
 
   let history = useNavigate();
 
-  const [memberseq, setMemberseq] = useState(1); 
+  const [memberseq, setMemberseq] = useState(); 
   const bbstag = 10;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const [pageno, setPageno] = useState(1);
 
-    // login 되어 있는지 검사하고 member_seq 얻기
-    useEffect(() => {
-      
+  const [open, setOpen] = React.useState(false);
 
-      const s = parseInt(localStorage.getItem("memberseq"), 10);
-      if(s !== null){
-          setMemberseq(s);
-      } else {
-          alert('로그인 후 글 작성이 가능합니다.');
-          history('/login');
-      }
-    }, []);
+
+  // 검색할때마다 totalCount 변경
+  useEffect(() => {
+    settotalpagenum(Math.ceil(totalCount / 10));
+  // console.log(totalpagenum);
+  }, [totalCount]);
+
+  // login 되어 있는지 검사하고 member_seq 얻기
+  useEffect(() => {
+    
+
+    const s = parseInt(localStorage.getItem("memberseq"), 10);
+    if(s !== null){
+        setMemberseq(s);
+    } else {
+        alert('로그인 후 글 작성이 가능합니다.');
+        history('/login');
+    }
+  }, []);
 
   // Editor DOM 선택용
   const editorRef = useRef();  
+
+  
+  // icon 클릭시
+  const searchIconClick = () => {
+    setResult([]);
+    SearchMealList(1);
+  };
+
+  // Enter 입력시
+  const handleKeyDown = (e, state) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.stopPropagation();
+      // console.log("handle");
+      // console.log("step1");
+      setResult([]);
+      // console.log("step2");
+      SearchMealList(1);
+      // console.log("step3");
+      return;
+    }
+  };
+
+  const removeSelectedItem = (indexToRemove, state) => {
+    const selectItem2 = selectedItems[indexToRemove];
+  
+    settotalCalories(totalCalories - parseFloat(selectItem2.nutrcont1));
+    settotalCarbo(totalCarbo - parseFloat(selectItem2.nutrcont2));
+    settotalprotein(totalprotein - parseFloat(selectItem2.nutrcont3));
+    settotalfat(totalfat - parseFloat(selectItem2.nutrcont4));
+  
+    
+    setSelectedItems(selectedItems.filter((_, index) => index !== indexToRemove));
+    
+  };
+
+  const handlePageChange = (event, data) => {
+    const { activePage } = data;
+
+    SearchMealList(activePage);
+  };
+
 
   const handleSearch = (searchTerm) => {
     setSearch(searchTerm);
     setPageno(1);
   }
 
+  
   // 공공데이터 포털 API / JSON 형태로 받기
   const SearchMealList = (activePage) => {
     if (search === undefined || search.trim() === "") {
@@ -59,11 +116,11 @@ function Meallist() {
       return Promise.reject("검색어를 입력해주세요"); // Promise.reject를 사용하여 실패한 Promise 객체 반환
     }
   
-    console.log(search);
-    console.log(pageno);
+    // console.log(search);
+    // console.log(pageno);
   
     return axios
-      .get("http://localhost:3000/FindMealList", { params: { "search": search, "pageNo": pageno } })
+      .get("http://localhost:3000/FindMealList", { params: { "search": search, "pageNo": activePage } })
       .then(function(resp) {
         // console.log(resp);
         // console.log(resp.data);
@@ -72,6 +129,7 @@ function Meallist() {
         
         const totalcnt = resp.data.totalCount;
         // console.log(totalcnt);
+        
   
         if (totalcnt === 0) {
           alert("검색결과가 존재하지 않습니다.");
@@ -79,6 +137,7 @@ function Meallist() {
           setSearch("");
           return; // Promise.resolve를 사용하여 성공한 Promise 객체 반환
         } else {
+
           setResult(resp.data.foodDtoList);
           return Promise.resolve(); // Promise.resolve를 사용하여 성공한 Promise 객체 반환
         }
@@ -87,7 +146,7 @@ function Meallist() {
         alert("오류가 발생했습니다. 잠시후 다시 실행해주세요.");
         return Promise.reject(err); // Promise.reject를 사용하여 실패한 Promise 객체 반환
       });
-  }
+    }
   
   
   
@@ -98,6 +157,7 @@ function Meallist() {
   const addToSelectedItems = (item) => {
     setSelectedItems([...selectedItems, item]);
     settotalCalories(totalCalories + parseFloat(item.nutrcont1));
+    
   }
 
   // 등록 버튼 핸들러
@@ -157,7 +217,7 @@ function Meallist() {
             if(selectedItems.length !== 0){
                // DB에 저장하기 위해 선택된 항목들을 JSON으로 담기.
                 const selectedItemsJson = JSON.stringify(selectedItems);
-                console.log(selectedItemsJson);
+                // console.log(selectedItemsJson);
                 axios.post('http://localhost:3000/writemeal2', selectedItemsJson, {
                 headers: {
                   'Content-Type': 'application/json',
@@ -174,10 +234,10 @@ function Meallist() {
               });
             } // 2중 axios 끝
 
-            console.log(res.data);
+            // console.log(res.data);
             if(res.data !== 1){
                 alert("성공적으로 등록되었습니다");
-                history('/mealviews');
+                history('/mate/meal');
             }else{
                 alert("등록되지 않았습니다");
             }
@@ -204,6 +264,7 @@ function Meallist() {
   // const firebaseApp = initializeApp(firebaseConfig); 
   // const storage = getStorage(firebaseApp); 
 
+  // 파이어베이스 중복 초기화 방지
   let storage;
 
   if(getApps().length === 0){
@@ -219,24 +280,24 @@ function Meallist() {
     // 이미지 업로드 핸들러
     const onUploadImage = async (blob, dropImage) => {
 
-      console.log(blob);
+      // console.log(blob);
       
       const url = await uploadImage(blob); //업로드된 이미지 서버 url
       dropImage(url, 'alt_text'); //에디터에 이미지 추가
-  };
+    };
 
-  const uploadImage = async(blob) => { 
-    try{ //firebase Storage Create Reference 파일 경로 / 파일 명 . 확장자 
-        const storageRef = ref(storage, `files/${generateName() + '.' + blob.type.substring(6, 10)}`); 
-          //firebase upload 
-          const snapshot = await uploadBytes(storageRef, blob); 
-          // 무슨 기능인지 잘 모르겠습니다. 추후 이미지 기능 모두 구현되면 그때 잡을게요
-          
-          return await getDownloadURL(storageRef); 
-      } catch (err){ 
-        console.log(err) 
-          return false; } 
-  }
+    const uploadImage = async(blob) => { 
+      try{ //firebase Storage Create Reference 파일 경로 / 파일 명 . 확장자 
+          const storageRef = ref(storage, `files/${generateName() + '.' + blob.type.substring(6, 10)}`); 
+            //firebase upload 
+            const snapshot = await uploadBytes(storageRef, blob); 
+            
+            
+            return await getDownloadURL(storageRef); 
+        } catch (err){ 
+          console.log(err) 
+            return false; } 
+    }
 
     // 랜덤 파일명 생성 
     const generateName = () => { 
@@ -249,6 +310,9 @@ function Meallist() {
   // 함수 끝 구조 생성
   return (
     <div>
+      <br/>
+      <h2>식단 공유 글쓰기</h2>
+      <Form>
       <input
           type="text"
           id="title"
@@ -257,6 +321,8 @@ function Meallist() {
           value={title}
           onChange={(e)=>setTitle(e.target.value)}
       />
+      </Form>
+      <br/>
 
       <Editor
           placeholder="내용을 입력해주세요."
@@ -282,36 +348,143 @@ function Meallist() {
       />
 
       <br/> 
-      <button onClick={handleRegisterButton}>등록</button>
+      
 
+          
+        <Grid columns={2}>
+        <Grid.Column width={16}>
+        
+        
+        <Card fluid>
+          <Card.Content style={{ maxHeight: "505px", minHeight: "505px", overflowY: "scroll"}}>
+            <Card.Header>&nbsp;식단 검색/추가</Card.Header>
+            <br/>
+            <Card.Description>
+              <Input
+                action={{ icon: 'search', onClick: () => searchIconClick() }}
+                placeholder="Search..."
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, 1)}
 
-      <br/> <br/><br/> <br/>
-      <input type="text" value={search} size="30" onChange={(e) => handleSearch(e.target.value)} placeholder="검색 리스트" />
+                
+              />
+            </Card.Description>
+            
+            <Table color="green" selectable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell textAlign='center'>상품명</Table.HeaderCell>
+                  <Table.HeaderCell textAlign='center'>제조사</Table.HeaderCell>
+                  <Table.HeaderCell textAlign='center'></Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body style={{ maxHeight: "360px"}}>
+                {selectedItems.map((item, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>{item.desckor}</Table.Cell>
+                    <Table.Cell>{item.animalplant.trim() === "" ? "N/A" : item.animalplant}</Table.Cell>
+                    <Table.Cell>
+                      <Button icon onClick={() => removeSelectedItem(index, 1)} size='mini' circular>
+                        <Icon color='red' name='close' />
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
 
-      <br />
-      <br />
+          </Card.Content>
+        </Card>
+        
 
-      <button type="button" onClick={() => SearchMealList()} className="btn btn-primary">검색</button>
+        </Grid.Column>
 
-      <br /><br />
+        <Grid.Column width={16}>
+          { result.length > 0 && (
+            <Card fluid>
+            <Card.Content>
+              <Card.Header>&nbsp;&nbsp;&nbsp;검색 결과</Card.Header>
+              <div className="card-wrapper d-flex flex-wrap justify-content-center">
+                {result.map((item, index) => (
+                  <div className="card m-2 card-hover" style={{ width: "200px" }} key={index} onClick={() => addToSelectedItems(item, 1)}>
+                    <div className="card-body">
+                    <h5 className="card-title">{item.desckor}<p className="card-text" style={{ fontSize: "12px", color: "grey" }}>{(item.animalplant.trim() === "") ? "N/A" : item.animalplant}</p></h5>
+                      <p className="card-text" style={{ fontSize: "12px", color: "grey" }}>{item.nutrcont1} kcal ({item.servingwt}g)</p>
+                      <p className="card-text" style={{ fontSize: "12px", color: "grey" }}>탄수화물: {item.nutrcont2}g</p>
+                      <p className="card-text" style={{ fontSize: "12px", color: "grey" }}>단백질: {item.nutrcont3}g</p>
+                      <p className="card-text" style={{ fontSize: "12px", color: "grey" }}>지방: {item.nutrcont4}g</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {result.length > 0 && (
+                <div style={{ textAlign: 'center' }}>
+                <Pagination
+                  boundaryRange={0}
+                  defaultActivePage={1}
+                  ellipsisItem={null}
+                  firstItem={null}
+                  lastItem={null}
+                  siblingRange={2}
+                  totalPages={totalpagenum}
+                  onPageChange={handlePageChange}
+                  
+                />
+                
+                </div>
+              )}
+
+              
+            </Card.Content>
+            
+          </Card>
+          
+          )}
+        </Grid.Column>
+        </Grid>
+        
+            
+        
+
+      
+      {/* <Button onClick={handleRegisterButton} style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
+          등 록
+      </Button> */}
+
+      <Modal
+      closeIcon
+      open={open}
+      trigger={<Button style={{ color:'white', backgroundColor:'#5271FF', display: 'block', margin: 'auto' }}>
+                등 록
+              </Button>}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+    >
+      <Header content='확인해주세요!' icon='check circle outline' />
+      <Modal.Content>
+        <p>총 {selectedItems.length}개의 식품을 선택하셨습니다. 글을 작성하시겠어요?</p> 
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='green' onClick={() => handleRegisterButton()}>
+          <Icon name='checkmark' /> 등록하기
+        </Button>
+        <Button color='red' onClick={() => setOpen(false)}>
+          <Icon name='remove' /> 취소
+        </Button>
+      </Modal.Actions>
+    </Modal>
+    <br/>
 
       
 
-      <div className="d-flex flex-wrap">
-        {result.map((item, index) => (
-          <div className="card m-2" style={{ width: "200px" }} key={index} onClick={() => addToSelectedItems(item)}>
-            <div className="card-body">
-              <h5 className="card-title">{item.desckor}</h5>
-              <p className="card-text">{item.nutrcont1} kcal</p>
-            </div>
-          </div>
-        ))}
-      </div>
 
       
-      <p></p>
 
-      <div>
+      
+      
+
+      {/* <div>
         <p>선택한 음식들:</p>
         <ul>
           {selectedItems.map((item, index) => (
@@ -321,7 +494,7 @@ function Meallist() {
           ))}
         </ul>
         <p>총 칼로리: {totalCalories} kcal</p>
-      </div>
+      </div> */}
     </div>
   )
 }

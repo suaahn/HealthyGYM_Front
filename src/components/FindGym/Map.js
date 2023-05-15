@@ -1,3 +1,4 @@
+import { findByLabelText } from '@testing-library/react';
 import React, { useEffect } from 'react';
 // head에 작성한 Kakao API 불러오기
 const { kakao } = window;
@@ -92,31 +93,35 @@ const Map = (props) => {
         function getListItem(index, places) {
             const el = document.createElement('li');
             let itemStr = `
-                <div class="info">
-                <a href="${places.place_url}" target="_blank">
-                <h5 class="info-item place-name">${places.place_name}</h5>
+            <div>
+            <span>
+                ${index+1}
+            </span>
+            <a href="${places.place_url}" target="_blank">
+                <h5>${places.place_name}</h5>
                 ${
-                    places.road_address_name 
-                    ? `<span class="info-item road-address-name">
-                        ${places.road_address_name}
+                places.road_address_name 
+                ? `<span>
+                    ${places.road_address_name}
                     </span>
-                    <span class="info-item address-name">
-                        ${places.address_name}
+                    <span>
+                 	${places.address_name}
+               	    </span>`
+                : `<span>
+             	    ${places.address_name}
                     </span>`
-                    : `<span class="info-item address-name">
-                        ${places.address_name}
-                    </span>`
-                }
-                <span class="info-item tel">
-                    ${places.phone}
+              }
+                <span>
+                ${places.phone}
                 </span>
-                </a>
+            </a>
             </div>
             `;
             el.innerHTML = itemStr;
             el.className = 'item';
             return el;
         }
+        
         // 마커를 생성하고 지도 위에 마커를 표시하는 함수
         function addMarker(position, idx, title) {
             var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지
@@ -154,6 +159,7 @@ const Map = (props) => {
                 const el = document.createElement('a');
                 el.href = "#";
                 el.innerHTML = i.toString();
+                el.style.marginRight = "25px"; // 숫자 간격을 조정합니다.
                 if (i === pagination.current) {
                     el.className = 'on';
                 }
@@ -185,26 +191,30 @@ const Map = (props) => {
     }, [props.searchKeyword]);
 
     return (
-        <div>
-            <div id="map" 
-            style={{
-                width: '500px',
-                height: '500px',
+        <div style={{display: 'flex'}}>
+            <div style={{width: '700px'}}>
+                <div id="map" 
+                style={{
+                    width: '100%',
+                    height: '500px'
                 }}>
+                </div>
             </div>
-            <div>
-                <p>
-                <span>
+            <div style={{width: '400px'}}>
+                <h4 style={{textAlign:'center', padding: '10px', background:'#E8F5FF'}}>
+                <span style={{color:'#5271FF', fontWeight:'bolder'}}>
                     { props.searchKeyword }
                 </span>
-                검색 결과
-                </p>
-                <div>
-                <ul id="places-list"></ul>
+                &nbsp;검색 결과를 클릭하세요
+                </h4>
+                <div style={{width: '400px', height: '427px', overflowY: 'scroll'}}>
+                <ul id="places-list" 
+                style ={{listStyleType: 'none'}}></ul>
                 </div>
-                <div id="pagination"></div>
+                <div id='pagination' style={{textAlign: 'center', background:'#E8F5FF'}} />
             </div>
-        </div>
+        </div>     
     );
+    
 };
 export default Map;

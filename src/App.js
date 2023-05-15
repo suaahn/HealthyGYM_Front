@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ToastEditor from "./components/ToastEditor";
 import ToastViewer from "./components/ToastViewer";
@@ -16,32 +16,63 @@ import PwdUpdate from "./components/auth/PwdUpdate";
 
 import Meallist from "./components/Meal/Meallist";
 import MealViews from "./components/Meal/MealViews";
-import Message from "./components/Message/Message";
+import MeallistUpdate from "./components/Meal/MeallistUpdate";
+
+import TopicBestList from "./components/TopicBest/TopicBestList"
+import SearchList from "./components/TopicBest/SearchList";
+import BodyGalleryEditor from "./components/BodyGallery/BodyGalleryEditor";
+import BodyGalleryList from "./components/BodyGallery/BodyGalleryList";
+import BodyGalleryDetail from "./components/BodyGallery/BodyGalleryDetail";
+import BodyGalleryEditorUpdate from "./components/BodyGallery/BodyGalleryEditorUpdate";
 
 import LandingPage from "./components/FindGym/LandingPage";
+import ToastImage from "./components/ToastImage";
 
 import HealthEditor from "./components/health/HealthEditor";
 import HealthList from "./components/health/HealthList";
 import HealthViews from "./components/health/HealthViews";
+import BbsUpdate from "./components/bbs/BbsUpdate";
+import UserPage from "./components/Mypage/UserPage";
+
+import { Icon, Popup } from 'semantic-ui-react';
 
 function App() {
+
+  const handleUpperClick = () => {
+    window.scrollTo(0, 0);
+  };
   
   return (
       <>
+        <div className="upper-button-container" onClick={handleUpperClick}>
+          <Popup trigger={<Icon size='large' circular name='arrow up' />} wide='very'>
+            <div >
+              맨 위로 이동하기
+            </div>
+          </Popup>
+        </div>
 
         <BrowserRouter>
-        <Header style={{ height : "55px"}} />
+          <Header style={{ height : "70px"}} />
 
-          <main style={{ height : "auto", minHeight: "calc(100% - 115px)" }}>
-            <div className="py-4">
+          <main style={{ height : "auto", minHeight: "calc(100% - 167px)", position:'relative', top:'70px', padding:'20px 0' }}>
+
               <div style={{ width:"1100px", margin:"auto" }}>
                 <Routes>
                   <Route path="/" element={<Home />}></Route>
+                  <Route path="/search/:search" element={<SearchList />}></Route>
 
-                  {/* 토픽베스트, 바디갤러리 추가해야함 */}
                   <Route path="/community/:bbstag" element={<BbsList />}></Route>
+                  <Route path="/community/update/:bbsseq" element={<BbsUpdate />}></Route>
+
+                  <Route path="/community/1" element={<TopicBestList />}></Route>
+                  <Route path="/community/2" element={<BodyGalleryList />}></Route>
+                  <Route path="/community/gallery/write" element={<BodyGalleryEditor />}></Route>
+                  <Route path="/community/gallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
+                  <Route path="/community/gallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
+                  <Route path="/userpage/:memberseq/*" element={<UserPage />}></Route>
 
                   <Route path="/write" element={<ToastEditor />}></Route>
 
@@ -53,6 +84,7 @@ function App() {
                   <Route path="/password" element={<PwdEmail />}></Route>
                   <Route path="/password/update" element={<PwdUpdate />}></Route>
 
+                  <Route path="/mate/meal/update/:bbsseq" exact element={<MeallistUpdate />}></Route>
                   <Route path="/mate/meal/write" element={<Meallist />}></Route>
                   <Route path="/mate/meal" exact element={<MealViews />}></Route>
 
@@ -60,21 +92,25 @@ function App() {
 
                   <Route path="/mate/health" element={<HealthList />}></Route>
                   <Route path="/mate/health/write" element={<HealthEditor />}></Route>
+                  <Route path="/mate/health/update/:bbsseq" exact element={<HealthEditor />}></Route>
                   <Route path="/mate/health/view/:bbsseq" exact element={<HealthViews />}></Route>
                   
-                  
+                  <Route path="/image/edit" element={<ToastImage />}></Route>
                 </Routes>
 
               </div>
-            </div>
+            
           </main>
 
           
         </BrowserRouter>
 
-        <footer style={{ height:"60px", textAlign:"center", backgroundColor:"#e0e1e2" }}>
+        <footer style={{ height:"100px", textAlign:"center", backgroundColor:"#e0e1e2", position:'relative', top:'70px' }}>
           <div>
-            <small>Copyright</small>
+            <br/>
+            <small>건강해GYM</small><br/>
+            <small>1:1 문의 &nbsp; healthyzym@gmail.com</small><br/>
+            <small>이미지 출처 &nbsp; Freepik</small>
           </div>
         </footer>
 

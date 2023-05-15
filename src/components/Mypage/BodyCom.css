@@ -1,8 +1,7 @@
 
-.upload-container {
-    margin-left: 80px;
-    margin-top: 40px;
-    width: 560px;
+.mypage-bodycom-00 {
+    margin-left: 35px;
+    width: 700px;
 }
 
 .upload-box1 {
@@ -23,9 +22,6 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-}
-
-.inbody-item-text {
 }
 
 .inbody-item img {
@@ -71,25 +67,305 @@
     max-height: 100%;
 }
 
+.mypage-bodycom-01{
+    margin-bottom: 10px;
+}
 
+.mypage-bodycom-02{
+    display: flex;
+    justify-content: space-between;
+margin-bottom: 20px;
+    font-size: 16px;
+}
 
+.mypage-bodycom-03{
+    padding-left: 3px;
+    color: #007bff;
+}
 
+.mypage-bodycom-04{
+    font-weight: bold;
+    font-size: 13px;
+    color: #007bff;
+    margin-top: 5px;
+}
 
-/*.image-wrapper {*/
-/*    position: relative;*/
-/*    display: inline-block;*/
-/*}*/
+.mypage-bodycom-05{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/*.uploaded-image {*/
-/*    display: block;*/
-/*    width: 200px;*/
-/*    height: 200px;*/
-/*    object-fit: cover;*/
-/*    border-radius: 10px;*/
-/*}*/
+.mypage-bodycom-06 {
+    border: 1px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    height: 180px;
+    cursor: pointer;
+}
 
-/*.delete-button {*/
-/*    position: absolute;*/
-/*    top: 5px;*/
-/*    right: 5px;*/
-/*}*/
+.mypage-bodycom-07{
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.mypage-bodycom-08{
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.mypage-bodycom-09{
+    width: 700px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-bodycom-10{
+    border-radius: 4px;
+    border: 1px solid rgb(218, 220, 224);
+    box-shadow: rgba(63, 71, 77, 0.06) 0px 2px 4px 0px;
+    width: 160px;
+    height: 225px;
+    background-color: rgb(245,245,245);
+    cursor: pointer;
+}
+
+.mypage-bodycom-11{
+    width: 127px;
+    height: 180px;
+    background-color: rgb(245,245,245);
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.mypage-bodycom-13{
+    border-radius: 4px;
+    border: 1px solid rgb(218, 220, 224);
+    box-shadow: rgba(63, 71, 77, 0.06) 0px 2px 4px 0px;
+    display: flex;
+    width: 700px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.mypage-bodycom-13:hover {
+    background-color: rgb(245,245,245);
+    color: #666;
+}
+
+.mypage-bodycom-14{
+    font-weight: normal;
+    font-size: 26px;
+    margin-right: 5px;
+
+}
+
+.mypage-bodycom-15{
+    border: 1px solid #eee;
+    border-radius: 5px;
+    display: flex;
+    width: 700px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+}
+
+.mypage-bodycom-16 {
+    width: 127px;
+    height: 180px;
+}
+
+.mypage-bodycom-17 {
+    border: solid #eee;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    width: 127px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mypage-bodycom-18 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    height: 120px;
+    margin-left: 20px;
+}
+
+.mypage-bodycom-19{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mypage-bodycom-20 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 110px;
+    height: 40px;
+    margin-left: 20px;
+}
+
+.mypage-bodycom-21{
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.mypage-bodycom-22{
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.mypage-bodycom-23{
+    background-color: rgb(89, 112, 246);
+    color: white;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.mypage-bodycom-24{
+    color: #666;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.mypage-bodycom-25 {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.mypage-bodycom-26{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.mypage-bodycom-27{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.mypage-bodycom-28{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 700px;
+    font-size: 16px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #bbb;
+}
+
+.mypage-bodycom-29{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+
+}
+.mypage-bodycom-30{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+}
+.mypage-bodycom-31{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+}
+
+.mypage-bodycom-32{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.mypage-bodycom-33{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.mypage-bodycom-35{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 700px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    color: #666;
+    font-size: 15px;
+    border-bottom: 1px solid rgb(234, 235, 239)
+}
+
+.mypage-bodycom-36{
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-bodycom-37{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 700px;
+    font-size: 16px;
+    padding-bottom: 15px;
+}

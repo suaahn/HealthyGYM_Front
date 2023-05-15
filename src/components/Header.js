@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthenticationService from "./auth/AuthenticationService"; 
 
-import { Button, Dropdown } from "semantic-ui-react";
+import { Button, Dropdown, Icon } from "semantic-ui-react";
 import logo from "../asset/logo_gym.png";
 import styled from "styled-components";
 import Message from "./Message/Message";
+import { HomeHeader, MenuItem, MenuSpan } from "./homeStyle";
 
 export default function Header() {
     const [menuItem, setMenuItem] = useState(0);
     //const [memberseq, setMemberseq] = useState(localStorage.getItem("memberseq"));
-
+    const [search, setSearch] = useState("");
     const navigate = useNavigate();
     let profile = null;
 
@@ -32,25 +33,30 @@ export default function Header() {
     const handleMember =   () => {
       return (
         <>
-          <Message />
           <Dropdown icon={null} trigger={
             <img
                 src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`}
                 alt="프로필"
-                width="28"
-                height="28"
-            />} >
+                width="37"
+                height="37"
+                style={{ borderRadius: '50%', overflow:'hidden', objectFit: 'cover'}}
+            />} style={{ height:'37.9px', padding:'1px 0'}}>
             <Dropdown.Menu>
               <Dropdown.Item>
-                <Link to="/mypage/profilecard/profile">마이페이지</Link>
+                <Link to="/mypage/profilecard/profile" style={{ color:'black'}}>마이페이지</Link>
               </Dropdown.Item>
               <Dropdown.Item onClick={logout}>로그아웃</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          
-          <Link to="/write">
-            <Button size="mini" style={{ color:'white', backgroundColor:'#5271FF'}}>글쓰기</Button>
-          </Link>
+
+          <Message />
+
+          <Button.Group size="small">
+            <Button id="write-button" onClick={() => navigate('/write')}>글쓰기</Button>
+            <Button icon id="image-button" onClick={() => navigate('/image/edit')}>
+              <Icon className="camera" />
+            </Button>
+          </Button.Group>
         </>
         
       );
@@ -59,7 +65,9 @@ export default function Header() {
     const handleGuest = () => {
       return (
         <>
-          <Link to="/login">로그인</Link>
+          <MenuSpan>
+            <Link to="/login">로그인</Link>
+          </MenuSpan>
           <Link to="/signup">회원가입</Link>
         </>
       );
@@ -72,35 +80,33 @@ export default function Header() {
     };
 
     return (
-        <header style={{ borderBottom:'2px solid rgba(34,36,38,.15)'}}>
-          <Link to="/">
-            <img alt="logo" src={logo} style={{ verticalAlign: "middle", width:"150px", margin:"10px"}} />
-          </Link>
-          
-          <span>
-            <MenuItem className={menuItem === 1 && "active"} to="/">홈</MenuItem>
-            <MenuItem className={menuItem === 2 && "active"} to="/community/0">커뮤니티</MenuItem>
-            <MenuItem className={menuItem === 3 && "active"} to="/mate/health">헬친</MenuItem>
-          </span>
+        <HomeHeader>
+          <div>
+            <Link to="/">
+              <img alt="logo" src={logo} />
+            </Link>
+            
+            <span>
+              <MenuItem className={menuItem === 1 && "active"} to="/">홈</MenuItem>
+              <MenuItem className={menuItem === 2 && "active"} to="/community/1">커뮤니티</MenuItem>
+              <MenuItem className={menuItem === 3 && "active"} to="/mate/health">헬친</MenuItem>
+            </span>
 
-          <div style={{ float:"right", padding: "13px"}}>
-            {localStorage.getItem("memberseq") == null ? handleGuest():handleMember()}
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              navigate(`/search/${search}`);
+              }} style={{textAlign:'center'}}>
+              <div className="ui icon input" style={{ margin:'0 15px'}}>
+                <input type="text" placeholder="검색어를 입력하세요" onChange={(e) => setSearch(e.target.value)} required/>
+                <i className="search icon"></i>
+              </div>
+            </form>
+
+            <div>
+              {localStorage.getItem("memberseq") == null ? handleGuest():handleMember()}
+            </div>
           </div>
-        </header>
+        </HomeHeader>
     );
 }
 
-const MenuItem = styled(Link)`
-  color: black;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 5px;
-  margin: 10px;
-  vertical-align: middle;
-  &:hover {
-    color: #5271FF;
-  }
-  &.active {
-    color: #5271FF;
-  }
-`;

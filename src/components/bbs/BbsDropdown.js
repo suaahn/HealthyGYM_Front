@@ -37,44 +37,47 @@ export default function BbsDropdown(props) {
     };
     // 게시글 신고
     const handleReportClick = async () => {
-        await axios.post('http://localhost:3000/updatebbs', null, { params:{"bbsseq":props.bbsseq, "memberseq":memberseq} })
+        await axios.post(`http://localhost:3000/reportbbs?bbsseq=${props.bbsseq}`, null)
         .then((res) => {
-            if(res.data) {
-
+            if(res.data === "OK") {
+                alert("글이 신고되었습니다.");
+                navigate(-1)
             }
         })
         .catch((error) => {
             alert(error);
         });
     };
+    // 삭제 모달창
     const [state, dispatch] = useReducer(exampleReducer, {
         open: false,
         dimmer: undefined,
     });
     const { open, dimmer } = state;
     function exampleReducer(state, action) {
-    switch (action.type) {
-        case 'close':
-        return { open: false }
-        case 'open':
-        return { open: true, dimmer: action.dimmer }
-        default:
-        throw new Error('Unsupported action...')
-    }
-    }
+        switch (action.type) {
+            case 'close':
+                return { open: false };
+            case 'open':
+                return { open: true, dimmer: action.dimmer };
+            default:
+                throw new Error('Unsupported action');
+        }
+    };
+
     return (
         <>
-        <Dropdown text="글 관리"  style={{ float:'right'}}>
-          <Dropdown.Menu>
-            {isWriter &&
-            <>
-                <Dropdown.Item text="수정" onClick={handleUpdateClick} />
-                <Dropdown.Item text="삭제" onClick={() => dispatch({ type: 'open', size: 'mini' })} />
-            </>
-            }
-            <Dropdown.Item text="신고" onClick={handleReportClick} />
-          </Dropdown.Menu>
-        </Dropdown>
+            <Dropdown text="글 관리"  style={{ float:'right'}}>
+                <Dropdown.Menu>
+                    {isWriter &&
+                    <>
+                        <Dropdown.Item text="수정" onClick={handleUpdateClick} />
+                        <Dropdown.Item text="삭제" onClick={() => dispatch({ type: 'open', size: 'mini' })} />
+                    </>
+                    }
+                    <Dropdown.Item text="신고" onClick={handleReportClick} />
+                </Dropdown.Menu>
+            </Dropdown>
 
             <Modal
                 size="mini"

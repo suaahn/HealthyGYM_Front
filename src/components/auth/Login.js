@@ -6,9 +6,9 @@ import { Button, Checkbox, Form } from 'semantic-ui-react';
 import AuthenticationService from './AuthenticationService';
 
 import { ReactComponent as Kakao } from '../../asset/logo_kakao.svg';
-import { SocialButton, Description } from './authStyle';
+import { SocialButton, Description, LoginOtherSection } from './authStyle';
 import google from '../../asset/logo_google2.png';
-import logo from '../../asset/logo_gym.png';
+import gym from '../../asset/GYM.png';
 
 export default function Login() {
     const history = useNavigate();
@@ -49,6 +49,10 @@ export default function Login() {
         .executeJwtAuthenticationService(id, pwd)
         .then((res) => {
             //console.log(res.data);
+            if(res.data.token === "deactivated") {
+                alert("활동이 정지된 계정입니다.");
+                return;
+            }
             AuthenticationService.registerSuccessfulLoginForJwt(res.data.seq, res.data.profile, 
                                                                 res.data.token.accessToken, 
                                                                 res.data.token.refreshToken);
@@ -75,9 +79,9 @@ export default function Login() {
     }, [cookies]);
 
     return (
-        <div style={{ width:'300px', margin:'0 210px' }}>
-            <img alt="건강해ZYM" src={logo} style={{ width:"180px", margin: "40px auto", display: "block" }} />
-            <Form>
+        <div style={{ width:'350px', margin:'20px auto', overflow:'hidden' }}>
+            <img alt="건강해ZYM" src={gym} style={{ objectFit:'cover', transform:'scale(1.2)', width:"350px", height:'150px', margin: "0px auto", display: "block" }} />
+            <Form size='large'>
                 <Form.Field>
                     <input type="email" value={id} onChange={idChange} placeholder="이메일" />
                 </Form.Field>
@@ -87,17 +91,17 @@ export default function Login() {
             
                 <Form.Field
                     control={Checkbox}
-                    label='아이디 저장'
+                    label='이메일 저장'
                     checked={saveId} onChange={checkHandler}
                 />
                 
-                <Button style={{ width:'300px', marginBottom:'20px' }} type="button" onClick={loginClicked}>로그인</Button>
+                <Button size='large' id='login-button' onClick={loginClicked}>로그인</Button>
             </Form>
             
-            <section style={{ textAlign:'center'}}>
+            <LoginOtherSection>
 
                 <Link to="/password">비밀번호 재설정</Link>
-                <span style={{ marginLeft:'20px' }} ></span>
+                <span></span>
                 <Link to="/signup">회원가입</Link>
 
 
@@ -111,7 +115,7 @@ export default function Login() {
                     </SocialButton>
                 </div>
                 
-            </section>
+            </LoginOtherSection>
         </div>
     );
 }

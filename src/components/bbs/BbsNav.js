@@ -10,10 +10,8 @@ export default function BbsNav(props) {
         // URL 검사
         const path = window.location.pathname;
 
-        if(path === "/community/0") {
+        if(path === "/community/1") {
             setActiveItem("토픽 베스트");
-          } else if(path === "/community/1") {
-            setActiveItem("운동루틴");
           } else if(path === "/community/2") {
             setActiveItem("바디갤러리");
           } else if(path === "/community/3") {
@@ -27,8 +25,6 @@ export default function BbsNav(props) {
 
     const handleItemClick = (e, { name }) => {
         if(name === '토픽 베스트') {
-            navigate('/community/0');
-        } else if(name === '운동루틴') {
             navigate('/community/1');
         } else if(name === '바디갤러리') {
             navigate('/community/2');
@@ -49,11 +45,7 @@ export default function BbsNav(props) {
                     active={activeItem === '토픽 베스트'}
                     onClick={handleItemClick}
                 />
-                <Menu.Item
-                    name='운동루틴'
-                    active={activeItem === '운동루틴'}
-                    onClick={handleItemClick}
-                />
+                
                 <Menu.Item
                     name='바디갤러리'
                     active={activeItem === '바디갤러리'}
@@ -83,10 +75,9 @@ export default function BbsNav(props) {
                                     key: '추천순',
                                     text: '추천순',
                                     value: 'likecount desc, wdate'}]}
-                        defaultValue={'wdate'}
                         value={props.order}
                         onChange={(e, { value }) => props.setOrder(value)}
-                        style={{ padding:'9px 16px'}} />
+                        style={{ padding:'9px 16px', borderColor:'none'}} />
                 </Menu.Menu>
             </Menu>
         </>
