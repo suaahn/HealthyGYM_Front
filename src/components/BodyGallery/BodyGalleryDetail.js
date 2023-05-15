@@ -10,18 +10,19 @@ import 'moment/locale/ko';
 export default function BodyGalleryDetail() {
   const { bbsseq } = useParams();
   const [detail, setDetail] = useState(null);
-  const [likeCount, setLikeCount] = useState(); // add like count state
+  const [likeCount, setLikeCount] = useState(); 
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/BodyGallery/findBodyById/${bbsseq}`)
+    const memberseq = localStorage.getItem('memberseq');
+    axios.get(`http://localhost:3000/BodyGallery/findBodyById/${bbsseq}?memberseq=${memberseq}`)
       .then(res => {
         setDetail(res.data);
-        setLikeCount(res.data.likecount); // set initial like count
+        setLikeCount(res.data.likecount); 
       })
       .catch(err => console.error(err));
   }, [bbsseq]);
 
-  // update like count when the FloatingMenu updates it
+  
   const updateLikeCount = (newCount) => {
     setLikeCount(newCount);
   }
@@ -55,7 +56,7 @@ export default function BodyGalleryDetail() {
           </Card.Content>
           <Card.Content extra>
             <p>조회수: {readcount}</p>
-            <p>추천수: {likeCount}</p> 
+            <p>추천수: {likeCount}</p>
           </Card.Content>
         </Card>
       </Grid.Column>
@@ -65,3 +66,4 @@ export default function BodyGalleryDetail() {
     </Grid>
   );
 }
+

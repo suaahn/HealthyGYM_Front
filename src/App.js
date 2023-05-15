@@ -54,9 +54,9 @@ function App() {
 
                   <Route path="/community/1" element={<TopicBestList />}></Route>
                   <Route path="/community/2" element={<BodyGalleryList />}></Route>
-                  <Route path="/community/BodyGallery/write" element={<BodyGalleryEditor />}></Route>
-                  <Route path="/community/BodyGallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
-                  <Route path="/community/BodyGallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
+                  <Route path="/community/gallery/write" element={<BodyGalleryEditor />}></Route>
+                  <Route path="/community/gallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
+                  <Route path="/community/gallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
                   <Route path="/userpage/:memberseq/*" element={<UserPage />}></Route>

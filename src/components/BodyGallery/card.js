@@ -7,7 +7,7 @@ import defaultImage from '../../asset/GYM.png';
 
 export default function PostCard(props) {
   const linkMap = {
-    2: `/community/BodyGallery/view/${props.data.bbsseq}`,
+    2: `/community/gallery/view/${props.data.bbsseq}`,
     3: `/view/${props.data.bbsseq}`,
     4: `/view/${props.data.bbsseq}`,
     5: `/mate/health/view/${props.data.bbsseq}`,
@@ -17,6 +17,7 @@ export default function PostCard(props) {
   const linkTo = linkMap[props.data.bbstag] || `/view/${props.data.bbsseq}`;
 
   return (
+    
     <Card>
       <Card.Content>
         <Image
@@ -30,18 +31,22 @@ export default function PostCard(props) {
           <Moment fromNow>{props.data.wdate}</Moment>
         </Card.Meta>
       </Card.Content>
-      <Image
-        src={
-          props.data.thumnail
-            ? `https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${props.data.thumnail}?alt=media`
-            : defaultImage
-        }
-        alt="thumbnail"
-        style={{ width: '400px', height: '400px' }}
-      />
-      <Card.Content style={{ textAlign: 'center', fontWeight: 'bold' }}>
-        <Link to={linkTo}>{props.data.title}</Link>
-      </Card.Content>
+      <Link to={linkTo}>
+        <div style={{ width: '100%', paddingTop: '120%', position: 'relative' }}>
+          <Image
+            src={
+              props.data.thumnail
+                ? `https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${props.data.thumnail}?alt=media`
+                : defaultImage
+            }
+            alt="thumbnail"
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+          </div>
+        <Card.Content style={{ textAlign: 'center', fontWeight: 'bold', margin: '10px' }}>
+          {props.data.title}
+        </Card.Content>
+      </Link>
       <Card.Content extra>
         <span style={{ float: 'right' }}>
           <i className="heart outline like icon"></i>
@@ -51,7 +56,7 @@ export default function PostCard(props) {
           <i className="comment icon"></i>
           {props.data.cmtcount} comments
         </span>
-      </Card.Content>
+      </Card.Content>     
     </Card>
   );
 }
