@@ -28,14 +28,20 @@ export const HealthInfoDiv = styled.div`
     margin-bottom: 5px;
 `;
 export const ProfileDiv = styled.div`
-    display: flex;
     margin-bottom: 10px;
-    &>img {
+    & a {
+        display: flex;
+        color: black;
+    }
+    & a:hover {
+        color: black;
+    }
+    & img {
         border-radius: 50%; 
         overflow:hidden;
         object-fit: cover;
     }
-    &>span {
+    & span {
         margin: auto 10px;
         font-weight: 600;
     }

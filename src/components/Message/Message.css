@@ -148,8 +148,9 @@
   }
  
   .message-label {
-    height: 28.2px;
+    height: 37.9px;
     margin: 0 10px !important;
+    padding: 1em !important;
   }
   .message-label>span {
     cursor: pointer;

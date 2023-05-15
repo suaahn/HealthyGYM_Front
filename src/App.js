@@ -44,7 +44,6 @@ function App() {
   
   return (
       <>
-
         <div className="upper-button-container" onClick={handleUpperClick}>
           <Popup trigger={<Icon size='large' circular name='arrow up' />} wide='very'>
             <div >
@@ -68,9 +67,9 @@ function App() {
 
                   <Route path="/community/1" element={<TopicBestList />}></Route>
                   <Route path="/community/2" element={<BodyGalleryList />}></Route>
-                  <Route path="/community/BodyGallery/write" element={<BodyGalleryEditor />}></Route>
-                  <Route path="/community/BodyGallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
-                  <Route path="/community/BodyGallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
+                  <Route path="/community/gallery/write" element={<BodyGalleryEditor />}></Route>
+                  <Route path="/community/gallery/view/:bbsseq" element={<BodyGalleryDetail />}></Route>
+                  <Route path="/community/gallery/update/:bbsseq" element={<BodyGalleryEditorUpdate />}></Route>
 
                   <Route path="/mypage/*" element={<MyPage />}></Route>
                   <Route path="/userpage/:memberseq/*" element={<UserPage />}></Route>
@@ -96,7 +95,7 @@ function App() {
                   <Route path="/mate/health/update/:bbsseq" exact element={<HealthEditor />}></Route>
                   <Route path="/mate/health/view/:bbsseq" exact element={<HealthViews />}></Route>
                   
-                  <Route path="/imageEdit" element={<ToastImage />}></Route>
+                  <Route path="/image/edit" element={<ToastImage />}></Route>
                 </Routes>
 
               </div>
@@ -110,7 +109,7 @@ function App() {
           <div>
             <br/>
             <small>건강해GYM</small><br/>
-            <small>1:1 문의 &nbsp; healthygym@gmail.com</small><br/>
+            <small>1:1 문의 &nbsp; healthyzym@gmail.com</small><br/>
             <small>이미지 출처 &nbsp; Freepik</small>
           </div>
         </footer>

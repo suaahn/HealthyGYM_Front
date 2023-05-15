@@ -5,9 +5,10 @@ import 'moment/locale/ko';
 import CommentForm from './CommentForm';
 import { Button, Divider, Dropdown, Form, Icon, Modal } from 'semantic-ui-react';
 import { InfoDiv } from './bbsStyle';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../utils/CustomAxios';
 import '../../App.css'
+import { ProfileDiv } from '../health/healthStyle';
 
 export default function CommentDetail(props){
     const [display, setDisplay] = useState(false);
@@ -78,8 +79,17 @@ export default function CommentDetail(props){
 
     return (
         <div className={props.data.step === 0 ? 'comment-box':'reply-box'}>
-            {/* <img src={props.data.profile} alt='' style={{ border-radius: '100%' }} /> */}
-            <p>{props.data.nickname}</p>
+            <ProfileDiv>
+                <Link to={`/userpage/${props.data.memberseq}/profile`}>
+                <img
+                    src={`http://localhost:3000/images/profile/${props.data.profile}`}
+                    alt="프로필"
+                    width="30"
+                    height="30"
+                />
+                <span style={{ fontWeight:'400'}}>{props.data.nickname}</span>
+                </Link>
+            </ProfileDiv>
             {!updateMode ? 
             <p>{props.data.cmtcontent}</p>
             :<Form>

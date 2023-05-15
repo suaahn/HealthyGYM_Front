@@ -6,7 +6,7 @@ import { Button, Dropdown, Icon } from "semantic-ui-react";
 import logo from "../asset/logo_gym.png";
 import styled from "styled-components";
 import Message from "./Message/Message";
-import { MenuItem, MenuSpan } from "./homeStyle";
+import { HomeHeader, MenuItem, MenuSpan } from "./homeStyle";
 
 export default function Header() {
     const [menuItem, setMenuItem] = useState(0);
@@ -37,10 +37,10 @@ export default function Header() {
             <img
                 src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`}
                 alt="프로필"
-                width="28"
-                height="28"
+                width="37"
+                height="37"
                 style={{ borderRadius: '50%', overflow:'hidden', objectFit: 'cover'}}
-            />} >
+            />} style={{ height:'37.9px', padding:'1px 0'}}>
             <Dropdown.Menu>
               <Dropdown.Item>
                 <Link to="/mypage/profilecard/profile" style={{ color:'black'}}>마이페이지</Link>
@@ -51,13 +51,12 @@ export default function Header() {
 
           <Message />
 
-          <Link to="/write">
-            <Button size="mini" style={{ color:'white', backgroundColor:'#5271FF'}}>글쓰기</Button>
-          </Link>
-
-          <Link to="/imageEdit">
-            <Icon className="camera" style={{margin:'4px'}} />
-          </Link>
+          <Button.Group size="small">
+            <Button id="write-button" onClick={() => navigate('/write')}>글쓰기</Button>
+            <Button icon id="image-button" onClick={() => navigate('/image/edit')}>
+              <Icon className="camera" />
+            </Button>
+          </Button.Group>
         </>
         
       );
@@ -81,10 +80,10 @@ export default function Header() {
     };
 
     return (
-        <header style={{ height : "70px", position:'fixed',width:'100%', backgroundColor:'white', zIndex:'1000', borderBottom:'2px solid rgba(34,36,38,.15)'}}>
-          <div style={{ width:'1100px', margin:'auto', display:'flex', alignItems:'center'}}>
+        <HomeHeader>
+          <div>
             <Link to="/">
-              <img alt="logo" src={logo} style={{ verticalAlign: "middle", width:"150px", margin:"15px 15px 15px 0"}} />
+              <img alt="logo" src={logo} />
             </Link>
             
             <span>
@@ -97,17 +96,17 @@ export default function Header() {
               e.preventDefault();
               navigate(`/search/${search}`);
               }} style={{textAlign:'center'}}>
-              <div className="ui icon input">
+              <div className="ui icon input" style={{ margin:'0 15px'}}>
                 <input type="text" placeholder="검색어를 입력하세요" onChange={(e) => setSearch(e.target.value)} required/>
                 <i className="search icon"></i>
               </div>
             </form>
 
-            <div style={{ float:"right", display: 'flex', marginLeft:'auto'}}>
+            <div>
               {localStorage.getItem("memberseq") == null ? handleGuest():handleMember()}
             </div>
           </div>
-        </header>
+        </HomeHeader>
     );
 }
 

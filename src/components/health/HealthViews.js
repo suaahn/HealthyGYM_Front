@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from '../../utils/CustomAxios';
 import Moment from 'react-moment'; // npm i moment react-moment
 import 'moment/locale/ko';
@@ -10,19 +10,21 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { shareKakao } from "../../utils/shareKakao.js";
 import ADDRESS_LIST from '../../asset/region.json';
-import styled from 'styled-components';
 import { Button, Divider, Grid, Icon, Label, Loader } from 'semantic-ui-react';
 import kakao from "../../asset/btn_kakao.png";
 import { InfoSpan, URLShareButton, KakaoShareButton } from '../bbs/bbsStyle';
 import { HealthTable, ProfileDiv } from './healthStyle';
 import { Cookies } from 'react-cookie';
 import HealthDropdown from './HealthDropdown';
+import Chatting from '../Message/Chatting';
 
 export default function HealthViews() {
     const [memberseq, setMemberseq] = useState(0);
     const [detail, setDetail] = useState();
     const [loading, setLoading] = useState(false); // 데이터를 모두 읽어 들일 때까지 rendering을 조절하는 변수
     const [bodyPart, setBodyPart] = useState([false,false,false,false,false,false,false]);
+    const [secondOpen, setSecondOpen] = useState(false)
+
     const { bbsseq } = useParams();
     const currentUrl = `http://localhost:9100/mate/health/view/${bbsseq}`;
     const koBody = ["등", "가슴", "어깨", "팔", "복근", "하체", "유산소"];
@@ -78,13 +80,15 @@ export default function HealthViews() {
             <div>
                 <h3>{detail.title}</h3>
                 <ProfileDiv>
-                    <img
-                        src={`http://localhost:3000/images/profile/${detail.profile}`}
-                        alt="프로필 이미지"
-                        width="30"
-                        height="30"
-                    />
-                    <span style={{ fontWeight:'400'}}>{detail.nickname}</span>
+                    <Link to={`/userpage/${detail.memberseq}/profile`}>
+                        <img
+                            src={`http://localhost:3000/images/profile/${detail.profile}`}
+                            alt="프로필 이미지"
+                            width="30"
+                            height="30"
+                        />
+                        <span style={{ fontWeight:'400'}}>{detail.nickname}</span>
+                    </Link>
                 </ProfileDiv>
                 <InfoSpan>
                     <span>
@@ -151,11 +155,15 @@ export default function HealthViews() {
                         <img alt='share to kakao' src={kakao} width={35} />
                     </KakaoShareButton>
                 </div>
-                <Button style={{ color:'white', backgroundColor:'#5271FF'}}>
+                <Button onClick={() => {setSecondOpen(true);}} 
+                    className={memberseq == detail.memberseq && 'disabled'}
+                    style={{ color:'white', backgroundColor:'#5271FF'}}>
                     <Icon name='envelope' /> 쪽지 보내기
                 </Button>
             </div>
             
+            <Chatting secondOpen={secondOpen} setSecondOpen={setSecondOpen} 
+                memberseq={detail.memberseq} nickname={detail.nickname} profile={detail.profile}/>
         </div>
     );
 }
