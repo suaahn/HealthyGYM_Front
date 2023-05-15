@@ -270,7 +270,7 @@ function MealViews() {
           <div>
           <h1>{post.bbsdto.title}</h1>
           
-          <a href={`http://localhost:3000/images/profile/${post.bbsdto.memberseq}`} style={{color: "black", textDecoration: "none"}} onMouseEnter={(e) => e.target.style.color = "rgb(30, 160, 224)"} onMouseLeave={(e) => e.target.style.color = "black"}>
+          <a href={`http://localhost:9100/userpage/${post.bbsdto.memberseq}/profile`} style={{color: "black", textDecoration: "none"}} onMouseEnter={(e) => e.target.style.color = "rgb(30, 160, 224)"} onMouseLeave={(e) => e.target.style.color = "black"}>
             <img src={`http://localhost:3000/images/profile/${post.profile}`} style={{ width: 20, height: 20 }} />
             &nbsp;&nbsp;<b style={{fontSize:"18px"}}>{post.bbsdto.nickname}</b>
           </a>
