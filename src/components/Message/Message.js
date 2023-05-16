@@ -127,7 +127,7 @@ function Message(){
               {talkinglist.map((tlist) => (
                 <li key={tlist.memberseq} onClick={() => handleMessageClick(tlist)} className="message-list-item">
                   {/* 프로필 이미지 */}
-                  <img src={`http://localhost:3000/images/profile/${selectedMessage.profile}`} />
+                  <img src={`http://localhost:3000/images/profile/${tlist.profile}`} />
 
                   {/* <img src={selectedMessage.profile} alt="Profile" /> */}
 

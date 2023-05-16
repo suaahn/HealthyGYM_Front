@@ -8,6 +8,8 @@ export default function BbsDropdown(props) {
     const [memberseq, setMemberseq] = useState(0);
     const [isWriter, setIsWriter] = useState(false);
 
+    // console.log(props);
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -17,7 +19,13 @@ export default function BbsDropdown(props) {
     });
     // 게시글 수정
     const handleUpdateClick = async () => {
-        window.location.href = `http://localhost:9100/community/update/${props.bbsseq}`;
+        if(props.bbstag == 10){
+            window.location.href = `http://localhost:9100/mate/meal/update/${props.bbsseq}`;
+        }
+        else {
+            window.location.href = `http://localhost:9100/community/update/${props.bbsseq}`;
+        }
+        
     };
     // 게시글 삭제
     const handleDeleteClick = async () => {

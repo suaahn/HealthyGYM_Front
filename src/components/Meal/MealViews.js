@@ -75,7 +75,7 @@ function MealViews() {
     
 
     const s = parseInt(localStorage.getItem("memberseq"), 10);
-    if(s !== null){
+    if (s !== null && !isNaN(s)) {
         setMemberseq(s);
     } else {
         alert('로그인 후 글 작성이 가능합니다.');
@@ -265,10 +265,11 @@ function MealViews() {
         )}
 
        {posts.map((post, index) => (
-        <div className="post-container">
-        <div  key={index}  className="post">
+        <div className="post-container" key={post.bbsdto.bbsseq}>
+        <div className="post">
           <div>
           <h1>{post.bbsdto.title}</h1>
+          
           
           <a href={`http://localhost:9100/userpage/${post.bbsdto.memberseq}/profile`} style={{color: "black", textDecoration: "none"}} onMouseEnter={(e) => e.target.style.color = "rgb(30, 160, 224)"} onMouseLeave={(e) => e.target.style.color = "black"}>
             <img src={`http://localhost:3000/images/profile/${post.profile}`} style={{ width: 20, height: 20 }} />
@@ -315,7 +316,8 @@ function MealViews() {
               
               <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
                 {post.fooddto.map((food, index) => (
-                  <Card  key={index} style={{ marginBottom: '3px', width: '350px' }}>
+                  
+                  <Card  key={food.foodseq} style={{ marginBottom: '3px', width: '350px' }}>
                     <Card.Content style={{ fontSize: "12px" }}>
                       <Card.Header>{food.desckor}</Card.Header>
                       <Card.Meta>

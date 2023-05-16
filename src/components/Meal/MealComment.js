@@ -65,7 +65,8 @@ function MealComment(props) {
 
       // login 되어 있는지 검사하고 member_seq 얻기
       const s = parseInt(localStorage.getItem("memberseq"), 10);
-      if(s !== null){
+      if (s !== null && !isNaN(s) && s !== "NaN") {
+        console.log(s);
           setMemberseq(s);
           // console.log(memberseq);
           getnickname(s);
@@ -89,11 +90,7 @@ function MealComment(props) {
   }, [props.bbsdto.bbsseq]);
 
   const handleCommentClick = () => {
-    const s = parseInt(localStorage.getItem("memberseq"), 10);
-    if(s === null){
-      alert('로그인 후 댓글 작성이 가능합니다.');
-      history('/login');
-    } 
+    
 
     setShowForm(true);
     setShowForm2(false);
@@ -117,10 +114,17 @@ function MealComment(props) {
   // };
 
   const handleCommentSubmit = () => {
+    const s = parseInt(localStorage.getItem("memberseq"), 10);
+    // console.log(s);
+    if (s === null || isNaN(s) || s === "NaN") {
+      alert('로그인 후 댓글 작성이 가능합니다.');
+      history('/login');
+    } 
+
     const data = {
       bbsseq: props.bbsdto.bbsseq,
       memberseq: memberseq,
-      commentcontent: commentcontent
+      commentcontent: commentcontent,
     };
     axios
       .post("http://localhost:3000/wrtiemealcomment", data)
@@ -140,6 +144,8 @@ function MealComment(props) {
               profile: `${localStorage.getItem("profile")}` // 프로필 이미지 URL
             }            
           };
+          // console.log(newComment.bbscommentdto);
+          // console.log(newComment.bbscommentdto.commentseq);
           setComments(prevComments => [...prevComments, newComment]); // 새로운 댓글 추가
           setCommentcnt(prevCount => prevCount + 1); // 댓글 개수 상태 업데이트
           setCommentcontent(""); // 댓글 내용 초기화
@@ -152,13 +158,22 @@ function MealComment(props) {
   
 
   const handleReplySubmit = (parentCommentId) => {
+    const s = parseInt(localStorage.getItem("memberseq"), 10);
+    // console.log(s);
+    if (s === null || isNaN(s) || s === "NaN") {
+      alert('로그인 후 댓글 작성이 가능합니다.');
+      history('/login');
+    } 
+    
+
     const data = {
       bbsseq: props.bbsdto.bbsseq,
       memberseq: memberseq,
       commentcontent: commentcontent,
       ref: parentCommentId
     };
-    // console.log(parentCommentId);
+    console.log(parentCommentId);
+    console.log(data);
     axios
       .post("http://localhost:3000/wrtiemealcomment2", data)
       .then(response => {
@@ -177,6 +192,7 @@ function MealComment(props) {
               profile: `${localStorage.getItem("profile")}` // 프로필 이미지 URL
             }            
           };
+          // console.log(newComment);
           setComments(prevComments => [...prevComments, newComment]); // 새로운 댓글 추가
           setCommentcnt(prevCount => prevCount + 1); // 댓글 개수 상태 업데이트
           setCommentcontent(""); // 댓글 내용 초기화

@@ -13,7 +13,7 @@ import BbsDropdown from "./bbs/BbsDropdown";
 import { shareKakao } from "../utils/shareKakao.js";
 import MealRecommend from './Message/MealRecommend.js';
 
-import { Divider, Icon, Loader } from 'semantic-ui-react';
+import { Divider, Icon, Loader, Card } from 'semantic-ui-react';
 import { InfoSpan, KakaoShareButton, URLShareButton } from './bbs/bbsStyle';
 import kakao from "../asset/btn_kakao.png";
 import { ProfileDiv } from './health/healthStyle';
@@ -28,6 +28,8 @@ function ToastViewer() {
     const [liking, setLiking] = useState(false);      // 로그인한 유저의 좋아요 여부
     const [likecount, setLikecount] = useState(0);  // 게시글의 좋아요 수
     const [bbstag, setBbstag] = useState(0);
+
+    const [selectedItems, setSelectedItems] = useState([]);
 
     const { bbsseq } = useParams();
     const currentUrl = `http://localhost:9100/view/${bbsseq}`;
@@ -71,12 +73,26 @@ function ToastViewer() {
           setBbstag(res.data[0].bbstag);
           setDetail(res.data[0]);
           setLikecount(res.data[0].likecount);
-          setLiking(res.data[0].liking);
-  
-          setLoading(true);   // 여기서 rendering해줌
+          setLiking(res.data[0].liking);      
         })
         .catch((error) => {
           alert(error);
+        });
+
+        const parsedBbsseq = parseInt(seq);
+
+        axios.post('http://localhost:3000/mealupdate', {
+          bbsseq: parsedBbsseq
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => {
+
+          setSelectedItems(response.data.foodlist);
+
+          setLoading(true);   // 여기서 rendering해줌
         });
     }
 
@@ -138,7 +154,7 @@ function ToastViewer() {
               <span>{detail.readcount}</span>
             </span>
           
-          <BbsDropdown bbsseq={bbsseq} memberseq={detail.memberseq} />
+          <BbsDropdown bbsseq={bbsseq} memberseq={detail.memberseq} bbstag={bbstag}/>
           </InfoSpan>
         </div><Divider />
         
@@ -168,6 +184,42 @@ function ToastViewer() {
         /></div>
 
         <br/>
+        {/* 10번 게시판인 경우 */}
+        {bbstag === 10 && selectedItems.length > 0 && (
+          <div>
+            <Card.Group style={{ display: 'flex', justifyContent: 'center' }}>
+              {selectedItems.map((food, index) => (
+                <Card key={index} style={{ marginBottom: '3px', width: '350px' }}>
+                  <Card.Content style={{ fontSize: "12px" }}>
+                    <Card.Header>{food.desckor}</Card.Header>
+                    <Card.Meta>
+                      <div>
+                        <b>{food.animalplant ? food.animalplant : "N/A"}</b>
+                        <br/>
+                        <strong>1회 제공량:</strong> {food.servingwt}g
+                        &nbsp;&nbsp;&nbsp;
+                        <strong>열량:</strong> {food.nutrcont1}kcal
+                      </div>
+                      
+                      <div>
+                        <strong>탄수화물:</strong> {food.nutrcont2}g
+                        &nbsp;&nbsp;&nbsp;
+                        <strong>단백질:</strong> {food.nutrcont3}g
+                        &nbsp;&nbsp;&nbsp;
+                        <strong>지방:</strong> {food.nutrcont4}g
+                      </div>
+                    </Card.Meta>
+                    {/* <Card.Description>
+                      Matthew is a pianist living in Nashville.
+                    </Card.Description> */}
+                  </Card.Content>
+                </Card>
+              ))}
+            </Card.Group>
+          </div>
+        )}
+
+
         {/* 11번 만 보이게 */}
         {bbstag === 11 && (
           <div>
