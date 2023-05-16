@@ -93,12 +93,13 @@ const Map = (props) => {
         function getListItem(index, places) {
             const el = document.createElement('li');
             let itemStr = `
-            <div>
+            <div style='position: relative; border-bottom: 1px solid #eee;'>
             <span>
                 ${index+1}
             </span>
-            <a href="${places.place_url}" target="_blank">
-                <h5>${places.place_name}</h5>
+            <a href="${places.place_url}" target="_blank" style='display: block; padding: 0.5rem;'>
+                <h5 style='font-weight: 700;'>${places.place_name}</h5>
+                <div style='position: relative; color: #a8a8a8;'>
                 ${
                 places.road_address_name 
                 ? `<span>
@@ -110,10 +111,10 @@ const Map = (props) => {
                 : `<span>
              	    ${places.address_name}
                     </span>`
-              }
-                <span>
+              }</div>
+                <p style='margin-top: 0.5rem; color: #0f6fff;'>
                 ${places.phone}
-                </span>
+                </p>
             </a>
             </div>
             `;

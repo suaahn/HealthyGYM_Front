@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { useNavigate, Link } from "react-router-dom";
+import axios from '../../utils/CustomAxios';
 
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button} from 'semantic-ui-react';
+import { Form, Button, Icon} from 'semantic-ui-react';
 
 export default function BodyGalleryEditor() {
     let navigate = useNavigate();
@@ -183,7 +183,7 @@ export default function BodyGalleryEditor() {
                     onChange={(e)=>setTitle(e.target.value)}
                 />
             </Form><br/>
-
+            <div>Tip! 이미지 편집 기능을 이용해 보세요! <Link to="/image/edit" target="_blank" style={{ color:'#5271FF'}}><Icon className="camera" />이미지 에디터</Link><br/><br/></div>
             <Editor
                 placeholder="내용을 입력해주세요."
                 initialValue={content}

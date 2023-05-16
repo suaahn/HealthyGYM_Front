@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Icon, Modal } from 'semantic-ui-react';
-import axios from 'axios';
+import { Button, Icon, Modal, Popup } from 'semantic-ui-react';
+import axios from '../../utils/CustomAxios';
 import { useNavigate } from 'react-router-dom';
+import BodyGalleryComment from './BodyGalleryComment';
 
-const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState();
+const FloatingMenu = ({ bbsseq, updateLikeCount, memberseq }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(0);
   const [isWriter, setIsWriter] = useState(false);
   const [activeItem, setActiveItem] = useState('');
   const [heartIcon, setHeartIcon] = useState('heart outline');
   const [showReportPopup, setShowReportPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
 
   let navigate = useNavigate();
 
   useEffect(() => {
     const s = localStorage.getItem("memberseq");
     if (s !== null) {
-      setIsLoggedIn(s);
-      setIsWriter(parseInt(s) === parseInt(isLoggedIn));
+    setIsLoggedIn(s);
+    setIsWriter(parseInt(s) === parseInt(memberseq));
     } else {
-      setIsWriter(false);
+    setIsWriter(false);
     }
     setActiveItem('');
-  }, [isLoggedIn]);
+    }, [isLoggedIn, bbsseq]);
 
   // 좋아요 확인
   useEffect(() => {
@@ -69,12 +71,19 @@ const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
       }
     }else if (name === 'report') {
       setShowReportPopup(true);
+    }else if (name === 'comment') {
+      setShowCommentModal(true);
     }else if (name === 'edit') {
-      navigate(`/community/BodyGallery/update/${bbsseq}`);
+      navigate(`/community/gallery/update/${bbsseq}`);
     }else if (name === 'delete') {
       setShowDeletePopup(true);
     }
   };
+
+  const closeModal = () => {
+    setShowCommentModal(false);
+  };
+
   // 게시글 신고
   const handleReportButtonClick = () => {
     axios.post(`http://localhost:3000/BodyGallery/updateBodyReport/${bbsseq}`)
@@ -108,81 +117,116 @@ const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
   };
 
   const buttonStyle = {
-    backgroundColor: '#5271FF',
+    backgroundColor: '#A4C3FF',
     transform: 'translateY(-50%)',
     marginBottom: '16px',
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', position: 'sticky', top: '50%' }}>
-      {isLoggedIn && (
-        <>
-          <Button
-            circular
-            size='large'
-            icon={heartIcon}
-            name='like'
-            active={activeItem === 'like'}
-            onClick={handleItemClick}
-            style={buttonStyle}
-          />
-          <Button
-            circular
-            size='large'
-            icon='comment'
-            name='comment'
-            active={activeItem === 'comment'}
-            onClick={handleItemClick}
-            style={buttonStyle}
-          />
-          <Button
-            circular
-            size='large'
-            icon='exclamation triangle'
-            name='report'
-            active={activeItem === 'report'}
-            onClick={handleItemClick}
-            style={buttonStyle}
-          />
-          <Modal open={showReportPopup} size='mini'>
-            <Modal.Header>게시글을 신고하시겠습니까?</Modal.Header>
-            <Modal.Actions>
-              <Button onClick={handleReportButtonClick} color='red'>Yes</Button>
-              <Button onClick={() => setShowReportPopup(false)}>No</Button>
-            </Modal.Actions>
-          </Modal>
-          {isWriter && (
-            <>
-              <Button
-                circular
-                size='large'
-                icon='pencil'
-                name='edit'
-                active={activeItem === 'edit'}
-                onClick={handleItemClick}
-                style={buttonStyle}
-              />
-              <Button
-                circular
-                size='large'
-                icon='trash'
-                name='delete'
-                active={activeItem === 'delete'}
-                onClick={handleItemClick}
-                style={buttonStyle}
-              />
-              <Modal open={showDeletePopup} size='mini'>
-                <Modal.Header>게시글을 삭제하시겠습니까?</Modal.Header>
-                <Modal.Actions>
-                  <Button onClick={handleDeleteButtonClick} color='red'>Yes</Button>
-                  <Button onClick={() => setShowDeletePopup(false)}>No</Button>
-                </Modal.Actions>
-              </Modal>
-            </>
-          )}
-        </>
-      )}
-    </div>
+    {isLoggedIn && (
+      <>
+        <Popup
+          trigger={
+            <Button
+              circular
+              size='large'
+              icon={heartIcon}
+              name='like'
+              active={activeItem === 'like'}
+              onClick={handleItemClick}
+              style={buttonStyle}
+            />
+          }
+          content='좋아요' // 툴팁 추가
+          position='right center'
+        />
+        <Popup
+          trigger={
+            <Button
+              circular
+              size='large'
+              icon='comment'
+              name='comment'
+              active={activeItem === 'comment'}
+              onClick={handleItemClick}
+              style={buttonStyle}
+            />
+          }
+          content='댓글'
+          position='right center'
+        />
+        <Modal open={showCommentModal} onClose={closeModal} style={{ maxWidth: '550px', width: '100%' }}>
+          <Modal.Content>
+            <BodyGalleryComment memberseq={isLoggedIn} bbsseq={bbsseq} closeModal={closeModal} />
+          </Modal.Content>
+        </Modal>
+        <Popup
+          trigger={
+            <Button
+              circular
+              size='large'
+              icon='exclamation triangle'
+              name='report'
+              active={activeItem === 'report'}
+              onClick={handleItemClick}
+              style={buttonStyle}
+            />
+          }
+          content='신고하기'
+          position='right center'
+        />
+        <Modal open={showReportPopup} size='mini'>
+          <Modal.Header>게시글을 신고하시겠습니까?</Modal.Header>
+          <Modal.Actions>
+            <Button onClick={handleReportButtonClick} color='red'>Yes</Button>
+            <Button onClick={() => setShowReportPopup(false)}>No</Button>
+          </Modal.Actions>
+        </Modal>
+        {isWriter && (
+          <>
+            <Popup
+              trigger={
+                <Button
+                  circular
+                  size='large'
+                  icon='pencil'
+                  name='edit'
+                  active={activeItem === 'edit'}
+                  onClick={handleItemClick}
+                  style={buttonStyle}
+                />
+              }
+              content='수정하기'
+              position='right center'
+            />
+            <Popup
+              trigger={
+                <Button
+                  circular
+                  size='large'
+                  icon='trash'
+                  name='delete'
+                  active={activeItem === 'delete'}
+                  onClick={handleItemClick}
+                  style={buttonStyle}
+                />
+              }
+              content='삭제하기'
+              position='right center'
+            />
+            <Modal open={showDeletePopup} size='mini'>
+              <Modal.Header>게시글을 삭제하시겠습니까?</Modal.Header>
+              <Modal.Actions>
+                <Button onClick={handleDeleteButtonClick} color='red'>Yes</Button>
+                <Button onClick={() => setShowDeletePopup(false)}>No</Button>
+              </Modal.Actions>
+            </Modal>
+          </>
+        )}
+      </>
+    )}
+  </div>
   );
 };
 

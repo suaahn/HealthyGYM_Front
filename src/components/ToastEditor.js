@@ -31,7 +31,7 @@ export default function ToastEditor() {
     }, []);
 
     const handleBbstag = (value) => {
-        if(value == 2) navigate("/community/gallery/write");
+        if(value == 2) navigate("/community/gallery/write"); 
         if(value == 5) navigate("/mate/health/write");
         if(value == 10) navigate("/mate/meal/write");
         setBbstag(value);
