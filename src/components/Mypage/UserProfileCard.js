@@ -10,7 +10,7 @@ import Users from "./Users";
 import UserProfile from "./UserProfile";
 import UserAllBbs from "./UserAllBbs";
 
-function UserProfileCard({usertoken}){
+function UserProfileCard({usertoken}) {
     const [member, setMember] = useState({});
     const [nickname, setNickname] = useState({});
     const [followNum, setFollowNum] = useState(0);
@@ -18,6 +18,7 @@ function UserProfileCard({usertoken}){
     const [inbodyCount, setInbodyCount] = useState([]);
     const [likeBbsCount, setLikeBbsCount] = useState([]);
     const [bbsCount, setBbsCount] = useState([]);
+    const [preventFollow, setPreventFollow] = useState(false);
 
     const [userFollow, setUserFollow] = useState(false);
 
@@ -31,6 +32,15 @@ function UserProfileCard({usertoken}){
         }),
         [usertoken.memberseq]
     );
+
+    useEffect(() => {
+        if ((token.memberseq === usertoken.memberseq)||!token.memberseq) {
+            setPreventFollow(true);
+        } else {
+            setPreventFollow(false);
+        }
+    }, [token.memberseq, usertoken.memberseq, preventFollow]);
+
 
     useEffect(() => {
         // member 정보 가져오기
@@ -59,7 +69,7 @@ function UserProfileCard({usertoken}){
         }).then((response) => {
             setUserFollow(response.data);   // follow 여부 세팅
         });
-    }, [usertoken,nickname]);
+    }, [usertoken, nickname]);
 
     useEffect(() => {
         // following 정보 가져오기
@@ -122,7 +132,7 @@ function UserProfileCard({usertoken}){
 
     const handleButtonClick = () => {
 
-        if(userFollow === false){
+        if (userFollow === false) {
 
             const requestBody = {
                 memberseq: token.memberseq,
@@ -168,14 +178,15 @@ function UserProfileCard({usertoken}){
                                 alt="프로필 이미지"
                                 width="120"
                                 height="120"
-                                style={{ borderRadius: '50%', overflow:'hidden', objectFit: 'cover'}}
+                                style={{borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}
                             />
                         </div>
                         <div className="mypage-profilecard-05">
                             <div className="mypage-profilecard-06">{member.nickname}</div>
                             <div className="mypage-profilecard-07">
                                 <div className="mypage-profilecard-08">
-                                    <Link className="mypage-profilecard-21" to={`/userpage/${usertoken.memberseq}/follower`}>
+                                    <Link className="mypage-profilecard-21"
+                                          to={`/userpage/${usertoken.memberseq}/follower`}>
                                         <div className="mypage-profilecard-09">
                                             팔로워
                                         </div>
@@ -185,22 +196,25 @@ function UserProfileCard({usertoken}){
                                     </Link>
                                     <div className="mypage-profilecard-11">
                                     </div>
-                                        <Link className="mypage-profilecard-21" to={`/userpage/${usertoken.memberseq}/following`}>
-                                        <div className="mypage-profilecard-09">
-                                            팔로잉
-                                        </div>
-                                        <div className="mypage-profilecard-10">
-                                            {followNum}
-                                        </div>
-                                    </Link>
+                                        <Link className="mypage-profilecard-21"
+                                              to={`/userpage/${usertoken.memberseq}/following`}>
+                                            <div className="mypage-profilecard-09">
+                                                팔로잉
+                                            </div>
+                                            <div className="mypage-profilecard-10">
+                                                {followNum}
+                                            </div>
+                                        </Link>
 
                                 </div>
                                 <div className="mypage-profilecard-12">
+                                    {!preventFollow && (
                                     <div>
                                         <div className={buttonClass} onClick={handleButtonClick}>
                                             {userFollow ? (
                                                 <>
-                                                    <i className="check icon"  style={{paddingBottom:'20px',color:'#999'}}></i>
+                                                    <i className="check icon"
+                                                       style={{paddingBottom: '20px', color: '#999'}}></i>
                                                     팔로잉
                                                 </>
                                             ) : (
@@ -208,6 +222,7 @@ function UserProfileCard({usertoken}){
                                             )}
                                         </div>
                                     </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -265,7 +280,8 @@ function UserProfileCard({usertoken}){
                 <div className="mypage-profilecard-20">
                     <div className='connect'>
                         <Routes>
-                            <Route path="profile" element={<UserProfile token={usertoken} nickname={member.nickname} />}/>
+                            <Route path="profile"
+                                   element={<UserProfile token={usertoken} nickname={member.nickname}/>}/>
                             <Route path="follower" element={<Follower token={usertoken}/>}/>
                             <Route path="following" element={<Following token={usertoken}/>}/>
                             <Route path="users/*"
@@ -279,4 +295,5 @@ function UserProfileCard({usertoken}){
         </>
     );
 }
+
 export default UserProfileCard;
