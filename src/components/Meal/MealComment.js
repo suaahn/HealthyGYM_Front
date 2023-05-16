@@ -66,7 +66,7 @@ function MealComment(props) {
       // login 되어 있는지 검사하고 member_seq 얻기
       const s = parseInt(localStorage.getItem("memberseq"), 10);
       if (s !== null && !isNaN(s) && s !== "NaN") {
-        console.log(s);
+        //console.log(s);
           setMemberseq(s);
           // console.log(memberseq);
           getnickname(s);

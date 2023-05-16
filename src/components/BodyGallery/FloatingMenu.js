@@ -88,7 +88,7 @@ const FloatingMenu = ({ bbsseq, updateLikeCount, memberseq }) => {
   const handleReportButtonClick = () => {
     axios.post(`http://localhost:3000/BodyGallery/updateBodyReport/${bbsseq}`)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       if (response.data === "Successfully updated") {
         setShowReportPopup(false);
       } else {
@@ -103,7 +103,7 @@ const FloatingMenu = ({ bbsseq, updateLikeCount, memberseq }) => {
   const handleDeleteButtonClick = () => {
     axios.post(`http://localhost:3000/BodyGallery/deleteBodyById/${bbsseq}`)
     .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       if (response.data === "Successfully deleted") {
         setShowDeletePopup(false);
         navigate(`/community/2`);

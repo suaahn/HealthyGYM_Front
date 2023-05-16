@@ -20,7 +20,7 @@ export default function Chatting(props) {
             params: { target: target, memberseq: memberseq }
           })
           .then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             setMessages(res.data.message);
             setRecommendmealRecv(res.data.fooddto);
             //setFirstOpen(true);
@@ -73,7 +73,7 @@ export default function Chatting(props) {
           },
         })
           .then((res) => {
-            console.log(res);
+            //console.log(res);
       
             // 사용자 후처리
       

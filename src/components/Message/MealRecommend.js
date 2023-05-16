@@ -46,7 +46,7 @@ function MealRecommend(props) {
 
   useEffect(() => {
     settotalpagenum(Math.ceil(totalCount / 10));
-    console.log(totalpagenum);
+    //console.log(totalpagenum);
   }, [totalCount]);
 
   const handlePageChange = (event, data) => {
@@ -101,17 +101,17 @@ function MealRecommend(props) {
 
   const handleSearchClick = (meal) => {
     if (meal === '아침') {
-      console.log("아침");
+      //console.log("아침");
       setShowForm(prevState => !prevState);     // 상태 토글
       setShowForm2(false);
       setShowForm3(false);
     } else if (meal === '점심') {
-      console.log("점심");
+      //console.log("점심");
       setShowForm(false);
       setShowForm2(prevState => !prevState);
       setShowForm3(false);
     } else if (meal === '저녁') {
-      console.log("저녁");
+      //console.log("저녁");
       setShowForm(false);
       setShowForm2(false);
       setShowForm3(prevState => !prevState);
@@ -145,12 +145,12 @@ function MealRecommend(props) {
       if (e.key === "Enter") {
         e.preventDefault();
         e.stopPropagation();
-        console.log("handle");
-        console.log("step1");
+        //console.log("handle");
+        //console.log("step1");
         setResult([]);
-        console.log("step2");
+        //console.log("step2");
         SearchMealList(1);
-        console.log("step3");
+        //console.log("step3");
         return;
       }
     };
@@ -226,8 +226,8 @@ function MealRecommend(props) {
 
     const MessageSend = () => {
 
-      console.log("MessageSend");
-      console.log(memberseq);
+      //console.log("MessageSend");
+      //console.log(memberseq);
 
       // 메시지 전송 백엔드 작성 
       
