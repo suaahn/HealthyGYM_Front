@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
-import "./BodyComAll.css";
+import "./MypageCss/BodyComAll.css";
 
+// 등록한 체성분 이미지 전체보기
 function BodyComAll({token}) {
     const [inbodyList, setInbodyList] = useState([]);
     const [inbodyCount, setInbodyCount] = useState([]);
@@ -19,10 +20,8 @@ function BodyComAll({token}) {
             });
     }, [token]);
 
-    const renderedList = useMemo(() => {
-        const sortedList = [...inbodyList].sort((a, b) => b.bodycomseq - a.bodycomseq);
-        return sortedList;
-    }, [inbodyList]);
+    const renderedList = useMemo(() => [...inbodyList].sort((a, b) => b.bodycomseq - a.bodycomseq), [inbodyList]);
+
 
     const handleImgClick = (imgPath) => {
         setSelectedImg(imgPath);
@@ -55,10 +54,10 @@ function BodyComAll({token}) {
                                             onClick={() => handleImgClick(inbody.imgpath)}
                                         />
                                     ) : (
-                                        <div className="mypage-bodycomall-11" />
+                                        <div className="mypage-bodycomall-11"/>
                                     )}
                                     {inbodyList.length < 4 && (
-                                        Array.from({ length: 4 - inbodyList.length }).map((_, i) => (
+                                        Array.from({length: 4 - inbodyList.length}).map((_, i) => (
                                             <div
                                                 className="mypage-bodycomall-11"
                                                 key={`placeholder-${i}`}

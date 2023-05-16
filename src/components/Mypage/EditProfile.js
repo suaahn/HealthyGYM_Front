@@ -1,10 +1,11 @@
 import {useEffect, useRef, useState} from "react";
 import axios from '../../utils/CustomAxios';
-import "./EditProfile.css";
+import "./MypageCss/EditProfile.css";
 import {Form, Input} from "semantic-ui-react";
 import AuthenticationService from "../auth/AuthenticationService";
 import {Description, Msg} from "../auth/authStyle";
 
+// 회원정보 수정
 function EditProfile({token}) {
 
     const [memberseq, setMemberseq] = useState('');

@@ -3,7 +3,7 @@ import axios from '../../utils/CustomAxios';
 import {Link} from "react-router-dom";
 import {getLinkByBbsTag} from "./MyPage";
 
-
+// 나의 작성글 리스트
 function MyWrite({token, profile}) {
     const [bbsImageList, setBbsImageList] = useState([]);
 

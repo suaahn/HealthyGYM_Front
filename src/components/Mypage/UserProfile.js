@@ -1,9 +1,10 @@
 import {Link} from "react-router-dom";
-import "./Profile.css";
+import "./MypageCss/Profile.css";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import BodyGraph from "./BodyGraph";
 
+// 유저페이지 프로필 (체성분, 사진)
 function UsersProfile({token}) {
 
     const [inbodyList, setInbodyList] = useState([]);

@@ -1,8 +1,9 @@
 import React, {useEffect, useState, useRef, useCallback} from "react";
-import axios from '../../utils/CustomAxios';
-import "./BodyCom.css";
+import "./MypageCss/BodyCom.css";
+import axios from "axios";
 
-function BodyComInput({ inbodyListLength }) {
+// 체성분 이미지 업로드 컴포넌트
+function BodyComInput({ inbodyListLength, token }) {
     const [memberseq, setMemberseq] = useState("");
     const [uploadFile, setUploadFile] = useState(null);
     const [inputKey, setInputKey] = useState(Date.now()); // 키 값 변경을 통해 input 요소 초기화
@@ -10,17 +11,12 @@ function BodyComInput({ inbodyListLength }) {
     const [isUploaded, setIsUploaded] = useState(false); // 파일 업로드 완료 여부 상태
     const [isCancelled, setIsCancelled] = useState(false); // 업로드 취소 여부 상태
     const fileInputRef = useRef(null);
-
     const [weight, setWeight] = useState("");
     const [bodyfatmass, setBodyfatmass] = useState("");
     const [musclemass, setMusclemass] = useState("");
     const [imgpath, setImgpath] = useState(null);
 
-    const authToken = localStorage.getItem("memberseq");
-    const token = {memberseq: authToken};
-
     useEffect(() => {
-
         axios
             .post("http://localhost:3000/members/findmember", token)
             .then((response) => {
@@ -29,7 +25,7 @@ function BodyComInput({ inbodyListLength }) {
             .catch((error) => {
                 console.error(error);
             });
-    }, [authToken]);
+    }, [token]);
 
     const handleImageChange = () => {
         if (fileInputRef.current) {
@@ -47,12 +43,12 @@ function BodyComInput({ inbodyListLength }) {
         }
     };
 
+    // 업로드 취소
     const handleCancel = useCallback(() => {
         if (isUploading) {
-            // 만약 업로드 중이라면, 요청을 취소합니다.
+            // 업로드 중이라면, 요청 취소
             setIsCancelled(true);
         }
-
         // 상태값 초기화
         setUploadFile(null);
         setIsUploading(false);
@@ -61,10 +57,10 @@ function BodyComInput({ inbodyListLength }) {
         setInputKey(Date.now());
     }, [isUploading]);
 
-
+    // 이미지 인식이 완료된 값 서버에 저장
     const handleSubmitData = async () => {
         try {
-            const response = await axios.post("http://localhost:3000/userbodycom", {
+            await axios.post("http://localhost:3000/userbodycom", {
                 memberseq,
                 weight,
                 musclemass,
@@ -86,6 +82,7 @@ function BodyComInput({ inbodyListLength }) {
         }
     };
 
+    //
     useEffect(() => {
         let source = axios.CancelToken.source();
 

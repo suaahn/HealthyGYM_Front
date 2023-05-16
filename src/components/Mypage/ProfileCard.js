@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import Follower from "./Follower";
 import Following from "./Following";
-import "./ProfileCard.css";
+import "./MypageCss/ProfileCard.css";
 import Profile from "./Profile";
 import BodyCom from "./BodyCom";
 import MyCommunity from "./MyCommunity";
@@ -13,6 +13,7 @@ import heart from "../../asset/icon_heart.png";
 import writing from "../../asset/icon_writing.png";
 import BodyComAll from "./BodyComAll";
 
+// 프로필 카드
 function ProfileCard({token}) {
 
     const [member, setMember] = useState({});

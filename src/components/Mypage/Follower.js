@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import axios from '../../utils/CustomAxios';
-import "./Follow.css";
+import "./MypageCss/Follow.css";
 import FollowBtn from "./FollowBtn";
 import {Link} from "react-router-dom";
 
+// 프로필 카드 - 팔로워 리스트
 function Follower({token}) {
 
     const [followerList, setFollowerList] = useState([]);

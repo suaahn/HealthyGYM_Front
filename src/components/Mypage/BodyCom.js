@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import axios from '../../utils/CustomAxios';
-import "./BodyCom.css";
+import "./MypageCss/BodyCom.css";
 import {Link, Route, Routes} from "react-router-dom";
 import BodyComInput from "./BodyComInput";
 
+// 체성분
 function BodyCom({token}) {
     const [inbodyList, setInbodyList] = useState([]);
     const [inbodyCount, setInbodyCount] = useState([]);
@@ -138,7 +139,7 @@ function BodyCom({token}) {
                         </div>
                     )}
                 </div>
-                <BodyComInput inbodyListLength={inbodyList.length} />
+                <BodyComInput inbodyListLength={inbodyList.length} token={token}/>
 
                 <div className="mypage-bodycom-27">
                     <div className="mypage-bodycom-28">

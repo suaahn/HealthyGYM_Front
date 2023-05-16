@@ -1,6 +1,8 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
+import "./MypageCss/ProfileCard.css";
 
+// 팔로잉, 팔로우 버튼 (로그인한 유저와 팔로우 관계 확인 + 팔로우, 언팔로우 기능)
 function FollowBtn({token, foltarget}) {
 
     const authToken = localStorage.getItem("memberseq");
