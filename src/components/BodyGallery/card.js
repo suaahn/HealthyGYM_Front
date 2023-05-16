@@ -15,7 +15,7 @@ export default function PostCard(props) {
   };
   
   const linkTo = linkMap[props.data.bbstag] || `/view/${props.data.bbsseq}`;
-
+  // 링크 위치, 크기 변경
   return (
     
     <Card>
@@ -31,7 +31,7 @@ export default function PostCard(props) {
           <Moment fromNow>{props.data.wdate}</Moment>
         </Card.Meta>
       </Card.Content>
-      <Link to={linkTo}>
+      <Link to={linkTo}> 
         <div style={{ width: '100%', paddingTop: '120%', position: 'relative' }}>
           <Image
             src={

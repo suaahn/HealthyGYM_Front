@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Icon, Modal, Popup } from 'semantic-ui-react';
-import axios from 'axios';
+import axios from '../../utils/CustomAxios';
 import { useNavigate } from 'react-router-dom';
 import BodyGalleryComment from './BodyGalleryComment';
 
-const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
+const FloatingMenu = ({ bbsseq, updateLikeCount, memberseq }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(0);
   const [isWriter, setIsWriter] = useState(false);
   const [activeItem, setActiveItem] = useState('');
@@ -18,13 +18,13 @@ const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
   useEffect(() => {
     const s = localStorage.getItem("memberseq");
     if (s !== null) {
-      setIsLoggedIn(s);
-      setIsWriter(parseInt(s) === parseInt(isLoggedIn));
+    setIsLoggedIn(s);
+    setIsWriter(parseInt(s) === parseInt(memberseq));
     } else {
-      setIsWriter(false);
+    setIsWriter(false);
     }
     setActiveItem('');
-  }, [isLoggedIn]);
+    }, [isLoggedIn, bbsseq]);
 
   // 좋아요 확인
   useEffect(() => {
@@ -138,7 +138,7 @@ const FloatingMenu = ({ bbsseq, updateLikeCount }) => {
               style={buttonStyle}
             />
           }
-          content='좋아요'
+          content='좋아요' // 툴팁 추가
           position='right center'
         />
         <Popup

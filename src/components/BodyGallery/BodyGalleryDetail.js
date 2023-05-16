@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../utils/CustomAxios';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Card, Image, Grid } from 'semantic-ui-react';
 import FloatingMenu from './FloatingMenu';
 import Moment from 'react-moment';
@@ -12,6 +12,7 @@ export default function BodyGalleryDetail() {
   const [detail, setDetail] = useState(null);
   const [likeCount, setLikeCount] = useState(); 
 
+  // floating Menu와 연결
   useEffect(() => {
     const memberseq = localStorage.getItem('memberseq');
     axios.get(`http://localhost:3000/BodyGallery/findBodyById/${bbsseq}?memberseq=${memberseq}`)
@@ -36,12 +37,14 @@ export default function BodyGalleryDetail() {
       <Grid.Column width={15}>
         <Card fluid>
           <Card.Content>
+            <Link to={`/userpage/${detail.memberseq}/profile`}> 
             <Image
               floated="left"
               size="mini"
               src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`}
               alt="profile"
             />
+            </Link>
             {nickname}
             <Card.Meta style={{ float: 'right' }}>
               <Moment fromNow>{wdate}</Moment>
@@ -61,7 +64,7 @@ export default function BodyGalleryDetail() {
         </Card>
       </Grid.Column>
       <Grid.Column width={1}>
-        <FloatingMenu isLoggedIn={true} isWriter={true} bbsseq={bbsseq} updateLikeCount={updateLikeCount} />
+        <FloatingMenu isLoggedIn={true} memberseq={detail.memberseq} bbsseq={bbsseq} updateLikeCount={updateLikeCount} />
       </Grid.Column>
     </Grid>
   );
