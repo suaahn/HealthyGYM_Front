@@ -55,7 +55,7 @@ function App() {
         <BrowserRouter>
           <Header style={{ height : "70px"}} />
 
-          <main style={{ height : "auto", minHeight: "calc(100% - 167px)", position:'relative', top:'70px', padding:'20px 0' }}>
+          <main style={{ height : "auto", minHeight: "calc(100% - 167px)", position:'relative', top:'70px', padding:'20px 0 50px 0' }}>
 
               <div style={{ width:"1100px", margin:"auto" }}>
                 <Routes>

@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import "./Profile.css";
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import BodyGraph from "./BodyGraph";
 
 function Profile({token}) {

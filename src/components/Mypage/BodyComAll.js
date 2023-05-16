@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./BodyComAll.css";
-import {Link, Route, Routes} from "react-router-dom";
-import BodyComInput from "./BodyComInput";
 
 function BodyComAll({token}) {
     const [inbodyList, setInbodyList] = useState([]);

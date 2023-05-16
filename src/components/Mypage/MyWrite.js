@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import {Link} from "react-router-dom";
 import {getLinkByBbsTag} from "./MyPage";
 
@@ -23,7 +23,7 @@ function MyWrite({token, profile}) {
                 },
             })
             .then((response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 setBbsImageList(response.data);
             });
     }, [requestBody]);

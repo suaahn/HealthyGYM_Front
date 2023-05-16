@@ -62,7 +62,7 @@ export default function BbsList() {
 
             {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
             {hasMore ? 
-                <div ref={target}>(〜￣▽￣)〜</div> : 
+                <div ref={target}>&nbsp;</div> : 
                 <Description><br/>마지막 게시글입니다.</Description>}
         </div>
     );

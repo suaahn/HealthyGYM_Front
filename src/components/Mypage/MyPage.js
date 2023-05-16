@@ -53,7 +53,7 @@ function MyPage() {
     };
 
     useEffect(() => {
-        console.log(token.memberseq);
+        //console.log(token.memberseq);
         if (token.memberseq === null) {
             alert("로그인 해주세요.");
             navigate("/");

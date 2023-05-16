@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./EditProfile.css";
 import {Form, Input} from "semantic-ui-react";
 import AuthenticationService from "../auth/AuthenticationService";

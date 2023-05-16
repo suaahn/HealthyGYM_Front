@@ -3,7 +3,7 @@ import Moment from 'react-moment'; // npm i moment react-moment
 import 'moment/locale/ko';
 
 import CommentForm from './CommentForm';
-import { Button, Divider, Dropdown, Form, Icon, Modal } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Icon, Modal } from 'semantic-ui-react';
 import { InfoDiv } from './bbsStyle';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../utils/CustomAxios';

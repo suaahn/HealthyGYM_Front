@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./BodyCom.css";
 
 function BodyComInput({ inbodyListLength }) {

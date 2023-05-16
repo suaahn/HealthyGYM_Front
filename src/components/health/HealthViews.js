@@ -17,6 +17,7 @@ import { HealthTable, ProfileDiv } from './healthStyle';
 import { Cookies } from 'react-cookie';
 import HealthDropdown from './HealthDropdown';
 import Chatting from '../Message/Chatting';
+import BbsComment from "../bbs/BbsComment";
 
 export default function HealthViews() {
     const [memberseq, setMemberseq] = useState(0);
@@ -78,7 +79,7 @@ export default function HealthViews() {
     return (
         <div>
             <div>
-                <h3>{detail.title}</h3>
+                <h2>{detail.title}</h2>
                 <ProfileDiv>
                     <Link to={`/userpage/${detail.memberseq}/profile`}>
                         <img
@@ -164,6 +165,9 @@ export default function HealthViews() {
             
             <Chatting secondOpen={secondOpen} setSecondOpen={setSecondOpen} 
                 memberseq={detail.memberseq} nickname={detail.nickname} profile={detail.profile}/>
+
+            <Divider />
+            <BbsComment bbsseq={bbsseq} />
         </div>
     );
 }

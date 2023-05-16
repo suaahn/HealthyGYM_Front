@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import {Link, Route, Routes} from "react-router-dom";
 import scale from "../../asset/icon_scale.png";
 import heart from "../../asset/icon_heart.png";

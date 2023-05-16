@@ -131,7 +131,7 @@ function ToastViewer() {
     return (
       <div>
         <div>
-          <h3>{detail.title}</h3>
+          <h2>{detail.title}</h2>
           <ProfileDiv>
               <Link to={`/userpage/${detail.memberseq}/profile`}>
               <img

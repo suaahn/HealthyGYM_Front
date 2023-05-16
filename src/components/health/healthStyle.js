@@ -26,24 +26,31 @@ export const HealthInfoDiv = styled.div`
     font-size: 13px;
     line-height: 1.8;
     margin-bottom: 5px;
+    &>a {
+        color: black;
+    }
+    &>a:hover {
+        color: black;
+    }
 `;
 export const ProfileDiv = styled.div`
     margin-bottom: 10px;
     & a {
-        display: flex;
         color: black;
     }
     & a:hover {
         color: black;
     }
     & img {
+        float: left;
         border-radius: 50%; 
         overflow:hidden;
         object-fit: cover;
     }
     & span {
-        margin: auto 10px;
+        margin: 7px 10px;
         font-weight: 600;
+        display: inline-block;
     }
 `;
 export const HealthTable = styled.table`

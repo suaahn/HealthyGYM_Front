@@ -286,8 +286,8 @@ function MealComment(props) {
               {showForm2 === comment.bbscommentdto.commentseq && (
                 <Form reply onSubmit={() => handleReplySubmit(comment.bbscommentdto.commentseq)}>
                   <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} style={{width:"750px"}}/>
-                  <Button content='Add Reply' labelPosition='left' icon='edit' primary />
-                  <Button content='Cancel' labelPosition='right' icon='close' onClick={() => setShowForm2(false)} />
+                  <Button content='대댓글 작성' labelPosition='left' icon='edit' primary />
+                  <Button content='취소' labelPosition='right' icon='close' onClick={() => setShowForm2(false)} />
                 </Form>
               )}
             </Comment.Content>
@@ -306,8 +306,8 @@ function MealComment(props) {
       {showForm && ( // 댓글을 작성할 수 있는 폼을 보여줌
         <Form reply onSubmit={handleCommentSubmit} >
           <Form.TextArea value={commentcontent} onChange={(e) => setCommentcontent(e.target.value)} style={{width: '840px'}}/>
-          <Button content='Add Comment' labelPosition='left' icon='edit' primary />
-          <Button content='Cancel' labelPosition='right' icon='close' onClick={handleCancelClick} />
+          <Button content='댓글 작성' labelPosition='left' icon='edit' primary />
+          <Button content='취소' labelPosition='right' icon='close' onClick={handleCancelClick} />
         </Form>
       )}
     </Comment.Group>

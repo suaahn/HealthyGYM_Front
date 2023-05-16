@@ -1,6 +1,6 @@
 import {Link, Route, Routes} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import Follower from "./Follower";
 import Following from "./Following";
 import "./ProfileCard.css";

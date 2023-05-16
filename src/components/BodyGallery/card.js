@@ -23,10 +23,10 @@ export default function PostCard(props) {
         <Image
           floated="left"
           size="mini"
-          src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`}
+          src={`http://localhost:3000/images/profile/${props.data.profile}`}
           alt="profile"
         />
-        {props.data.nickname}
+        <span style={{ display:'inline-block', margin: '7px 0', fontSize:'15px', color:'black'}}>{props.data.nickname}</span>
         <Card.Meta style={{ float: 'right' }}>
           <Moment fromNow>{props.data.wdate}</Moment>
         </Card.Meta>
@@ -43,7 +43,7 @@ export default function PostCard(props) {
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           />
           </div>
-        <Card.Content style={{ textAlign: 'center', fontWeight: 'bold', margin: '10px' }}>
+        <Card.Content style={{ textAlign: 'center', fontWeight: 'bold', margin: '10px', color:'black', textOverflow:'ellipsis', overflow:'hidden' }}>
           {props.data.title}
         </Card.Content>
       </Link>

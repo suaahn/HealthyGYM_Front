@@ -117,7 +117,7 @@ const FloatingMenu = ({ bbsseq, updateLikeCount, memberseq }) => {
   };
 
   const buttonStyle = {
-    backgroundColor: '#A4C3FF',
+    backgroundColor: '#E6EAFF',
     transform: 'translateY(-50%)',
     marginBottom: '16px',
   };
