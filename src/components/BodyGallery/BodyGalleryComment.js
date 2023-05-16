@@ -131,7 +131,7 @@ export default function BodyGalleryComment(props) {
           value={comment}
           onChange={handleCommentChange}
         />
-        <Button content='Add Comment' labelPosition='left' icon='edit' primary />
+        <Button content='댓글 작성' labelPosition='left' icon='edit' primary />
       </Form>
     </Comment.Group>
   );
