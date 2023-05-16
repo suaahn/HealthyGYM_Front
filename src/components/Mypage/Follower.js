@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./Follow.css";
 import FollowBtn from "./FollowBtn";
 import {Link} from "react-router-dom";

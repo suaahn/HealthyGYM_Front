@@ -5,13 +5,14 @@ import axios from '../../utils/CustomAxios';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { Form, Button, Icon} from 'semantic-ui-react';
+import { Form, Button, Icon, Dropdown} from 'semantic-ui-react';
 
 export default function BodyGalleryEditor() {
     let navigate = useNavigate();
 
+    const [bbstag, setBbstag] = useState(2);
     const [memberseq, setMemberseq] = useState(0);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -27,6 +28,13 @@ export default function BodyGalleryEditor() {
             navigate('/login');
         }
     }, []);
+
+    const handleBbstag = (value) => {
+        if(value == 3 || value == 4) navigate("/write"); 
+        if(value == 5) navigate("/mate/health/write");
+        if(value == 10) navigate("/mate/meal/write");
+        setBbstag(value);
+    }
 
     // Editor DOM 선택용
     const editorRef = useRef();
@@ -106,7 +114,7 @@ export default function BodyGalleryEditor() {
         measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
     };
 
-    const firebaseApp = initializeApp(firebaseConfig);
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     const storage = getStorage(firebaseApp);
 
     
@@ -163,17 +171,21 @@ export default function BodyGalleryEditor() {
             <br/>
             <h2>글쓰기</h2>
             <Form>
-            <select onChange={(e) => {if(e.target.value < 3||4) navigate("/write"); else if(e.target.value === 5) navigate("/mate/health/write"); else navigate("/meallist")}}>
-                    <optgroup label='커뮤니티'>
-                        <option value={2} selected>바디갤러리</option>
-                        <option value={3}>정보</option>
-                        <option value={4}>자유</option>
-                    </optgroup>
-                    <optgroup label='헬친'>
-                        <option value={5}>헬스메이트</option>
-                        <option value={10}>식단메이트</option>
-                    </optgroup>
-                </select><br/>
+                <Dropdown
+                    className='topic-select'
+                    value={bbstag} onChange={(e, { value }) => handleBbstag(value)}
+                    placeholder='토픽을 선택해주세요'
+                    fluid
+                    selection
+                    options={[{key:0, value:0, text:'커뮤니티', disabled:true, icon:'discussions'},
+                            {key:2, value:2, text:'바디갤러리'},
+                            {key:3, value:3, text:'정보게시판'},
+                            {key:4, value:4, text:'자유게시판'},
+                            {key:11, value:11, text:'식단추천'},
+                            {key:100, value:100, text:'헬친', disabled:true, icon:'child'},
+                            {key:5, value:5, text:'운동메이트'},
+                            {key:10, value:10, text:'식단메이트'}]}
+                /><br/>
                 <input
                     type="text"
                     id="title"
@@ -188,7 +200,7 @@ export default function BodyGalleryEditor() {
                 placeholder="내용을 입력해주세요."
                 initialValue={content}
                 previewStyle={window.innerWidth > 1000 ? 'vertical' : 'tab'} // 미리보기 스타일 지정
-                height="300px" // 에디터 창 높이
+                height="500px" // 에디터 창 높이
                 initialEditType="wysiwyg" // 초기 입력모드 설정
                 language="ko-KR"
                 toolbarItems={[           // 툴바 옵션 설정

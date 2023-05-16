@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import { Icon, Popup, Card, Input, Dropdown, Loader, Divider } from 'semantic-ui-react'
 import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
-import clockicon from "../../asset/icon_clock.png";
-// import doticon from "../../asset/icon_dot.png";
 import likeicon from "../../asset/icon_like.png";
 import likefilledicon from "../../asset/icon_like_filled.png";
-import comment from "../../asset/icon_comment.png";
 import MealDropDown from "./MealDropdown";
 import MealComment from "./MealComment";
 import MateNav from "../health/MateNav";
 
 import "./MealViews.css";
+import { ProfileDiv } from "../health/healthStyle";
 
 
 
@@ -132,7 +130,7 @@ function MealViews() {
     const res = await axios.get("http://localhost:3000/posts", {
       params: { page: 0, limit: 5, memberseq: memberseq, search:search, select:select },
     });
-    console.log(res);
+    //console.log(res);
     const newPosts = res.data;
     setPosts([...newPosts]);
     setLoading(false);
@@ -210,37 +208,32 @@ function MealViews() {
     <div>
       <MateNav />
       <br/>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <Input
-      action={
-        <Dropdown
-          button
-          basic
-          floating
-          options={options}
-          defaultValue='all'
-          onChange={handleSelect} // 선택 옵션 변경 시 상태 업데이트
+      <div  style={{ width:'325px', margin:'auto'}}>
+        <Input
+          action={
+            <Dropdown
+              button
+              basic
+              floating
+              options={options}
+              defaultValue='all'
+              onChange={handleSelect} // 선택 옵션 변경 시 상태 업데이트
+            />
+          }
+          icon='search'
+          iconPosition='left'
+          placeholder='Search...'
+          value={search}
+          onChange={(event, data) => setSearch(data.value)} // 검색어 입력 시 상태 업데이트
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault(); // 기본행동 막기
+              handleSearch(); // 엔터 키를 누르면 검색 수행
+            }
+          }}
         />
-      }
-      icon='search'
-      iconPosition='left'
-      placeholder='Search...'
-      value={search}
-      onChange={(event, data) => setSearch(data.value)} // 검색어 입력 시 상태 업데이트
-      onKeyDown={(event) => {
-        if (event.key === 'Enter') {
-          event.preventDefault(); // 기본행동 막기
-          handleSearch(); // 엔터 키를 누르면 검색 수행
-        }
-      }}
-    />
-    <br/><br/>
+      </div>
+      <br/><br/>
   
 
         <div className="write-button-container" onClick={handleWriteClick}>
@@ -269,16 +262,22 @@ function MealViews() {
         <div className="post">
           <div>
           <h1>{post.bbsdto.title}</h1>
+          <ProfileDiv>
+            <Link to={`/userpage/${post.bbsdto.memberseq}/profile`}>
+            <img
+                src={`http://localhost:3000/images/profile/${post.profile}`}
+                alt="프로필"
+                width="30"
+                height="30"
+            />
+            <span>{post.bbsdto.nickname}</span>
+            </Link>
+          </ProfileDiv>
           
-          
-          <a href={`http://localhost:9100/userpage/${post.bbsdto.memberseq}/profile`} style={{color: "black", textDecoration: "none"}} onMouseEnter={(e) => e.target.style.color = "rgb(30, 160, 224)"} onMouseLeave={(e) => e.target.style.color = "black"}>
-            <img src={`http://localhost:3000/images/profile/${post.profile}`} style={{ width: 20, height: 20 }} />
-            &nbsp;&nbsp;<b style={{fontSize:"18px"}}>{post.bbsdto.nickname}</b>
-          </a>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ whiteSpace: "nowrap" }}>
-            <img alt="clock" src={clockicon} width="15" />
+            <Icon name='clock outline' size='small' />
             &nbsp;
             {post.bbsdto.wdate}
           </span>
@@ -363,7 +362,7 @@ function MealViews() {
 
           {/* 코멘트 개수 */}
           <span>
-          <img alt="clock" src={comment} width="15" />
+          <Icon name='comment outline' size='small' />
           &nbsp;&nbsp;
           {post.commentcnt}
           </span>

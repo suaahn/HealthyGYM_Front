@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from '../../utils/CustomAxios';
 
 import { Button, Icon, Form, Table, Card, Grid, Input, Pagination, Modal, Header, Loader } from 'semantic-ui-react'
 import { Editor } from '@toast-ui/react-editor';
@@ -46,7 +46,7 @@ function MeallistUpdate() {
     // 검색할때마다 totalCount 변경
     useEffect(() => {
         settotalpagenum(Math.ceil(totalCount / 10));
-    console.log(totalpagenum);
+    //console.log(totalpagenum);
     }, [totalCount]);
 
     // login 되어 있는지 검사하고 member_seq 얻기
@@ -75,8 +75,8 @@ function MeallistUpdate() {
             }
           })
           .then(response => {
-            console.log(response);
-            console.log(response.data.bbsdto.content);
+            //console.log(response);
+            //console.log(response.data.bbsdto.content);
             setContent(response.data.bbsdto.content);
             setTitle(response.data.bbsdto.title);
             setSelectedItems(response.data.foodlist);
@@ -151,7 +151,7 @@ function MeallistUpdate() {
     return axios
       .get("http://localhost:3000/FindMealList", { params: { "search": search, "pageNo": activePage } })
       .then(function(resp) {
-        console.log(resp);
+        //console.log(resp);
         // console.log(resp.data);
         // console.log(resp.data.totalCount);
         setTotalCount(resp.data.totalCount);
@@ -251,7 +251,7 @@ function MeallistUpdate() {
                 }
               })
               .then(response => {
-                console.log(response);
+                //console.log(response);
               })
               .catch(error => {
                 console.error(error);

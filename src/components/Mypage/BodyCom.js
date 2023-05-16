@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./BodyCom.css";
 import {Link, Route, Routes} from "react-router-dom";
 import BodyComInput from "./BodyComInput";

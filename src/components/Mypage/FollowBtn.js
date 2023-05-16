@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 
 function FollowBtn({token, foltarget}) {
 

@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from '../../utils/CustomAxios';
 
 import { Button, Icon, Form, Table, Card, Grid, Input, Pagination, Modal, Header } from 'semantic-ui-react'
 import { Editor } from '@toast-ui/react-editor';

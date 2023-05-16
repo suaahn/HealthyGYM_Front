@@ -49,6 +49,10 @@ export default function Login() {
         .executeJwtAuthenticationService(id, pwd)
         .then((res) => {
             //console.log(res.data);
+            if(res.data.token === "null") {
+                alert("가입되지 않은 계정입니다.");
+                return;
+            }
             if(res.data.token === "deactivated") {
                 alert("활동이 정지된 계정입니다.");
                 return;

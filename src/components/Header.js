@@ -4,7 +4,6 @@ import AuthenticationService from "./auth/AuthenticationService";
 
 import { Button, Dropdown, Icon } from "semantic-ui-react";
 import logo from "../asset/logo_gym.png";
-import styled from "styled-components";
 import Message from "./Message/Message";
 import { HomeHeader, MenuItem, MenuSpan } from "./homeStyle";
 

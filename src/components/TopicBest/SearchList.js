@@ -22,7 +22,7 @@ export default function SearchList() {
 
         await axios.get('http://localhost:3000/findBbsByKeyword', { params:{ "bbstag":bbstag, "page":page, "order":order, "search":search } })
       .then(function(res) {
-        console.log(res.data);
+        //console.log(res.data);
 
         setPage(page + 1);
         setBbsList(prev => [...prev, ...res.data]);
@@ -66,7 +66,7 @@ export default function SearchList() {
             </div>
             {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
             {hasMore ? 
-                <div ref={target}>target</div> : 
+                <div ref={target}>&nbsp;</div> : 
                 <Description><br/>마지막 게시글입니다.</Description>}
         </div>
     );

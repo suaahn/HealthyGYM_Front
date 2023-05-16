@@ -25,7 +25,7 @@ export default function BodyGalleryList() {
             params: { bbstag: bbstag, page: page, order: order },
         })
         .then(function (res) {
-            console.log(res.data);
+            //console.log(res.data);
 
             setPage(page + 1);
             setBbsList((prev) => [...prev, ...res.data]);
@@ -53,7 +53,7 @@ export default function BodyGalleryList() {
     return (
         <div>
         <Carousel />
-        <br />
+        
         <div className="ui container" style={{ marginTop: '20px' }}>
             <BbsNav setOrder={setOrder} order={order} />
             <div className="ui three cards" style={{ margin: '15px' }}>
@@ -69,7 +69,7 @@ export default function BodyGalleryList() {
             </>
         )}
         {hasMore ? (
-            <div ref={target}>target</div>
+            <div ref={target}>&nbsp;</div>
         ) : (
             <Description>
             <br />

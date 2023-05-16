@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../../utils/CustomAxios';
 import { Viewer } from '@toast-ui/react-editor';
 import { Link, useParams } from 'react-router-dom';
-import { Card, Image, Grid } from 'semantic-ui-react';
+import { Card, Image, Grid, Divider } from 'semantic-ui-react';
 import FloatingMenu from './FloatingMenu';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
@@ -39,27 +39,27 @@ export default function BodyGalleryDetail() {
           <Card.Content>
             <Link to={`/userpage/${detail.memberseq}/profile`}> 
             <Image
-              floated="left"
+              floated="left" 
               size="mini"
-              src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`}
+              src={`http://localhost:3000/images/profile/${detail.profile}`}
               alt="profile"
             />
+            <span style={{ display:'inline-block', margin: '7px 0', fontSize:'15px', color:'black'}}>{nickname}</span>
             </Link>
-            {nickname}
             <Card.Meta style={{ float: 'right' }}>
               <Moment fromNow>{wdate}</Moment>
             </Card.Meta>
           </Card.Content>
           <Card.Content style={{ padding: '20px' }}>
             <Card.Header>{title}</Card.Header>
-            <hr />
+            <Divider />
             <Card.Description>
               <Viewer initialValue={content} />
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <p>조회수: {readcount}</p>
-            <p>추천수: {likeCount}</p>
+            <p>조회수 {readcount}</p>
+            <p>추천수 {likeCount}</p>
           </Card.Content>
         </Card>
       </Grid.Column>

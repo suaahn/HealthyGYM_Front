@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import axios from 'axios';
-
+import axios from '../../utils/CustomAxios';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
@@ -11,7 +10,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "fire
 import ADDRESS_LIST from '../../asset/region.json';
 import { Form, Button, Loader, Popup } from 'semantic-ui-react';
 import SelectBodyPart from './SelectBodyPart';
-import styled from 'styled-components';
 import { BodyWrap } from './healthStyle';
 
 export default function HealthEditor() {
@@ -90,6 +88,12 @@ export default function HealthEditor() {
             return;
         } else if(markdown.length === 0) {
             alert('내용을 입력해주세요.');
+            return;
+        } else if(mdate === '') {
+            alert('날짜를 선택해주세요.');
+            return;
+        } else if(mtime === '') {
+            alert('시간을 선택해주세요.');
             return;
         }
 
@@ -278,7 +282,8 @@ export default function HealthEditor() {
                 <Form.Group widths='equal'>
                     <Form.Field required>
                         <label>날짜</label>
-                        <input type='date' value={mdate} onChange={(e) => {setMdate(e.target.value)}} />
+                        <input type='date' value={mdate} onChange={(e) => {setMdate(e.target.value)}} 
+                            min={`${new Date().getFullYear()}-${('0' + (new Date().getMonth()+1)).slice(-2)}-${('0' + (new Date().getDate())).slice(-2)}`}/>
                     </Form.Field>
                     <Form.Field required>
                         <label>시간</label>

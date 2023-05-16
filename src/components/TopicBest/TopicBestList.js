@@ -2,13 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from '../../utils/CustomAxios';
 import { useParams } from 'react-router-dom';
 import useInfiniteScroll from '../../utils/useInfiniteScroll';
-import Card from '../BodyGallery/card';
+import BbsBox from '../bbs/BbsBox';
 import BbsNav from '../bbs/BbsNav';
 import { Loader } from 'semantic-ui-react';
 import { Description } from '../auth/authStyle';
+import { BbsWrapper  } from '../bbs/bbsStyle';
 import Carousel from '../bbs/Carousel';
 
-export default function BodyGalleryList() {
+export default function TopicBestList() {
 
     const [bbsList, setBbsList] = useState([]);
     const [page, setPage] = useState(0);
@@ -22,7 +23,7 @@ export default function BodyGalleryList() {
 
         await axios.get('http://localhost:3000/findAllBest', { params:{ "bbstag":bbstag, "page":page, "order":order  } })
             .then(function(res) {
-                console.log(res.data);
+                //console.log(res.data);
 
                 setPage(page + 1);
                 setBbsList(prev => [...prev, ...res.data]);
@@ -51,17 +52,17 @@ export default function BodyGalleryList() {
         <div>
             <Carousel />
             <br/>
-            <div className="ui container" style={{ marginTop: '20px'}}>
             <BbsNav setOrder={setOrder} order={order} />
-            <div className="ui three cards" style={{ margin: '15px'}}>
-                {bbsList.map(bbs => (
-                <Card key={bbs.id} data={bbs} />
+
+            <BbsWrapper>
+                {bbsList.map((bbs, i) => (
+                    <BbsBox key={i} data={bbs} />
                 ))}
-            </div>
-            </div>
+            </BbsWrapper>
+
             {isLoading && hasMore && <><br/><Loader active inline='centered' /></>}
             {hasMore ? 
-                <div ref={target}>target</div> : 
+                <div ref={target}>&nbsp;</div> : 
                 <Description><br/>마지막 게시글입니다.</Description>}
         </div>
     );

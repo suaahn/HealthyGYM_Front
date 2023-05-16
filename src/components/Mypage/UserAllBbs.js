@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 import "./MyCommunity.css";
 import {getLinkByBbsTag} from "./MyPage";
 

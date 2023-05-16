@@ -1,7 +1,7 @@
 import "./BodyGraph.css";
 import React, { useEffect, useState } from "react";
 import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis } from "recharts";
-import axios from "axios";
+import axios from '../../utils/CustomAxios';
 
 export default function BodyGraph({ token }) {
 

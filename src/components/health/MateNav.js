@@ -38,16 +38,15 @@ export default function MateNav() {
                     onClick={handleItemClick}
                 />
                 <Menu.Item
-                    name='GYM 찾기'
-                    active={activeItem === 'GYM 찾기'}
-                    onClick={handleItemClick}
-                />
-                <Menu.Item
                     name='식단메이트'
                     active={activeItem === '식단메이트'}
                     onClick={handleItemClick}
                 />
-                
+                <Menu.Item
+                    name='GYM 찾기'
+                    active={activeItem === 'GYM 찾기'}
+                    onClick={handleItemClick}
+                />
             </Menu>
         </>
     );
