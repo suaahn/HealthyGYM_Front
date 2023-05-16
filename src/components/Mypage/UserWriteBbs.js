@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {getLinkByBbsTag} from "./MyPage";
 
 
 function UserWriteBbs({token, profile}) {
@@ -72,7 +73,7 @@ function UserWriteBbs({token, profile}) {
                         {filteredBbs.map((bbs, i) => (
                             <div key={i}>
                                 <div className="mypage-mycommunity-09">
-                                    <Link to={`/view/${bbs.bbsseq}`}>
+                                    <Link to={getLinkByBbsTag(bbs.bbsseq, bbs.bbstag)}>
                                         <div className="mypage-mycommunity-08">
                                             <div className="mypage-mycommunity-10">
                                                 <div className="mypage-mycommunity-13">{bbs.title}</div>
@@ -110,7 +111,7 @@ function UserWriteBbs({token, profile}) {
                                                         style={{
                                                             width: 120,
                                                             height: 120,
-                                                            backgroundColor: "rgb(237,237,237)",
+                                                            backgroundColor: "white",
                                                         }}
                                                     ></div>
                                                 )}
@@ -134,11 +135,11 @@ function UserWriteBbs({token, profile}) {
 
     return (
         <div className="mypage-mycommunity-01">
-            {renderBbsImageList(1, "운동루틴")}
             {renderBbsImageList(3, "정보게시판")}
             {renderBbsImageList(4, "자유게시판")}
-            {renderBbsImageList(10, "식단공유 게시판??")}
-            {renderBbsImageList(11, "식단추천 게시판")}
+            {renderBbsImageList(5, "운동메이트")}
+            {renderBbsImageList(10, "식단공유")}
+            {renderBbsImageList(11, "식단추천")}
         </div>
     );
 }

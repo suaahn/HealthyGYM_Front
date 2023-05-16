@@ -9,6 +9,14 @@ import MyCommunity from "./MyCommunity";
 import {useEffect, useMemo, useState} from "react";
 import {Menu} from "semantic-ui-react";
 
+export function getLinkByBbsTag(bbsseq, bbstag) {
+    if (bbstag === 5) {
+        return `/mate/health/view/${bbsseq}`;
+    } else {
+        return `/view/${bbsseq}`;
+    }
+}
+
 function MyPage() {
 
     const authToken = localStorage.getItem("memberseq");
@@ -43,6 +51,14 @@ function MyPage() {
             navigate('/mypage/setting/editprofile');
         }
     };
+
+    useEffect(() => {
+        console.log(token.memberseq);
+        if (token.memberseq === null) {
+            alert("로그인 해주세요.");
+            navigate("/");
+        }
+    }, [token.memberseq, navigate]);
 
     return (
         <div>

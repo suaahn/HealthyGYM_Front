@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {getLinkByBbsTag} from "./MyPage";
 
 
 function MyWrite({token, profile}) {
@@ -22,16 +23,17 @@ function MyWrite({token, profile}) {
                 },
             })
             .then((response) => {
+                console.log(response.data);
                 setBbsImageList(response.data);
             });
     }, [requestBody]);
-
-
 
     const removeImageTags = (content) => {
         const imgRegex = /<img\b[^>]*>/gi;
         return content.replace(imgRegex, "");
     };
+
+
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -72,7 +74,7 @@ function MyWrite({token, profile}) {
                         {filteredBbs.map((bbs, i) => (
                             <div key={i}>
                                 <div className="mypage-mycommunity-09">
-                                    <Link to={`/view/${bbs.bbsseq}`}>
+                                    <Link to={getLinkByBbsTag(bbs.bbsseq, bbs.bbstag)}>
                                         <div className="mypage-mycommunity-08">
                                             <div className="mypage-mycommunity-10">
                                                 <div className="mypage-mycommunity-13">{bbs.title}</div>
@@ -110,7 +112,7 @@ function MyWrite({token, profile}) {
                                                         style={{
                                                             width: 120,
                                                             height: 120,
-                                                            backgroundColor: "rgb(237,237,237)",
+                                                            backgroundColor: "white",
                                                         }}
                                                     ></div>
                                                 )}
@@ -134,11 +136,11 @@ function MyWrite({token, profile}) {
 
     return (
         <div className="mypage-mycommunity-01">
-            {renderBbsImageList(1, "운동루틴")}
-            {renderBbsImageList(3, "정보게시판")}
-            {renderBbsImageList(4, "자유게시판")}
-            {renderBbsImageList(10, "식단공유 게시판??")}
-            {renderBbsImageList(11, "식단추천 게시판")}
+                {renderBbsImageList(3, "정보게시판")}
+                {renderBbsImageList(4, "자유게시판")}
+                {renderBbsImageList(5, "운동메이트")}
+                {renderBbsImageList(10, "식단공유")}
+                {renderBbsImageList(11, "식단추천")}
         </div>
     );
 }

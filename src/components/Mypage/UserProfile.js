@@ -120,14 +120,14 @@ function UsersProfile({token}) {
                             {bbsImageList.slice(0, 4).map((bbs, i) => (
                                 <div key={i}>
                                     {bbs.thumnail ? (
-                                        <Link to={`/view/${bbs.bbsseq}`}>
+                                        <Link to={`/community/gallery/view/${bbs.bbsseq}`}>
                                             <img className='mypage-bbs-image-01'
                                                  src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
                                                  alt=''
                                             />
                                         </Link>
                                     ) : (
-                                        <Link to={`/view/${bbs.bbsseq}`}>
+                                        <Link to={`/community/gallery/view/${bbs.bbsseq}`}>
                                             <div className='mypage-bbs-image-01'
                                             />
                                         </Link>

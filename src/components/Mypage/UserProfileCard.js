@@ -12,11 +12,17 @@ import UserAllBbs from "./UserAllBbs";
 
 function UserProfileCard({usertoken}){
     const [member, setMember] = useState({});
+    const [nickname, setNickname] = useState({});
     const [followNum, setFollowNum] = useState(0);
     const [followerNum, setFollowerNum] = useState(0);
     const [inbodyCount, setInbodyCount] = useState([]);
     const [likeBbsCount, setLikeBbsCount] = useState([]);
     const [bbsCount, setBbsCount] = useState([]);
+
+    const [userFollow, setUserFollow] = useState(false);
+
+    const authToken = localStorage.getItem("memberseq");
+    const token = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     const requestBody = useMemo(
         () => ({
@@ -32,11 +38,28 @@ function UserProfileCard({usertoken}){
             .post("http://localhost:3000/members/findmember", usertoken)
             .then((response) => {
                 setMember(response.data);
+                setNickname(response.data.nickname);
             })
             .catch((error) => {
                 console.error(error);
             });
     }, [usertoken]);
+
+    useEffect(() => {
+        // confirm follow
+        const requestBody = {
+            memberseq: token.memberseq,
+            foltarget: member.nickname,
+        };
+
+        axios.post("http://localhost:3000/confirm/follow", requestBody, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            setUserFollow(response.data);   // follow 여부 세팅
+        });
+    }, [usertoken,nickname]);
 
     useEffect(() => {
         // following 정보 가져오기
@@ -97,6 +120,43 @@ function UserProfileCard({usertoken}){
             });
     }, [requestBody]);
 
+    const handleButtonClick = () => {
+
+        if(userFollow === false){
+
+            const requestBody = {
+                memberseq: token.memberseq,
+                foltarget: member.nickname,
+            };
+
+            axios.post("http://localhost:3000/request/follow", requestBody, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((response) => {
+                setUserFollow(!userFollow);
+            });
+
+        } else {
+
+            const requestBody = {
+                memberseq: token.memberseq,
+                foltarget: member.nickname,
+            };
+
+            axios.post("http://localhost:3000/request/unfollow", requestBody, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((response) => {
+                setUserFollow(!userFollow);
+            });
+
+        }
+    };
+
+    const buttonClass = userFollow ? "mypage-profilecard-22" : "mypage-profilecard-23";
+
     return (
         <>
             <div className="mypage-profilecard-00">
@@ -136,9 +196,18 @@ function UserProfileCard({usertoken}){
 
                                 </div>
                                 <div className="mypage-profilecard-12">
-                                    <Link to="/mypage/setting/editprofile" className="mypage-profilecard-13">
-                                        팔로우
-                                    </Link>
+                                    <div>
+                                        <div className={buttonClass} onClick={handleButtonClick}>
+                                            {userFollow ? (
+                                                <>
+                                                    <i className="check icon"  style={{paddingBottom:'20px',color:'#999'}}></i>
+                                                    팔로잉
+                                                </>
+                                            ) : (
+                                                "팔로우"
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

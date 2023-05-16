@@ -108,10 +108,7 @@ function Profile({token}) {
             </div>
             <div className='bbs-image-container'>
                 <div className='bbs-image-container-02'>
-                    <div>
-                        <b  className='mypage-profile-02'>나의 사진<b className='count-blue'> {bbsImageCount}</b></b></div>
-                    <div className='bbs-image-blue-text'><Link className="mypage-profile-03" to="/">전체보기</Link></div>
-                </div>
+                        <b className='mypage-profile-02'>나의 사진<b className='count-blue'> {bbsImageCount}</b></b></div>
 
                 <div className='bbs-image-container-01'>
                     {bbsImageList.length === 0 ? (
@@ -124,30 +121,23 @@ function Profile({token}) {
                         </div>
                     ) : (
                         <div className='mypage-bbs-image'>
-                            {bbsImageList.slice(0, 4).map((bbs, i) => (
+                            {bbsImageList.map((bbs, i) => (
                                 <div key={i}>
                                     {bbs.thumnail ? (
-                                        <Link to={`/view/${bbs.bbsseq}`}>
-                                            <img className='mypage-bbs-image-01'
-                                                 src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
-                                                 alt=''
+                                        <Link to={`/community/gallery/view/${bbs.bbsseq}`}>
+                                            <img
+                                                className='mypage-bbs-image-01'
+                                                src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
                                             />
                                         </Link>
                                     ) : (
-                                        <Link to={`/view/${bbs.bbsseq}`}>
+                                        <Link to={`/community/gallery/view/${bbs.bbsseq}`}>
                                             <div className='mypage-bbs-image-01'
                                             />
                                         </Link>
                                     )}
                                 </div>
                             ))}
-                            {bbsImageList.length < 4 && (
-                                Array.from({length: 4 - bbsImageList.length}).map((_, i) => (
-                                    <div className='mypage-bbs-image-01'
-                                         key={`placeholder-${i}`}
-                                    />
-                                ))
-                            )}
                         </div>
                     )}
                 </div>
