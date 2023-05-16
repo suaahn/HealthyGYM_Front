@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import "./Follow.css";
 import FollowBtn from "./FollowBtn";
+import {Link} from "react-router-dom";
 
 function Following({token}) {
 
@@ -34,11 +35,13 @@ function Following({token}) {
                             </div>
                             <div className='follow-list-02'>
                                 <div className='mypage-follow-03'>
-                                <div className='follow-list-03'>{following.foltarget}</div>
-                                    <div className='mypage-follow-04'>
-                                        {following.mbti === "선택" || following.mbti === null ? "비공개" : following.mbti}{" "}
-                                        {following.gender === "female" ? "여자" : following.gender === "male" ? "남자" : ""}
-                                    </div>
+                                    <Link to={`/userpage/${following.userseq}/profile`}>
+                                        <div className='follow-list-03'>{following.foltarget}</div>
+                                        <div className='mypage-follow-04'>
+                                            {following.mbti === "선택" || following.mbti === null ? "비공개" : following.mbti}{" "}
+                                            {following.gender === "female" ? "여자" : following.gender === "male" ? "남자" : ""}
+                                        </div>
+                                    </Link>
                                 </div>
                                 <FollowBtn token={token} foltarget={following.foltarget}/>
                             </div>
