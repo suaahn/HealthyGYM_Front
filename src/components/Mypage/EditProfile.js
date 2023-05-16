@@ -3,6 +3,7 @@ import axios from "axios";
 import "./EditProfile.css";
 import {Form, Input} from "semantic-ui-react";
 import AuthenticationService from "../auth/AuthenticationService";
+import {Description, Msg} from "../auth/authStyle";
 
 function EditProfile({token}) {
 
@@ -11,7 +12,6 @@ function EditProfile({token}) {
     const [email, setEmail] = useState('');
     const [emailname, setEmailname] = useState('');
     const [emaildomain, setEmaildomain] = useState('');
-    const [nickname, setNickname] = useState('');
     const [gender, setGender] = useState('');
     const [age, setAge] = useState('');
     const [phone, setPhone] = useState('');
@@ -21,6 +21,12 @@ function EditProfile({token}) {
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef();
 
+    const [oldnickname, setOldNickname] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [nicknameMsg, setNicknameMsg] = useState('');
+    const [checkNickname, setCheckNickname] = useState(false);
+
+
     useEffect(() => {
         axios
             .post("http://localhost:3000/members/findmember", token)
@@ -29,6 +35,7 @@ function EditProfile({token}) {
                 setEmail(response.data.email);
                 setProfile(response.data.profile);
                 setNickname(response.data.nickname);
+                setOldNickname(response.data.nickname);
                 setEmailname(response.data.email.match(/(.*)@/)[1]);
                 setEmaildomain(response.data.email.match(/@(.*)/)[1]);
             })
@@ -56,8 +63,48 @@ function EditProfile({token}) {
         setName(event.target.value);
     }
 
-    const handleNicknameChange = (event) => {
-        setNickname(event.target.value);
+    ////// 닉네임 핸들러 & 유효성 검증 & 중복검사 //////
+    const onChangeNickname = (e) => {
+        const currNickname = e.target.value;
+        setNickname(currNickname);
+
+        if(validateNickname(currNickname)) {
+            existsNickname(currNickname);
+        } else {
+            setCheckNickname(false);
+        }
+    };
+
+    const existsNickname = async (nickname) => {
+
+        await axios.get(`http://localhost:3000/checknickname?nickname=${nickname}`)
+            .then((res) => {
+                //console.log(res.data);
+                if(!res.data || (nickname === oldnickname)) {
+                    setNicknameMsg('');
+                    setCheckNickname(true);
+                } else {
+                    setNicknameMsg('이미 사용중인 닉네임입니다.');
+                    setCheckNickname(false);
+                }
+            }).catch((err) => {
+                alert('error');
+            });
+
+    };
+
+    const validateNickname = (nickname) => {
+        if(nickname === '') {
+            setNicknameMsg('필수 입력 항목입니다.');
+            return false;
+        } else if(nickname.length < 2 || nickname.length > 15) {
+            setNicknameMsg('2 ~ 15자로 입력해주세요.');
+            return false;
+        } else if(nickname.match(/\s/g)) {
+            setNicknameMsg('공백은 사용할 수 없습니다.');
+            return false;
+        }
+        return true;
     }
 
     const handleGenderChange = (event) => {
@@ -117,6 +164,8 @@ function EditProfile({token}) {
             });
         }
     };
+
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -193,8 +242,8 @@ function EditProfile({token}) {
                         </div>
                     </div>
                 </div>
-                <div className='mypage-editprofile-01'>
-                    <div className='mypage-editprofile-02'>
+                <div className='mypage-editprofile-23'>
+                    <div className='mypage-editprofile-22'>
                         <div className='mypage-editprofile-04'>
                             별명
                         </div>
@@ -203,9 +252,15 @@ function EditProfile({token}) {
                         </div>
                     </div>
                     <div className='mypage-editprofile-03'>
-                        <div className='mypage-editprofile-06'>
-                            <Input type="text" value={nickname} onChange={handleNicknameChange}/>
-                        </div>
+                        {/*<div className='mypage-editprofile-06'>*/}
+                        {/*    <Input type="text" value={nickname} onChange={handleNicknameChange}/>*/}
+                        {/*</div>*/}
+                        {/*{!isNicknameAvailable && <div className="error-message">중복된 닉네임입니다.</div>}*/}
+                        <div>
+                            <div><Description>다른 유저와 겹치지 않도록 입력해주세요. (2~15자)</Description></div>
+                        <Input className='mypage-editprofile-21' value={nickname} onChange={onChangeNickname} placeholder="별명 (2~15자)" />
+                        <div><Msg>{nicknameMsg}</Msg></div>
+                    </div>
                     </div>
                 </div>
                 <div className='mypage-editprofile-12'>
@@ -359,7 +414,7 @@ function EditProfile({token}) {
                     </div>
                     <div className='mypage-editprofile-03'>
                         <div className='mypage-editprofile-06'>
-                            <button className='mypage-editprofile-18' type="submit">회원 정보 수정</button>
+                            <button className='mypage-editprofile-18' type="submit" disabled={!(checkNickname)}>회원 정보 수정</button>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,9 @@ import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import "./MyCommunity.css";
+import {getLinkByBbsTag} from "./MyPage";
+
+
 
 function MyAllBbs({token, profile}) {
     let params = useParams();
@@ -39,10 +42,12 @@ function MyAllBbs({token, profile}) {
             setBbsTitle("정보게시판");
         } else if (params.bbstag === "4") {
             setBbsTitle("자유게시판");
+        } else if (params.bbstag === "5") {
+            setBbsTitle("운동메이트");
         } else if (params.bbstag === "10") {
-            setBbsTitle("식단공유 게시판??");
+            setBbsTitle("식단공유");
         } else if (params.bbstag === "11") {
-            setBbsTitle("식단추천 게시판");
+            setBbsTitle("식단추천");
         }
     }, [params.bbstag]);
 
@@ -79,7 +84,7 @@ function MyAllBbs({token, profile}) {
                         {bbsImageList.map((bbs, i) => (
                             <div key={i}>
                                 <div className="mypage-mycommunity-09">
-                                    <Link to={`/viewer/${bbs.bbsseq}`}>
+                                    <Link to={getLinkByBbsTag(bbs.bbsseq, bbs.bbstag)}>
                                         <div className="mypage-mycommunity-08">
                                             <div className="mypage-mycommunity-10">
                                                 <div className="mypage-mycommunity-13">{bbs.title}</div>
@@ -117,7 +122,7 @@ function MyAllBbs({token, profile}) {
                                                         style={{
                                                             width: 120,
                                                             height: 120,
-                                                            backgroundColor: "rgb(237,237,237)",
+                                                            backgroundColor: "white",
                                                         }}
                                                     ></div>
                                                 )}

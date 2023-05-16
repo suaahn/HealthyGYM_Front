@@ -42,9 +42,11 @@
 }
 
 .mypage-bbs-image {
-    display: flex;
     width: 700px;
-    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-left: 2px;
 }
 
 .profile-container-box-03 {
@@ -94,10 +96,10 @@
 }
 
 .mypage-bbs-image-01 {
-    width: 160px;
-    height: 160px;
+    width: 222px;
+    height: 222px;
+    object-fit: cover;
     background-color: rgb(245, 245, 245);
-    border-radius: 8px;
 }
 
 .bbs-image-container-02 {
@@ -156,4 +158,6 @@
     font-size: 12px;
     color: #6c757d;
 }
+
+
 

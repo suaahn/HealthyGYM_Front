@@ -113,7 +113,7 @@ function BodyCom({token}) {
                         </b>
                     </div>
                     <div className="mypage-bodycom-04">
-                        <Link to="/">
+                        <Link to="/mypage/profilecard/allbdc">
                             전체보기
                         </Link>
                     </div>
@@ -122,7 +122,7 @@ function BodyCom({token}) {
                     {inbodyList.length !== 0 && (
                             <div className="mypage-bodycom-09">
                                 {renderedList.slice(0, 4).map((inbody) => (
-                                    <div key={`inbody-${inbody.bodycomseq}`}>
+                                    <div className="mypage-bodycom-38" key={`inbody-${inbody.bodycomseq}`}>
                                         {inbody.imgpath ? (
                                             <img
                                                 className="mypage-bodycom-10"
@@ -132,14 +132,6 @@ function BodyCom({token}) {
                                             />
                                         ) : (
                                             <div className="mypage-bodycom-11" />
-                                        )}
-                                        {inbodyList.length < 4 && (
-                                            Array.from({ length: 4 - inbodyList.length }).map((_, i) => (
-                                                <div
-                                                    className="mypage-bodycom-11"
-                                                    key={`placeholder-${i}`}
-                                                />
-                                            ))
                                         )}
                                     </div>
                                 ))}

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import "./Follow.css";
+import FollowBtn from "./FollowBtn";
 
 function Following({token}) {
 
@@ -22,7 +23,7 @@ function Following({token}) {
             <div className='follow-list'>
                 {followingList.length > 0 ? (
                     followingList.map((following) => (
-                        <div className='follow-list-01' key={following.memberseq}>
+                        <div className='follow-list-01' key={following.followseq}>
                             <div className='mypage-follow-02'>
                                 <img
                                     src={`http://localhost:3000/images/profile/${following.profile}`}
@@ -39,7 +40,7 @@ function Following({token}) {
                                         {following.gender === "female" ? "여자" : following.gender === "male" ? "남자" : ""}
                                     </div>
                                 </div>
-                                <div className='follow-list-04'>팔로잉</div>
+                                <FollowBtn token={token} foltarget={following.foltarget}/>
                             </div>
                         </div>
                     ))

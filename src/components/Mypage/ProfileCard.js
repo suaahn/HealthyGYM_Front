@@ -11,6 +11,7 @@ import MyAllBbs from "./MyAllBbs";
 import scale from "../../asset/icon_scale.png";
 import heart from "../../asset/icon_heart.png";
 import writing from "../../asset/icon_writing.png";
+import BodyComAll from "./BodyComAll";
 
 function ProfileCard({token}) {
 
@@ -207,6 +208,7 @@ function ProfileCard({token}) {
                                    element={<MyCommunity token={token} profile={member.profile}/>}/>
                             <Route path="myallbbs/:communitytag/:bbstag"
                                    element={<MyAllBbs token={token} profile={member.profile}/>}/>
+                            <Route path="allbdc" element={<BodyComAll token={token}/>}/>
                         </Routes>
                     </div>
                 </div>
