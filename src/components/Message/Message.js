@@ -51,7 +51,7 @@ function Message(){
                   { params: { memberseq: memberseq } }
                 );
                 //console.log(res.data);
-                console.log(memberseq);
+                //console.log(memberseq);
                 setNotreadmessage(res.data);
               } catch (error) {
                 console.log(error);
@@ -66,7 +66,7 @@ function Message(){
           params: { memberseq: memberseq },
         })
         .then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             setTalkingList(res.data);
             setFirstOpen(true);
         })
@@ -83,7 +83,7 @@ function Message(){
               params: { target: target, memberseq: memberseq },
             })
             .then((res) => {
-              console.log(res.data);
+              //console.log(res.data);
               setMessages(res.data.message);
               setRecommendmealRecv(res.data.fooddto);
               setFirstOpen(true);
@@ -169,8 +169,8 @@ function Message(){
         // console.log(memberdto);
         loadMessages(memberdto.memberseq, memberseq); // 선택한 사용자의 memberseq(target)와 로그인 사용자의 memberseq전달.
         
-        console.log(memberdto.memberseq);
-        console.log(memberseq);
+        //console.log(memberdto.memberseq);
+        //console.log(memberseq);
         
         // 쪽지 목록 조회시 읽음처리
         axios({
@@ -372,7 +372,7 @@ function Message(){
           },
         })
           .then((res) => {
-            console.log(res);
+            //console.log(res);
       
             // 사용자 후처리
       

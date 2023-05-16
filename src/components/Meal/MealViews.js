@@ -94,7 +94,7 @@ function MealViews() {
         params: { page: currentPage, limit: 5, memberseq:memberseq, search:search, select:select },
         
       });
-       console.log(res);
+       //console.log(res);
       // console.log(res.data[0].fooddto.length);
       const newPosts = res.data;
       setPosts((prevPosts) => [...prevPosts, ...newPosts]);

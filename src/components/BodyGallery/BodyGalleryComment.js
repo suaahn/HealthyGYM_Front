@@ -14,7 +14,7 @@ export default function BodyGalleryComment(props) {
   const findAllBodyComment = () => {
     axios.get(`http://localhost:3000/BodyGallery/findAllBodyComment/${props.bbsseq}`)
       .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         setCommentList(res.data);
       })
       .catch(function(err){
@@ -54,7 +54,7 @@ export default function BodyGalleryComment(props) {
       }
     })
       .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         if(res.data === "Successfully Comment saved"){
           // 댓글 등록에 성공하면, 댓글 목록을 다시 불러옴
           findAllBodyComment();
@@ -95,7 +95,7 @@ export default function BodyGalleryComment(props) {
       }
     })
       .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         if(res.data === "Successfully Comment deleted"){
           // 댓글 삭제에 성공하면, 댓글 목록을 다시 불러옴
           findAllBodyComment();
