@@ -337,7 +337,7 @@ export default function Signup() {
 
                 
                     <Button size="large" onClick={signupBtn} style={{ width:"100%", margin:'20px 0'}}
-                        disabled={!(isAllchecked && checkEmail && checkPwd && checkNickname && checkAuth)}>
+                        disabled={!(isAllchecked && checkEmail && checkPwd && checkNickname )}>
                         회원가입하기
                     </Button>
                 
