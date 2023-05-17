@@ -32,7 +32,7 @@ CustomAxios.interceptors.request.use(
             
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("expiresAt",
-                moment().add(30, "minute").format("yyyy-MM-DD HH:mm:ss")
+                moment().add(60, "minute").format("yyyy-MM-DD HH:mm:ss")
             );
             cookies.set('refreshToken', res.data.refreshToken, { 
                 sameSite: 'strict', 
@@ -60,7 +60,9 @@ CustomAxios.interceptors.response.use(
     async function (error) {
         if (error.response && error.response.status === 401) {
             localStorage.clear();
-            alert("다시 로그인해주세요. (", error.response.message, ")");
+            console.log(error.response.message);
+            //alert("다시 로그인해주세요.");
+            window.location.href = "/login";
         }
         
         return Promise.reject(error);
