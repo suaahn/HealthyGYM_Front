@@ -57,8 +57,8 @@ export default function BodyGalleryList() {
         <div className="ui container" style={{ marginTop: '20px' }}>
             <BbsNav setOrder={setOrder} order={order} />
             <div className="ui three cards" style={{ margin: '15px' }}>
-            {bbsList.map((bbs) => (
-                <Card key={bbs.seq} data={bbs} />
+            {bbsList.map((bbs, i) => (
+                <Card key={i} data={bbs} />
             ))}
             </div>
         </div>
