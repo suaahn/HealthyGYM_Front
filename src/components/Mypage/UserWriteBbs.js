@@ -31,7 +31,8 @@ function UserWriteBbs({token, profile}) {
 
     const removeImageTags = (content) => {
         const imgRegex = /<img\b[^>]*>/gi;
-        return content.replace(imgRegex, "");
+        const youtubeRegex = /<iframe\b[^>]*><\/iframe>/gi;
+        return content.replace(imgRegex, "").replace(youtubeRegex, "<p>[Youtube]</p>");
     };
 
     const formatDate = (dateString) => {
