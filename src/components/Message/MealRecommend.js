@@ -281,9 +281,9 @@ function MealRecommend(props) {
       {(memberseq === null || isNaN(memberseq)) && (
         <Popup
         content='로그인후 활용하실 수 있는 기능입니다.'
-        on='조언하기'
+        on='click'
         pinned
-        trigger={<Button content='Button' />}
+        trigger={<Button content='조언하기' />}
         size='tiny'
       />
       )}
