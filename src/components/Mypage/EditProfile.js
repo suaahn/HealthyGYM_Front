@@ -25,7 +25,7 @@ function EditProfile({token}) {
     const [oldnickname, setOldNickname] = useState('');
     const [nickname, setNickname] = useState('');
     const [nicknameMsg, setNicknameMsg] = useState('');
-    const [checkNickname, setCheckNickname] = useState(false);
+    const [checkNickname, setCheckNickname] = useState(true);
 
 
     useEffect(() => {
