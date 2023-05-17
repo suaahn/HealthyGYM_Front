@@ -151,6 +151,12 @@ function MealViews() {
 
   // 백엔드 구현 끝. 렌더링해주는 작업 필요.
   const likeHandler = async (bbsseq) => {
+
+    if(memberseq === 0){
+      alert("로그인 후 좋아요를 누를 수 있습니다.");
+      return;
+    }
+
     try {
       await axios.post(
         "http://localhost:3000/likemealpost",
@@ -176,6 +182,10 @@ function MealViews() {
   };
 
   const handleWriteClick = () => {
+    if(memberseq === 0) {
+      alert("로그인 후 글을 작성하실 수 있습니다.");
+      return;
+    }
     history("/mate/meal/write");
     // console.log("클릭");
   };

@@ -286,6 +286,7 @@ function MealRecommend(props) {
         trigger={<Button content='조언하기' />}
         size='tiny'
       />
+      
       )}
       
 
