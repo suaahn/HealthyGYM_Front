@@ -169,13 +169,6 @@ function UsersProfile({token}) {
                                     )}
                                 </div>
                             ))}
-                            {bbsImageList.length < 4 && (
-                                Array.from({length: 4 - bbsImageList.length}).map((_, i) => (
-                                    <div className='mypage-bbs-image-01'
-                                         key={`placeholder-${i}`}
-                                    />
-                                ))
-                            )}
                         </div>
                     )}
                 </div>
