@@ -23,9 +23,9 @@ const LandingPage = () => {
         <MateNav />
         <div>
           <form onSubmit={ submitKeyword } style={{textAlign:'center', margin:'15px'}}>
-              <div class="ui large icon input">
+              <div className="ui large icon input">
               <input type="text" onChange={ keywordChange } placeholder="검색어를 입력하세요" required />
-              <i class="search icon"></i>
+              <i className="search icon"></i>
             </div>
           </form>
         </div>

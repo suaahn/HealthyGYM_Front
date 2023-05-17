@@ -36,7 +36,7 @@ export default function BodyGalleryEditor() {
         const fetchBodyDetail = async() => {
             await axios.get(`http://localhost:3000/BodyGallery/findBodyById/${bbsseq}`, { params:{"bbsseq":bbsseq} })
                 .then((res) => {
-                    console.log(JSON.stringify(res.data));
+                    //console.log(JSON.stringify(res.data));
                     setTitle(res.data.title);
                     setContent(res.data.content);
                     setLoading(true);   // 여기서 rendering해줌
@@ -101,7 +101,7 @@ export default function BodyGalleryEditor() {
             }
           })
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 if(res.data === "Successfully updated"){
                     setTitle(title);
                     setContent(editorRef.current.getInstance().getHTML()); // 수정된 게시글 내용을 저장함
@@ -135,10 +135,10 @@ export default function BodyGalleryEditor() {
     
     // 이미지 업로드 핸들러 : toast editor에서 image OK 버튼 누르는 순간 동작
     const onUploadImage = async (blob, dropImage) => {
-        console.log(blob);
+        //console.log(blob);
         
         const [url, filename] = await uploadImage(blob); // 업로드된 이미지 서버 url
-        console.log(url);
+        //console.log(url);
         dropImage(url, 'alt_text'); // 에디터에 이미지 추가
 
         // 이미지 배열에 저장
@@ -169,7 +169,7 @@ export default function BodyGalleryEditor() {
                 }
             }
         }
-        console.log(deleteImg);
+        //console.log(deleteImg);
         return [deleteImg, contentImgUpdate];
     }
     // 본문 마크다운에서 이미지 이름을 배열로 빼내기
