@@ -56,14 +56,6 @@ function BodyComAll({token}) {
                                     ) : (
                                         <div className="mypage-bodycomall-11"/>
                                     )}
-                                    {inbodyList.length < 4 && (
-                                        Array.from({length: 4 - inbodyList.length}).map((_, i) => (
-                                            <div
-                                                className="mypage-bodycomall-11"
-                                                key={`placeholder-${i}`}
-                                            />
-                                        ))
-                                    )}
                                 </div>
                             ))}
                         </div>
