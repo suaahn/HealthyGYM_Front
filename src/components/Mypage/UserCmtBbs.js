@@ -83,7 +83,7 @@ function UserCmtBbs({token, profile}) {
                                                 </div>
                                                 <div className="mypage-mycommunity-14">
                                                     <img
-                                                        src={`http://localhost:3000/images/profile/${profile}`}
+                                                        src={`http://localhost:3000/images/profile/${bbs.profile}`}
                                                         alt="프로필 이미지"
                                                         width="20"
                                                         height="20"
