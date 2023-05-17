@@ -43,7 +43,7 @@ export const TitleLink = styled(Link)`
 export const ContentLink = styled(Link)`
     color: black;
     width:420px; 
-    height:35px; 
+    height:37px; 
     margin-bottom: 14px;
     word-wrap:break-word; 
     white-space:normal; 

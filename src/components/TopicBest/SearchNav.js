@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Dropdown } from 'semantic-ui-react';
+import { Menu, Dropdown, Divider } from 'semantic-ui-react';
 
 export default function SearchNav(props) {
 
@@ -42,7 +42,7 @@ export default function SearchNav(props) {
           </Menu.Item>
         </Menu.Menu>     
       </Menu>
-    <hr style={{ margin: 0 }} />
+    <Divider style={{ margin: 0 }} />
     </div>
   );
 }
