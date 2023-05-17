@@ -10,7 +10,7 @@ export const shareKakao = (url, title) => {
           objectType: "feed",
           content: {
             title: title,
-            imageUrl: "https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%2F1683078742736.png?alt=media&token=dff93ed7-bcdc-4f44-9705-ac905d6a310d",
+            imageUrl: "https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%2Fimg_zym.png?alt=media&token=d3f1aaa7-32a8-47ce-b7a9-2d871f160d1f",
             link: {
               mobileWebUrl: url,
               webUrl: url
