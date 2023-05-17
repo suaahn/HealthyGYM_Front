@@ -75,10 +75,7 @@ function MealViews() {
     const s = parseInt(localStorage.getItem("memberseq"), 10);
     if (s !== null && !isNaN(s)) {
         setMemberseq(s);
-    } else {
-        alert('로그인 후 글 작성이 가능합니다.');
-        history('/login');
-    }
+    } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
