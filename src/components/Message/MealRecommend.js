@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Button, Icon, Modal, Form, TextArea, Input, Card, Grid, Table, Header, Pagination } from 'semantic-ui-react';
+import { Button, Icon, Modal, Form, TextArea, Input, Card, Grid, Table, Header, Pagination, Popup } from 'semantic-ui-react';
 import axios from 'axios';
 import "./MealRecommend.css";
 
@@ -275,9 +275,19 @@ function MealRecommend(props) {
   return (
     <div className='recommend-container'>
       {/* 다른사람에게만 조언 버튼이 보이도록 했어요. 테스트 필요하시면 === 으로 바꾸신다음 본인에게 노출해서 쪽지 받게 설정할수있습니다. */}
-      {memberseq !== detail.memberseq && (
+      {memberseq !== detail.memberseq && !isNaN(memberseq) && (
         <Button positive onClick={() => setFirstOpen(true)}>조언하기</Button>
       )}
+      {(memberseq === null || isNaN(memberseq)) && (
+        <Popup
+        content='로그인후 활용하실 수 있는 기능입니다.'
+        on='조언하기'
+        pinned
+        trigger={<Button content='Button' />}
+        size='tiny'
+      />
+      )}
+      
 
       <Modal
         onClose={() => setFirstOpen(false)}
