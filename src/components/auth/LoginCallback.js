@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 import AuthenticationService from './AuthenticationService';
+import { Loader } from 'semantic-ui-react';
 
 // 소셜 로그인
 export default function LoginCallback() {
@@ -48,7 +49,7 @@ export default function LoginCallback() {
     
     return (
         <>
-            <div>Loading</div>
+            <br/><Loader active inline='centered' />
         </>
     );
 
