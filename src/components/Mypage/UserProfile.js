@@ -3,6 +3,7 @@ import "./MypageCss/Profile.css";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import BodyGraph from "./BodyGraph";
+import lock from "../../asset/icon_lock.png";
 
 // 유저페이지 프로필 (체성분, 사진)
 function UsersProfile({token}) {
@@ -12,6 +13,27 @@ function UsersProfile({token}) {
     const [weightInt,setWeightInt] = useState(0);
     const [muscleInt,setMuscleInt] = useState(0);
     const [fatInt,setFatInt] = useState(0);
+    const [mate,setMate] = useState(false);
+
+    const authToken = localStorage.getItem("memberseq");
+    const loginToken = useMemo(() => ({memberseq: authToken}), [authToken]);
+
+    useEffect(() => {
+        // confirm mate
+        const requestBody = {
+            memberseq: loginToken.memberseq,
+            userseq: token.memberseq,
+        };
+
+        axios.post("http://localhost:3000/confirm/mate", requestBody, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            console.log(response.data);
+            setMate(response.data);   // Mate 여부 세팅
+        });
+    }, [token, loginToken]);
 
     useEffect(() => {
         axios.post('http://localhost:3000/bodycomlist', token)
@@ -55,14 +77,15 @@ function UsersProfile({token}) {
         <div className='profile-container-01'>
             <div className=' bbs-image-container-02'>
                 <b className='mypage-profile-02'>체성분<b className='count-blue'>{inbodyCount}</b></b></div>
-            <div>
-                {inbodyList.length === 0 ? (
-                    <div className='profile-container-box'>
+            {mate ? <div>
+                <div>
+                    {inbodyList.length === 0 ? (
+                        <div className='profile-container-box'>
                             <div className='profile-container-box-01'>
                                 등록된 체성분이 없어요
                             </div>
-                    </div>
-                ) : (
+                        </div>
+                    ) : (
                         <div className="profile-container-box-03">
                             <div>
                                 {inbodyList.slice(-1).map((inbody) => (
@@ -98,10 +121,21 @@ function UsersProfile({token}) {
                                 ))}
                             </div>
                         </div>
-                )}
-            </div>
-            <div className='mypage-profile-09'>* 등록된 체성분의 처음과 마지막을 비교합니다.
-            </div>
+                    )}
+                </div>
+                <div className='mypage-profile-09'>* 등록된 체성분의 처음과 마지막을 비교합니다.</div></div> : <div className='profile-container-box-04'>
+                <div className='mypage-profile-10'>
+                <img className='mypage-profile-11' alt="좋아요"
+                     src={lock}
+                     style={{
+                         width: '50px',
+                         height: '50px'
+                     }}/>
+                <div className='profile-container-box-01'>
+                    팔로우하는 사이가 되어야 볼 수 있어요
+                </div></div>
+            </div>}
+
             <div className='bbs-image-container'>
                 <div className='bbs-image-container-02'>
                     <div>

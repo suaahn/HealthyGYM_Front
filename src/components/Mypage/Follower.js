@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import "./MypageCss/Follow.css";
 import FollowBtn from "./FollowBtn";
@@ -8,6 +8,10 @@ import {Link} from "react-router-dom";
 function Follower({token}) {
 
     const [followerList, setFollowerList] = useState([]);
+    const [preventFollow, setPreventFollow] = useState(false);
+
+    const authToken = localStorage.getItem("memberseq");
+    const loginToken = useMemo(() => ({memberseq: authToken}), [authToken]);
 
     useEffect(() => {
         axios.post('http://localhost:3000/members/follower', token)
@@ -18,6 +22,14 @@ function Follower({token}) {
                 console.error(error);
             });
     }, [token]);
+
+    useEffect(()=>{
+        if(loginToken.memberseq){
+            setPreventFollow(false);
+        } else {
+            setPreventFollow(true);
+        }
+    },[loginToken]);
 
     return (
         <div className='follow-container'>
@@ -44,7 +56,9 @@ function Follower({token}) {
                                         </div>
                                     </div>
                                 </Link>
+                                {!preventFollow && (
                                 <FollowBtn token={token} foltarget={follower.foltarget}/>
+                                    )}
                             </div>
                         </div>
                     ))
