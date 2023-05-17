@@ -70,7 +70,7 @@ export default function BodyGalleryComment(props) {
   const renderComment = (comment) => {
     return (
       <Comment key={comment.id}>
-        <Comment.Avatar src={`http://localhost:3000/images/profile/${localStorage.getItem('profile')}`} />
+        <Comment.Avatar src={`http://localhost:3000/images/profile/${comment.profile}`} />
         <Comment.Content>
           <Comment.Author as='a'>{comment.nickname}</Comment.Author>
           <Comment.Metadata>
