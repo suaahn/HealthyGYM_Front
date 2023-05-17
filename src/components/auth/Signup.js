@@ -86,8 +86,11 @@ export default function Signup() {
             } else if(res.data === "kakao") {
                 setEmailMsg("이미 카카오톡 간편가입으로 가입된 이메일입니다. '카카오톡' 버튼을 눌러 로그인해주세요.");
                 setCheckEmail(false);
-            } else {
+            } else if(res.data === "google") {
                 setEmailMsg("이미 구글 간편가입으로 가입된 이메일입니다. '구글' 버튼을 눌러 로그인해주세요.");
+                setCheckEmail(false);
+            } else {
+                setEmailMsg("이미 가입된 이메일입니다.");
                 setCheckEmail(false);
             }
         }).catch((err) => {
@@ -227,13 +230,13 @@ export default function Signup() {
 
     
     const loginKakao = () => {
-        const KAKAO_CLIENT_id = process.env.REACT_APP_KAKAO_CLIENT_id;
+        const KAKAO_CLIENT_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
         const KAKAO_REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
         const KAKAO_OAUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_id}&redirect_uri=${KAKAO_REDIRECT_URL}&response_type=code&prompt=login`;
         window.location.href = KAKAO_OAUTH_URL;
     };
     const loginGoogle = () => {
-        const GOOGLE_CLIENT_id = process.env.REACT_APP_GOOGLE_CLIENT_id;
+        const GOOGLE_CLIENT_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
         const GOOGLE_REDIRECT_URL = process.env.REACT_APP_GOOGLE_REDIRECT_URL;
         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_id}&redirect_uri=${GOOGLE_REDIRECT_URL}&response_type=code&scope=email profile`;
     };

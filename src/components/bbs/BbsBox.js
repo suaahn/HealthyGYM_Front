@@ -20,7 +20,8 @@ export default function BbsBox(props) {
 
     const removeImageTags = (content) => {
         const imgRegex = /<img\b[^>]*>/gi;
-        return content.replace(imgRegex, "");
+        const youtubeRegex = /<iframe\b[^>]*><\/iframe>/gi;
+        return content.replace(imgRegex, "").replace(youtubeRegex, "<p>[Youtube]</p>");
     };
 
     
