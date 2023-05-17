@@ -169,7 +169,7 @@ export default function ToastEditor() {
     // 팝업 바디 생성
     const container = document.createElement('div');
     const description = document.createElement('p');
-    description.innerText = "Youtube 주소를 입력하고 Enter를 누르세요!";
+    description.innerText = "Youtube 주소를 입력하고 Enter를 누르세요!\n(퍼가기가 허용된 영상만 삽입 가능합니다.)";
 
     const urlInput = document.createElement('input');
     urlInput.style.width = '100%';
