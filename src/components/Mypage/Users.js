@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import "./MyCommunity.css";
+import "./MypageCss/MyCommunity.css";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {Menu} from "semantic-ui-react";
 import UserLikeBbs from "./UserLikeBbs";
 import UserWriteBbs from "./UserWriteBbs";
 import UserCmtBbs from "./UserCmtBbs";
 
+// 유저페이지 내비게이션
 function Users({token, profile}) {
 
     const [activeItem, setActiveItem] = useState('');

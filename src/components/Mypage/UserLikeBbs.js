@@ -1,9 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import {Link} from "react-router-dom";
-import "./MyCommunity.css";
+import "./MypageCss/MyCommunity.css";
 import {getLinkByBbsTag} from "./MyPage";
 
+// 유저페이지 - 좋아요한 글 리스트
 function UserLikeBbs({token, profile}) {
     const [bbsImageList, setBbsImageList] = useState([]);
 

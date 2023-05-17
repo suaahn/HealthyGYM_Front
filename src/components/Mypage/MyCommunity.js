@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import "./MyCommunity.css";
+import "./MypageCss/MyCommunity.css";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import MyWrite from "./MyWrite";
 import MyCmtBbs from "./MyCmtBbs";
 import MyLikeBbs from "./MyLikeBbs";
 import {Menu} from "semantic-ui-react";
 
+// 마이페이지 - 커뮤니티 내비게이션
 function MyCommunity({token, profile}) {
 
     const [activeItem, setActiveItem] = useState('');

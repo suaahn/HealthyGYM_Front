@@ -1,11 +1,10 @@
 import {Link, useParams} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
-import "./MyCommunity.css";
+import "./MypageCss/MyCommunity.css";
 import {getLinkByBbsTag} from "./MyPage";
 
-
-
+// 선택한 게시판 전체보기
 function MyAllBbs({token, profile}) {
     let params = useParams();
 

@@ -1,6 +1,5 @@
 import {Routes, Route, useNavigate} from "react-router-dom";
-import "./MyPage.css";
-import "./MypageActive.css";
+import "./MypageCss/MyPage.css";
 import Setting from "./Setting";
 import BodyCom from "./BodyCom";
 import Profile from "./Profile";
@@ -9,6 +8,7 @@ import MyCommunity from "./MyCommunity";
 import {useEffect, useMemo, useState} from "react";
 import {Menu} from "semantic-ui-react";
 
+// 마이페이지 내비바
 export function getLinkByBbsTag(bbsseq, bbstag) {
     if (bbstag === 5) {
         return `/mate/health/view/${bbsseq}`;

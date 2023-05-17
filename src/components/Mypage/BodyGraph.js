@@ -1,8 +1,9 @@
-import "./BodyGraph.css";
+import "./MypageCss/BodyGraph.css";
 import React, { useEffect, useState } from "react";
 import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis } from "recharts";
 import axios from '../../utils/CustomAxios';
 
+// 체성분 레이더 차트
 export default function BodyGraph({ token }) {
 
     const [dayA, setDayA] = useState("");

@@ -1,12 +1,30 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
+import "./MypageCss/ProfileCard.css";
 
+// 팔로잉, 팔로우 버튼 (로그인한 유저와 팔로우 관계 확인 + 팔로우, 언팔로우 기능)
 function FollowBtn({token, foltarget}) {
 
     const authToken = localStorage.getItem("memberseq");
     const newtoken = useMemo(() => ({memberseq: authToken}), [authToken]);
-
+    const [preventMe, setPreventMe] = useState(false);
     const [userFollow, setUserFollow] = useState(false);
+
+    useEffect(() => {
+
+        const requestBody = {
+            memberseq: newtoken.memberseq,
+            nickname: foltarget,
+        };
+
+        axios.post("http://localhost:3000/confirm/follow/me", requestBody, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            setPreventMe(response.data);   // 로그인한 자신일 경우 Prevent
+        });
+    }, [newtoken,foltarget]);
 
     useEffect(() => {
 
@@ -63,6 +81,7 @@ function FollowBtn({token, foltarget}) {
     return (
         <div>
             <div className="mypage-profilecard-12">
+                {!preventMe &&
                 <div>
                     <div className={buttonClass} onClick={handleButtonClick}>
                         {userFollow ? (
@@ -75,6 +94,7 @@ function FollowBtn({token, foltarget}) {
                         )}
                     </div>
                 </div>
+                }
             </div>
         </div>
     );

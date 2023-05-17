@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from '../../utils/CustomAxios';
-import "./PwdChange.css";
+import "./MypageCss/PwdChange.css";
 import {Form} from "semantic-ui-react";
 
+// 비밀번호 변경
 function PwdChange({token}) {
     const [memberseq, setMemberseq] = useState('');
     const [pwd, setPwd] = useState("");

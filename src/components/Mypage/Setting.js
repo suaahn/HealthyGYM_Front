@@ -1,10 +1,11 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
 import EditProfile from "./EditProfile";
 import PwdChange from "./PwdChange";
-import "./Setting.css";
+import "./MypageCss/Setting.css";
 import React, {useEffect, useState} from "react";
 import {Menu} from "semantic-ui-react";
 
+// 설정 내비게이션
 function Setting({token}) {
 
     const [activeItem, setActiveItem] = useState('');

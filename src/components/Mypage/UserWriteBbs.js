@@ -3,7 +3,7 @@ import axios from '../../utils/CustomAxios';
 import {Link} from "react-router-dom";
 import {getLinkByBbsTag} from "./MyPage";
 
-
+// 유저페이지 - 작성한 글 리스트
 function UserWriteBbs({token, profile}) {
     const [bbsImageList, setBbsImageList] = useState([]);
 

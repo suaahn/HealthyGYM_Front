@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import {Link, Route, Routes} from "react-router-dom";
+import "./MypageCss/ProfileCard.css";
 import scale from "../../asset/icon_scale.png";
 import heart from "../../asset/icon_heart.png";
 import writing from "../../asset/icon_writing.png";
@@ -10,9 +11,9 @@ import Users from "./Users";
 import UserProfile from "./UserProfile";
 import UserAllBbs from "./UserAllBbs";
 
+// 유저 프로필 카드
 function UserProfileCard({usertoken}) {
     const [member, setMember] = useState({});
-    const [nickname, setNickname] = useState({});
     const [followNum, setFollowNum] = useState(0);
     const [followerNum, setFollowerNum] = useState(0);
     const [inbodyCount, setInbodyCount] = useState([]);
@@ -48,7 +49,6 @@ function UserProfileCard({usertoken}) {
             .post("http://localhost:3000/members/findmember", usertoken)
             .then((response) => {
                 setMember(response.data);
-                setNickname(response.data.nickname);
             })
             .catch((error) => {
                 console.error(error);
@@ -69,7 +69,7 @@ function UserProfileCard({usertoken}) {
         }).then((response) => {
             setUserFollow(response.data);   // follow 여부 세팅
         });
-    }, [usertoken, nickname]);
+    }, [token, member]);
 
     useEffect(() => {
         // following 정보 가져오기

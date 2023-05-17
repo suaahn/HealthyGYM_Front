@@ -1,9 +1,10 @@
 import {Link} from "react-router-dom";
-import "./Profile.css";
+import "./MypageCss/Profile.css";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from '../../utils/CustomAxios';
 import BodyGraph from "./BodyGraph";
 
+// 프로필 탭
 function Profile({token}) {
 
     const [inbodyList, setInbodyList] = useState([]);
@@ -128,6 +129,7 @@ function Profile({token}) {
                                             <img
                                                 className='mypage-bbs-image-01'
                                                 src={`https://firebasestorage.googleapis.com/v0/b/healthygym-8f4ca.appspot.com/o/files%${bbs.thumnail}?alt=media`}
+                                                alt=''
                                             />
                                         </Link>
                                     ) : (
